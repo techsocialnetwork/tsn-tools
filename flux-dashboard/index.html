@@ -445,32 +445,31 @@
             color: #e0e0e0;
             line-height: 1.4;
         }
-        .map-legend-swatches {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .map-legend-dot {
-            display: inline-block;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.85);
-            box-sizing: border-box;
-            vertical-align: middle;
-        }
-        .map-legend-dot.small {
-            width: 10px;
-            height: 10px;
-            background: #00d4ff;
-            border-width: 1.5px;
-            border-color: #7dd3fc;
-        }
-        .map-legend-dot.large {
-            width: 18px;
-            height: 18px;
-            background: #c084fc;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
-        }
         .map-legend strong { color: #fff; font-weight: 600; }
+        /* Simple cyan count dots on the map */
+        .flux-node-marker {
+            background: transparent !important;
+            border: none !important;
+        }
+        .flux-node-dot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #00d4ff;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 11px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        .flux-node-dot span {
+            transform: translateY(0.5px);
+        }
         .map-basemap-toggle {
             display: inline-flex;
             align-items: center;
@@ -1385,25 +1384,17 @@
             });
         }
 
-        function majorityKey(counts) {
-            let best = '', n = 0;
-            for (const [k, v] of Object.entries(counts)) {
-                if (v > n) { best = k; n = v; }
-            }
-            return best;
-        }
-
-        function clusterStyle(count, maxCount) {
-            // Size encodes count; bright cyan + white stroke for dark gray / satellite
-            const t = Math.min(1, Math.log(count + 1) / Math.log((maxCount || 1) + 1));
-            return {
-                fillColor: '#00d4ff',
-                fillOpacity: Math.max(0.75, 0.75 + 0.2 * t),
-                radius: Math.max(8, Math.min(36, 7 + Math.sqrt(count) * 2.6)),
-                weight: 2,
-                color: '#ffffff',
-                opacity: 1
-            };
+        function nodeCountIcon(count) {
+            const text = String(count);
+            // Lightly grow with digits so the number fits
+            const size = Math.max(24, Math.min(42, 16 + text.length * 7));
+            const fontSize = text.length >= 4 ? 10 : 11;
+            return L.divIcon({
+                className: 'flux-node-marker',
+                html: `<div class="flux-node-dot" style="width:${size}px;height:${size}px;font-size:${fontSize}px"><span>${text}</span></div>`,
+                iconSize: [size, size],
+                iconAnchor: [size / 2, size / 2]
+            });
         }
 
         function destroyFluxMap() {
@@ -1444,22 +1435,13 @@
                     c = {
                         lat: Number(lat.toFixed(2)),
                         lon: Number(lon.toFixed(2)),
-                        count: 0,
-                        countries: {},
-                        regions: {},
-                        orgs: {}
+                        count: 0
                     };
                     clusters.set(key, c);
                 }
                 c.count += 1;
 
                 const country = g.country || 'Unknown';
-                const region = g.regionName || g.region || '';
-                const org = g.org || g.isp || '';
-                c.countries[country] = (c.countries[country] || 0) + 1;
-                if (region) c.regions[region] = (c.regions[region] || 0) + 1;
-                if (org) c.orgs[org] = (c.orgs[org] || 0) + 1;
-
                 countryCounts[country] = (countryCounts[country] || 0) + 1;
                 const continent = g.continent || 'Unknown';
                 continentCounts[continent] = (continentCounts[continent] || 0) + 1;
@@ -1471,11 +1453,7 @@
                     <div class="map-column">
                         <div id="flux-leaflet-map" role="img" aria-label="Flux node world map"></div>
                         <div class="map-legend" id="map-legend">
-                            <span><strong>Dot size = node count</strong> at that location</span>
-                            <span class="map-legend-swatches" aria-hidden="true">
-                                <span class="map-legend-dot small"></span> fewer
-                                <span class="map-legend-dot large"></span> denser
-                            </span>
+                            <span><strong>Dot = location</strong> · number = node count</span>
                             <div class="map-basemap-toggle" role="group" aria-label="Basemap">
                                 <button type="button" data-basemap="satellite" aria-pressed="false">Satellite</button>
                                 <button type="button" data-basemap="dark" aria-pressed="true" class="active">Dark</button>
@@ -1553,32 +1531,19 @@
                         '<div class="error">Geolocation loaded but no lat/lon points to plot</div>');
                 }
 
-                const maxCount = Math.max(...clusterArr.map(c => c.count), 1);
                 const bounds = [];
 
-                // Smaller clusters first so dense ones paint on top
+                // Smaller counts first so larger labels paint on top
                 clusterArr.sort((a, b) => a.count - b.count);
 
                 for (const c of clusterArr) {
-                    const style = clusterStyle(c.count, maxCount);
-                    const country = majorityKey(c.countries) || 'Unknown';
-                    const region = majorityKey(c.regions);
-                    const org = majorityKey(c.orgs);
-                    const marker = L.circleMarker([c.lat, c.lon], {
+                    const marker = L.marker([c.lat, c.lon], {
                         pane: 'nodes',
-                        radius: style.radius,
-                        color: style.color,
-                        weight: style.weight,
-                        opacity: style.opacity,
-                        fillColor: style.fillColor,
-                        fillOpacity: style.fillOpacity
+                        icon: nodeCountIcon(c.count),
+                        keyboard: false,
+                        riseOnHover: true
                     });
-                    marker.bindPopup(
-                        `<div class="popup-title">${escapeHtml(country)}</div>` +
-                        (region ? `<div class="popup-region">${escapeHtml(region)}</div>` : '') +
-                        (org ? `<div class="popup-org">${escapeHtml(org)}</div>` : '') +
-                        `<div class="popup-count">Nodes: <strong>${c.count.toLocaleString()}</strong></div>`
-                    );
+                    marker.bindPopup(`<strong>${c.count.toLocaleString()}</strong> nodes`);
                     fluxMapLayer.addLayer(marker);
                     bounds.push([c.lat, c.lon]);
                 }
