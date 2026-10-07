@@ -1339,6 +1339,33 @@
             }
         };
 
+        function ensureNodesPane() {
+            if (!fluxMap) return null;
+            let pane = fluxMap.getPane('nodes');
+            if (!pane) {
+                pane = fluxMap.createPane('nodes');
+            }
+            pane.style.zIndex = '650';
+            pane.style.pointerEvents = 'auto';
+            return pane;
+        }
+
+        function bringNodeMarkersToFront() {
+            if (!fluxMap) return;
+            ensureNodesPane();
+            if (fluxBaseLayer && typeof fluxBaseLayer.setZIndex === 'function') {
+                fluxBaseLayer.setZIndex(1);
+            }
+            if (fluxMapLayer) {
+                fluxMapLayer.eachLayer(layer => {
+                    if (typeof layer.bringToFront === 'function') layer.bringToFront();
+                });
+                if (typeof fluxMapLayer.bringToFront === 'function') {
+                    fluxMapLayer.bringToFront();
+                }
+            }
+        }
+
         function setFluxBasemap(mode) {
             if (!fluxMap || !FLUX_BASEMAPS[mode]) return;
             fluxBasemapMode = mode;
@@ -1347,10 +1374,10 @@
                 fluxBaseLayer = null;
             }
             const cfg = FLUX_BASEMAPS[mode];
-            fluxBaseLayer = L.tileLayer(cfg.url, cfg.options);
+            fluxBaseLayer = L.tileLayer(cfg.url, Object.assign({ pane: 'tilePane' }, cfg.options));
             fluxBaseLayer.addTo(fluxMap);
-            // Keep markers above the basemap
-            if (fluxMapLayer) fluxMapLayer.bringToFront();
+            // Markers must stay above tiles (nodes pane zIndex 650)
+            bringNodeMarkersToFront();
             document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
                 const active = btn.getAttribute('data-basemap') === mode;
                 btn.classList.toggle('active', active);
@@ -1367,34 +1394,15 @@
         }
 
         function clusterStyle(count, maxCount) {
-            // t: 0 = few nodes (cyan), 1 = dense cluster (bright purple)
+            // Size encodes count; bright cyan + white stroke for dark gray / satellite
             const t = Math.min(1, Math.log(count + 1) / Math.log((maxCount || 1) + 1));
-            // #00d4ff → #a78bfa → #c084fc
-            const stops = [
-                [0, 212, 255],   // #00d4ff
-                [167, 139, 250], // #a78bfa
-                [192, 132, 252]  // #c084fc
-            ];
-            let r, g, b;
-            if (t < 0.5) {
-                const u = t / 0.5;
-                r = Math.round(stops[0][0] + (stops[1][0] - stops[0][0]) * u);
-                g = Math.round(stops[0][1] + (stops[1][1] - stops[0][1]) * u);
-                b = Math.round(stops[0][2] + (stops[1][2] - stops[0][2]) * u);
-            } else {
-                const u = (t - 0.5) / 0.5;
-                r = Math.round(stops[1][0] + (stops[2][0] - stops[1][0]) * u);
-                g = Math.round(stops[1][1] + (stops[2][1] - stops[1][1]) * u);
-                b = Math.round(stops[1][2] + (stops[2][2] - stops[1][2]) * u);
-            }
             return {
-                fillColor: `rgb(${r},${g},${b})`,
-                fillOpacity: 0.62 + 0.3 * t,
-                radius: Math.max(7, Math.min(38, 6 + Math.sqrt(count) * 2.8)),
-                weight: 2 + t * 2.5,
-                // strong stroke so markers stay visible on satellite imagery
-                color: t > 0.45 ? '#ffffff' : '#e0f9ff',
-                opacity: 0.9 + 0.1 * t
+                fillColor: '#00d4ff',
+                fillOpacity: Math.max(0.75, 0.75 + 0.2 * t),
+                radius: Math.max(8, Math.min(36, 7 + Math.sqrt(count) * 2.6)),
+                weight: 2,
+                color: '#ffffff',
+                opacity: 1
             };
         }
 
@@ -1514,70 +1522,99 @@
                 return;
             }
 
-            const mapEl = document.getElementById('flux-leaflet-map');
-            fluxMap = L.map(mapEl, {
-                worldCopyJump: true,
-                scrollWheelZoom: true,
-                minZoom: 2
-            }).setView([20, 0], 2);
-            fluxMapLayer = L.layerGroup().addTo(fluxMap);
-            setFluxBasemap(fluxBasemapMode || 'dark');
-
-            document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const mode = btn.getAttribute('data-basemap');
-                    if (mode) setFluxBasemap(mode);
-                });
-            });
-
-            const clusterArr = Array.from(clusters.values());
-            const maxCount = Math.max(...clusterArr.map(c => c.count), 1);
-            const bounds = [];
-
-            // Draw smaller clusters first so large dense ones sit on top
-            clusterArr.sort((a, b) => a.count - b.count);
-
-            for (const c of clusterArr) {
-                const style = clusterStyle(c.count, maxCount);
-                const country = majorityKey(c.countries) || 'Unknown';
-                const region = majorityKey(c.regions);
-                const org = majorityKey(c.orgs);
-                const marker = L.circleMarker([c.lat, c.lon], {
-                    radius: style.radius,
-                    color: style.color,
-                    weight: style.weight,
-                    opacity: style.opacity,
-                    fillColor: style.fillColor,
-                    fillOpacity: style.fillOpacity
-                });
-                marker.bindPopup(
-                    `<div class="popup-title">${escapeHtml(country)}</div>` +
-                    (region ? `<div class="popup-region">${escapeHtml(region)}</div>` : '') +
-                    (org ? `<div class="popup-org">${escapeHtml(org)}</div>` : '') +
-                    `<div class="popup-count">Nodes: <strong>${c.count.toLocaleString()}</strong></div>`
-                );
-                fluxMapLayer.addLayer(marker);
-                bounds.push([c.lat, c.lon]);
-            }
-
-            if (bounds.length) {
-                try {
-                    fluxMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 5 });
-                    // Avoid ultra-zoomed-out world view that makes dots tiny
-                    if (fluxMap.getZoom() < 2.4) fluxMap.setZoom(2.4);
-                } catch (e) {
-                    fluxMap.setView([20, 0], 2.4);
+            try {
+                const mapEl = document.getElementById('flux-leaflet-map');
+                if (!mapEl) {
+                    container.innerHTML = '<div class="error">Map container missing</div>';
+                    return;
                 }
-            } else {
-                fluxMap.setView([20, 0], 2.4);
-            }
 
-            const refreshSize = () => { if (fluxMap) fluxMap.invalidateSize(); };
-            requestAnimationFrame(() => {
-                refreshSize();
-                setTimeout(refreshSize, 120);
-                setTimeout(refreshSize, 400);
-            });
+                fluxMap = L.map(mapEl, {
+                    worldCopyJump: true,
+                    scrollWheelZoom: true,
+                    minZoom: 2
+                });
+                ensureNodesPane();
+
+                // Basemap first (tile pane), then marker layer on high-zIndex nodes pane
+                setFluxBasemap(fluxBasemapMode || 'dark');
+                fluxMapLayer = L.layerGroup().addTo(fluxMap);
+
+                document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const mode = btn.getAttribute('data-basemap');
+                        if (mode) setFluxBasemap(mode);
+                    });
+                });
+
+                const clusterArr = Array.from(clusters.values());
+                if (!clusterArr.length) {
+                    container.insertAdjacentHTML('afterbegin',
+                        '<div class="error">Geolocation loaded but no lat/lon points to plot</div>');
+                }
+
+                const maxCount = Math.max(...clusterArr.map(c => c.count), 1);
+                const bounds = [];
+
+                // Smaller clusters first so dense ones paint on top
+                clusterArr.sort((a, b) => a.count - b.count);
+
+                for (const c of clusterArr) {
+                    const style = clusterStyle(c.count, maxCount);
+                    const country = majorityKey(c.countries) || 'Unknown';
+                    const region = majorityKey(c.regions);
+                    const org = majorityKey(c.orgs);
+                    const marker = L.circleMarker([c.lat, c.lon], {
+                        pane: 'nodes',
+                        radius: style.radius,
+                        color: style.color,
+                        weight: style.weight,
+                        opacity: style.opacity,
+                        fillColor: style.fillColor,
+                        fillOpacity: style.fillOpacity
+                    });
+                    marker.bindPopup(
+                        `<div class="popup-title">${escapeHtml(country)}</div>` +
+                        (region ? `<div class="popup-region">${escapeHtml(region)}</div>` : '') +
+                        (org ? `<div class="popup-org">${escapeHtml(org)}</div>` : '') +
+                        `<div class="popup-count">Nodes: <strong>${c.count.toLocaleString()}</strong></div>`
+                    );
+                    fluxMapLayer.addLayer(marker);
+                    bounds.push([c.lat, c.lon]);
+                }
+
+                bringNodeMarkersToFront();
+
+                const applyView = () => {
+                    if (!fluxMap) return;
+                    fluxMap.invalidateSize();
+                    if (bounds.length) {
+                        try {
+                            fluxMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 5 });
+                            if (fluxMap.getZoom() < 2.4) fluxMap.setZoom(2.4);
+                        } catch (e) {
+                            fluxMap.setView([20, 0], 2.4);
+                        }
+                    } else {
+                        fluxMap.setView([20, 0], 2.4);
+                    }
+                    bringNodeMarkersToFront();
+                };
+
+                applyView();
+                requestAnimationFrame(() => {
+                    applyView();
+                    setTimeout(applyView, 150);
+                    setTimeout(applyView, 400);
+                });
+            } catch (err) {
+                console.error('loadNodeMap failed', err);
+                destroyFluxMap();
+                container.innerHTML =
+                    '<div class="error">Failed to render node map: ' +
+                    escapeHtml(err && err.message ? err.message : String(err)) +
+                    '</div>';
+            }
         }
 
         async function loadAllData() {
@@ -1620,7 +1657,18 @@
                 loadTierInfo(shared),
                 loadNetworkInfo(shared),
                 loadPrice(),
-                Promise.resolve(loadNodeMap(nodeGeoPayload))
+                (async () => {
+                    try {
+                        loadNodeMap(nodeGeoPayload);
+                    } catch (err) {
+                        console.error(err);
+                        const el = document.getElementById('node-map');
+                        if (el) {
+                            el.innerHTML = '<div class="error">Failed to render node map: ' +
+                                escapeHtml(err && err.message ? err.message : String(err)) + '</div>';
+                        }
+                    }
+                })()
             ]);
             
             document.getElementById('last-updated').textContent =
