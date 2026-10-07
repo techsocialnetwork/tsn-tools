@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flux Network Dashboard | DePIN Cloud Metrics | TSN Media</title>
-    <meta name="description" content="Real-time Flux Network dashboard showing decentralized cloud infrastructure metrics, node statistics, app deployments, and blockchain data.">
-    <meta name="keywords" content="Flux Network, decentralized cloud, Web3 infrastructure, node statistics, blockchain metrics, Flux cryptocurrency">
+    <meta name="description" content="Real-time Flux Network dashboard showing decentralized cloud infrastructure metrics, node statistics, latest app launches, and blockchain data.">
+    <meta name="keywords" content="Flux Network, decentralized cloud, Web3 infrastructure, node statistics, blockchain metrics, Flux cryptocurrency, app launches">
     
     <!-- Open Graph -->
     <meta property="og:title" content="Flux Network Dashboard | DePIN Cloud Metrics">
-    <meta property="og:description" content="Real-time Flux Network infrastructure metrics and statistics">
+    <meta property="og:description" content="Real-time Flux Network infrastructure metrics, latest app launches, and statistics">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/">
     <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/flux-og.jpg">
@@ -19,7 +19,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Flux Network Dashboard | DePIN Cloud Metrics">
-    <meta name="twitter:description" content="Real-time Flux Network infrastructure metrics and statistics">
+    <meta name="twitter:description" content="Real-time Flux Network infrastructure metrics, latest app launches, and statistics">
     <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/flux-og.jpg">
     
     <!-- Google tag (gtag.js) -->
@@ -52,6 +52,7 @@
             background: linear-gradient(135deg, #00d4ff, #7b2cbf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
         }
         header p { color: #8892a0; font-size: 1.1em; }
@@ -99,13 +100,21 @@
         }
         .section h2 {
             font-size: 1.5em;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             color: #fff;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .section h2 .icon { font-size: 1.2em; }
+        .section-sub {
+            color: #8892a0;
+            font-size: 0.9em;
+            margin-bottom: 18px;
+            line-height: 1.45;
+        }
+        .section-sub a { color: #00d4ff; text-decoration: none; }
         
         .node-list {
             display: grid;
@@ -119,6 +128,8 @@
             background: #0a0e1a;
             border-radius: 8px;
             border: 1px solid #1a2332;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         .node-info h4 { color: #fff; margin-bottom: 4px; }
         .node-info p { color: #8892a0; font-size: 0.9em; }
@@ -127,9 +138,12 @@
             border-radius: 20px;
             font-size: 0.85em;
             font-weight: 600;
+            white-space: nowrap;
         }
         .node-status.online { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
         .node-status.offline { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .node-status.partial { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .node-status.unknown { background: rgba(136, 146, 160, 0.2); color: #8892a0; }
         
         .tier-grid {
             display: grid;
@@ -147,27 +161,108 @@
         .tier-card .tier-count { font-size: 2em; font-weight: 700; color: #00d4ff; }
         .tier-card p { color: #8892a0; font-size: 0.9em; margin-top: 5px; }
         
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        /* Latest launches scrollable list */
+        .launches-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            color: #8892a0;
+            font-size: 0.85em;
         }
-        .app-card {
+        .launches-list {
+            max-height: 520px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: grid;
+            gap: 12px;
+            padding-right: 6px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #00d4ff #0a0e1a;
+        }
+        .launches-list::-webkit-scrollbar { width: 8px; }
+        .launches-list::-webkit-scrollbar-track { background: #0a0e1a; border-radius: 8px; }
+        .launches-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00d4ff, #7b2cbf);
+            border-radius: 8px;
+        }
+        .launch-item {
             background: #0a0e1a;
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px 18px;
             border: 1px solid #1a2332;
-            transition: transform 0.2s;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px 16px;
+            align-items: start;
         }
-        .app-card:hover { transform: translateY(-4px); }
-        .app-card h4 { color: #fff; margin-bottom: 8px; }
-        .app-card p { color: #8892a0; font-size: 0.9em; margin-bottom: 12px; }
-        .app-meta {
+        .launch-main h4 {
+            color: #fff;
+            font-size: 1.05em;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+        .launch-main h4 a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .launch-main h4 a:hover { color: #00d4ff; }
+        .launch-desc {
+            color: #8892a0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .launch-meta {
             display: flex;
-            gap: 15px;
-            font-size: 0.85em;
-            color: #00d4ff;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            font-size: 0.82em;
+            color: #a8b2c0;
         }
+        .launch-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .launch-meta .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            color: #00d4ff;
+            word-break: break-all;
+        }
+        .launch-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            min-width: 110px;
+        }
+        .launch-time {
+            color: #8892a0;
+            font-size: 0.8em;
+            text-align: right;
+            line-height: 1.35;
+        }
+        .launch-link {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(0, 212, 255, 0.12);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.8em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .launch-link:hover { background: rgba(0, 212, 255, 0.22); }
         
         .loading {
             text-align: center;
@@ -184,6 +279,7 @@
             border-top-color: transparent;
             animation: spin 1s linear infinite;
             margin-left: 10px;
+            vertical-align: middle;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
@@ -194,6 +290,7 @@
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
+            line-height: 1.45;
         }
         
         .refresh-btn {
@@ -226,10 +323,24 @@
         footer a { color: #00d4ff; text-decoration: none; }
         
         @media (max-width: 768px) {
+            body { padding: 12px; }
+            header { padding: 24px 0; margin-bottom: 24px; }
             header h1 { font-size: 1.8em; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .app-grid { grid-template-columns: 1fr; }
+            .section { padding: 18px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 12px; }
             .tier-grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 1.8em; }
+            .launches-list { max-height: 420px; }
+            .launch-item {
+                grid-template-columns: 1fr;
+            }
+            .launch-side {
+                align-items: flex-start;
+                flex-direction: row;
+                flex-wrap: wrap;
+                min-width: 0;
+            }
+            .launch-time { text-align: left; }
         }
     </style>
 </head>
@@ -239,7 +350,7 @@
             <h1>⚡ Flux Network Dashboard</h1>
             <p>Real-time decentralized cloud infrastructure metrics</p>
             <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,44,191,0.1)); border-radius: 12px; border: 1px solid #1a2332;">
-                <p style="color: #8892a0; font-size: 0.95em;">Powered by <a href="https://runonflux.com/" target="_blank" rel="noopener" style="color: #00d4ff; text-decoration: none; font-weight: 600;">Flux Network</a> — The world's leading decentralized Web3 cloud infrastructure with <span id="header-node-count">7,374</span> nodes worldwide providing enterprise-grade computing power.</p>
+                <p style="color: #8892a0; font-size: 0.95em;">Powered by <a href="https://runonflux.com/" target="_blank" rel="noopener" style="color: #00d4ff; text-decoration: none; font-weight: 600;">Flux Network</a> — The world's leading decentralized Web3 cloud infrastructure with <span id="header-node-count">—</span> nodes worldwide providing enterprise-grade computing power.</p>
                 <a href="https://runonflux.com/" target="_blank" rel="noopener" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: linear-gradient(135deg, #00d4ff, #7b2cbf); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9em;">Explore Flux Network →</a>
             </div>
         </header>
@@ -249,6 +360,20 @@
         
         <div class="stats-grid" id="stats-grid">
             <div class="loading">Loading network statistics...</div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🚀</span> Latest app launches</h2>
+            <p class="section-sub">
+                Newest registrations / updates from the public Flux global app registry
+                (<a href="https://api.runonflux.io/apps/globalappsspecifications" target="_blank" rel="noopener">/apps/globalappsspecifications</a>),
+                newest first by block height. Live instance counts from
+                <a href="https://api.runonflux.io/apps/locations" target="_blank" rel="noopener">/apps/locations</a>.
+            </p>
+            <div class="launches-toolbar" id="launches-toolbar"></div>
+            <div id="apps-list">
+                <div class="loading">Loading latest launches...</div>
+            </div>
         </div>
         
         <div class="section">
@@ -262,13 +387,6 @@
             <h2><span class="icon">🌐</span> Network Overview</h2>
             <div id="network-info">
                 <div class="loading">Loading network info...</div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2><span class="icon">📱</span> Recent App Deployments</h2>
-            <div id="apps-list">
-                <div class="loading">Loading applications...</div>
             </div>
         </div>
         
@@ -290,33 +408,101 @@
     <script>
         const API_BASE = 'https://api.runonflux.io';
         const EXPLORER_API = 'https://explorer.runonflux.io/api';
-        
+        const BLOCK_SECONDS = 30; // Flux ~2 min target; registry tooling commonly uses 30s/block for ETA math
+        const LAUNCHES_LIMIT = 80;
+
         async function fetchData(endpoint) {
             try {
                 const response = await fetch(endpoint);
-                const data = await response.json();
-                return data;
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('Error fetching:', error);
+                console.error('Error fetching', endpoint, error);
                 return null;
             }
         }
-        
-        async function loadNetworkStats() {
-            const nodeCount = await fetchData(`${API_BASE}/daemon/getzelnodecount`);
+
+        function escapeHtml(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function truncateMiddle(str, head = 8, tail = 6) {
+            const s = String(str || '');
+            if (s.length <= head + tail + 1) return s;
+            return `${s.slice(0, head)}…${s.slice(-tail)}`;
+        }
+
+        function formatRelative(date) {
+            if (!date || Number.isNaN(date.getTime())) return 'Unknown time';
+            const diffSec = Math.round((Date.now() - date.getTime()) / 1000);
+            const abs = Math.abs(diffSec);
+            const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+            if (abs < 60) return rtf.format(-Math.sign(diffSec || 1) * abs, 'second').replace(/^in /, '') || `${abs}s ago`;
+            // Prefer "X ago" style
+            const units = [
+                ['year', 31536000],
+                ['month', 2592000],
+                ['week', 604800],
+                ['day', 86400],
+                ['hour', 3600],
+                ['minute', 60]
+            ];
+            for (const [unit, secs] of units) {
+                if (abs >= secs) {
+                    const n = Math.round(abs / secs);
+                    return `${n} ${unit}${n === 1 ? '' : 's'} ago`;
+                }
+            }
+            return 'just now';
+        }
+
+        function approxTimeFromHeight(appHeight, currentHeight) {
+            if (!appHeight || !currentHeight) return null;
+            const blocksAgo = Math.max(0, currentHeight - appHeight);
+            return new Date(Date.now() - blocksAgo * BLOCK_SECONDS * 1000);
+        }
+
+        function statusFromCounts(running, requested) {
+            if (running == null) return { label: 'Unknown', cls: 'unknown' };
+            if (running <= 0) return { label: 'Deploying', cls: 'partial' };
+            if (requested && running >= requested) return { label: 'Running', cls: 'online' };
+            if (running > 0) return { label: 'Partial', cls: 'partial' };
+            return { label: 'Offline', cls: 'offline' };
+        }
+
+        function composeResources(app) {
+            const parts = Array.isArray(app.compose) && app.compose.length ? app.compose : [app];
+            let cpu = 0, ram = 0, hdd = 0;
+            const images = [];
+            for (const c of parts) {
+                if (!c || typeof c !== 'object') continue;
+                cpu += Number(c.cpu) || 0;
+                ram += Number(c.ram) || 0;
+                hdd += Number(c.hdd) || 0;
+                if (c.repotag) images.push(c.repotag);
+            }
+            return { cpu, ram, hdd, image: images[0] || '' };
+        }
+
+        async function loadNetworkStats(shared) {
+            const nodeCount = shared.nodeCount;
+            const appsCount = shared.appsCount;
             const statsGrid = document.getElementById('stats-grid');
             
             if (!nodeCount || !nodeCount.data) {
-                statsGrid.innerHTML = '<div class="error">Failed to load network statistics</div>';
+                statsGrid.innerHTML = '<div class="error">Failed to load network statistics from api.runonflux.io</div>';
                 return;
             }
             
             const data = nodeCount.data;
-            
-            // Update header node count
             const headerNodeCount = document.getElementById('header-node-count');
             if (headerNodeCount) {
-                headerNodeCount.textContent = data.total?.toLocaleString() || '7,374';
+                headerNodeCount.textContent = data.total?.toLocaleString() || '—';
             }
             
             statsGrid.innerHTML = `
@@ -328,7 +514,12 @@
                 <div class="stat-card">
                     <h3>Stable Nodes</h3>
                     <div class="stat-value" style="color: #00d4a0;">${data.stable?.toLocaleString() || 'N/A'}</div>
-                    <div class="stat-change positive">${((data.stable/data.total)*100).toFixed(1)}% of Network</div>
+                    <div class="stat-change positive">${data.total ? ((data.stable/data.total)*100).toFixed(1) : '—'}% of Network</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Registered Apps</h3>
+                    <div class="stat-value">${appsCount != null ? appsCount.toLocaleString() : 'N/A'}</div>
+                    <div class="stat-change">Global registry</div>
                 </div>
                 <div class="stat-card">
                     <h3>Cumulus Nodes</h3>
@@ -345,16 +536,11 @@
                     <div class="stat-value">${data['stratus-enabled']?.toLocaleString() || 'N/A'}</div>
                     <div class="stat-change">Top Tier</div>
                 </div>
-                <div class="stat-card">
-                    <h3>IPv4 Nodes</h3>
-                    <div class="stat-value">${data.ipv4?.toLocaleString() || 'N/A'}</div>
-                    <div class="stat-change">Network Type</div>
-                </div>
             `;
         }
         
-        async function loadTierInfo() {
-            const nodeCount = await fetchData(`${API_BASE}/daemon/getzelnodecount`);
+        async function loadTierInfo(shared) {
+            const nodeCount = shared.nodeCount;
             const tierInfo = document.getElementById('tier-info');
             
             if (!nodeCount || !nodeCount.data) {
@@ -385,8 +571,8 @@
             `;
         }
         
-        async function loadNetworkInfo() {
-            const info = await fetchData(`${API_BASE}/flux/info`);
+        async function loadNetworkInfo(shared) {
+            const info = shared.fluxInfo;
             const networkInfo = document.getElementById('network-info');
             
             if (!info || !info.data) {
@@ -403,90 +589,139 @@
                     <div class="node-item">
                         <div class="node-info">
                             <h4>Flux Version</h4>
-                            <p>${flux.version || 'N/A'}</p>
+                            <p>${escapeHtml(flux.version || 'N/A')}</p>
                         </div>
                     </div>
                     <div class="node-item">
                         <div class="node-info">
                             <h4>Block Height</h4>
-                            <p>${daemon.blocks?.toLocaleString() || 'N/A'}</p>
+                            <p>${daemon.blocks?.toLocaleString() || shared.currentHeight?.toLocaleString() || 'N/A'}</p>
                         </div>
                     </div>
                     <div class="node-item">
                         <div class="node-info">
                             <h4>Network Difficulty</h4>
-                            <p>${daemon.difficulty?.toFixed(6) || 'N/A'}</p>
+                            <p>${daemon.difficulty != null ? Number(daemon.difficulty).toFixed(6) : 'N/A'}</p>
                         </div>
                     </div>
                     <div class="node-item">
                         <div class="node-info">
                             <h4>Connections</h4>
-                            <p>${daemon.connections || 'N/A'} peers</p>
+                            <p>${daemon.connections ?? 'N/A'} peers</p>
                         </div>
                     </div>
                     <div class="node-item">
                         <div class="node-info">
-                            <h4>Operating System</h4>
-                            <p>${flux.osPrettyName || 'N/A'}</p>
+                            <h4>Sample Node OS</h4>
+                            <p>${escapeHtml(flux.osPrettyName || 'N/A')}</p>
                         </div>
                     </div>
                     <div class="node-item">
                         <div class="node-info">
-                            <h4>Location</h4>
-                            <p>${geolocation.country || 'N/A'} (${geolocation.countryCode || 'N/A'})</p>
-                        </div>
-                    </div>
-                    <div class="node-item">
-                        <div class="node-info">
-                            <h4>Network Protocol</h4>
-                            <p>IPv${geolocation.ip?.includes(':') ? '6' : '4'} ${flux.staticIp ? '(Static)' : '(Dynamic)'}</p>
+                            <h4>Sample Node Location</h4>
+                            <p>${escapeHtml(geolocation.country || 'N/A')} (${escapeHtml(geolocation.countryCode || 'N/A')})</p>
                         </div>
                     </div>
                 </div>
             `;
         }
         
-        async function loadApps() {
-            const data = await fetchData(`${API_BASE}/apps/globalappsspecifications`);
+        function renderLaunches(apps, locationCounts, currentHeight) {
             const appsList = document.getElementById('apps-list');
-            
-            if (!data || !data.data) {
-                appsList.innerHTML = '<div class="error">Failed to load applications</div>';
+            const toolbar = document.getElementById('launches-toolbar');
+
+            if (!apps || !Array.isArray(apps)) {
+                toolbar.innerHTML = '';
+                appsList.innerHTML = '<div class="error">Failed to load app launches from the Flux public API (<code>api.runonflux.io/apps/globalappsspecifications</code>). The registry may be temporarily unavailable — try Refresh.</div>';
                 return;
             }
-            
-            const apps = data.data.slice(0, 12); // Show first 12 apps
-            
+
+            const sorted = [...apps].sort((a, b) => (b.height || 0) - (a.height || 0));
+            const newest = sorted.slice(0, LAUNCHES_LIMIT);
+
+            toolbar.innerHTML = `
+                <span>Showing ${newest.length.toLocaleString()} of ${apps.length.toLocaleString()} apps · newest by height</span>
+                <span>Current height: ${currentHeight ? currentHeight.toLocaleString() : '—'}</span>
+            `;
+
             appsList.innerHTML = `
-                <div class="app-grid">
-                    ${apps.map(app => {
-                        const compose = app.compose ? app.compose[0] : app;
+                <div class="launches-list" role="list" aria-label="Latest Flux app launches">
+                    ${newest.map(app => {
+                        const name = app.name || 'unnamed';
+                        const owner = app.owner || '';
+                        const requested = app.instances ?? null;
+                        const running = locationCounts[name] ?? 0;
+                        const status = statusFromCounts(running, requested);
+                        const when = approxTimeFromHeight(app.height, currentHeight);
+                        const resources = composeResources(app);
+                        const visitUrl = `https://${encodeURIComponent(name)}.app.runonflux.io`;
+                        const manageUrl = 'https://cloud.runonflux.com/apps/globalapps';
+                        const desc = app.description || 'No description';
+                        const heightLabel = app.height != null ? `#${Number(app.height).toLocaleString()}` : '—';
+                        const timeLabel = when
+                            ? `${formatRelative(when)}<br><span title="Approximate from block height (~${BLOCK_SECONDS}s/block)">${escapeHtml(when.toLocaleString())}</span>`
+                            : `Height ${escapeHtml(heightLabel)}`;
+
                         return `
-                            <div class="app-card">
-                                <h4>${app.name}</h4>
-                                <p>${app.description || 'No description'}</p>
-                                <div class="app-meta">
-                                    <span>⚡ ${compose.cpu || 'N/A'} CPU</span>
-                                    <span>💾 ${compose.ram || 'N/A'} MB</span>
-                                    <span>🖥️ ${app.instances || 'N/A'} instances</span>
+                            <article class="launch-item" role="listitem">
+                                <div class="launch-main">
+                                    <h4><a href="${visitUrl}" target="_blank" rel="noopener">${escapeHtml(name)}</a></h4>
+                                    <p class="launch-desc">${escapeHtml(desc)}</p>
+                                    <div class="launch-meta">
+                                        <span title="Owner Zel ID / address">👤 <span class="mono">${escapeHtml(truncateMiddle(owner, 10, 8))}</span></span>
+                                        <span>🖥️ ${running}/${requested ?? '—'} nodes</span>
+                                        <span>⚡ ${resources.cpu || '—'} CPU</span>
+                                        <span>💾 ${resources.ram ? resources.ram.toLocaleString() + ' MB' : '—'}</span>
+                                        <span>📦 ${resources.hdd ? resources.hdd + ' GB' : '—'}</span>
+                                        <span>⛓ ${escapeHtml(heightLabel)}</span>
+                                        ${resources.image ? `<span title="${escapeHtml(resources.image)}">🐳 ${escapeHtml(truncateMiddle(resources.image, 18, 10))}</span>` : ''}
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="launch-side">
+                                    <span class="node-status ${status.cls}">${status.label}</span>
+                                    <div class="launch-time">${timeLabel}</div>
+                                    <a class="launch-link" href="${visitUrl}" target="_blank" rel="noopener">Open app</a>
+                                    <a class="launch-link" href="${manageUrl}" target="_blank" rel="noopener">Registry</a>
+                                </div>
+                            </article>
                         `;
                     }).join('')}
                 </div>
             `;
+        }
+
+        async function loadApps(shared) {
+            const appsPayload = shared.appsPayload;
+            const locationsPayload = shared.locationsPayload;
+            const currentHeight = shared.currentHeight;
+
+            const locationCounts = {};
+            if (locationsPayload && Array.isArray(locationsPayload.data)) {
+                for (const loc of locationsPayload.data) {
+                    if (!loc || !loc.name) continue;
+                    locationCounts[loc.name] = (locationCounts[loc.name] || 0) + 1;
+                }
+            }
+
+            if (!appsPayload || appsPayload.status === 'error' || !Array.isArray(appsPayload.data)) {
+                renderLaunches(null, locationCounts, currentHeight);
+                return;
+            }
+
+            shared.appsCount = appsPayload.data.length;
+            renderLaunches(appsPayload.data, locationCounts, currentHeight);
         }
         
         async function loadPrice() {
             const data = await fetchData(`${EXPLORER_API}/currency`);
             const priceInfo = document.getElementById('price-info');
             
-            if (!data || !data.data) {
-                priceInfo.innerHTML = '<div class="error">Failed to load price data</div>';
+            if (!data || data.data == null || data.data.rate == null) {
+                priceInfo.innerHTML = '<div class="error">Failed to load price data from explorer.runonflux.io</div>';
                 return;
             }
             
-            const rate = data.data.rate;
+            const rate = Number(data.data.rate);
             const usdPrice = rate.toFixed(4);
             
             priceInfo.innerHTML = `
@@ -499,7 +734,7 @@
                     <div class="stat-card">
                         <h3>Market Cap (Est.)</h3>
                         <div class="stat-value">$${(rate * 400000000).toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
-                        <div class="stat-change">Based on circulating supply</div>
+                        <div class="stat-change">Based on ~400M circulating estimate</div>
                     </div>
                 </div>
             `;
@@ -507,24 +742,44 @@
         
         async function loadAllData() {
             document.getElementById('last-updated').textContent = 'Loading...';
-            
+            document.getElementById('apps-list').innerHTML = '<div class="loading">Loading latest launches...</div>';
+
+            const [nodeCount, appsPayload, locationsPayload, fluxInfo, daemonInfo] = await Promise.all([
+                fetchData(`${API_BASE}/daemon/getfluxnodecount`),
+                fetchData(`${API_BASE}/apps/globalappsspecifications`),
+                fetchData(`${API_BASE}/apps/locations`),
+                fetchData(`${API_BASE}/flux/info`),
+                fetchData(`${API_BASE}/daemon/getinfo`)
+            ]);
+
+            const currentHeight =
+                daemonInfo?.data?.blocks ??
+                fluxInfo?.data?.daemon?.info?.blocks ??
+                null;
+
+            const shared = {
+                nodeCount,
+                appsPayload,
+                locationsPayload,
+                fluxInfo,
+                currentHeight,
+                appsCount: Array.isArray(appsPayload?.data) ? appsPayload.data.length : null
+            };
+
             await Promise.all([
-                loadNetworkStats(),
-                loadTierInfo(),
-                loadNetworkInfo(),
-                loadApps(),
+                loadApps(shared),
+                loadNetworkStats(shared),
+                loadTierInfo(shared),
+                loadNetworkInfo(shared),
                 loadPrice()
             ]);
             
-            document.getElementById('last-updated').textContent = 
+            document.getElementById('last-updated').textContent =
                 'Last updated: ' + new Date().toLocaleString();
         }
         
-        // Load data on page load
         loadAllData();
-        
-        // Auto-refresh every 60 seconds
-        setInterval(loadAllData, 60000);
+        setInterval(loadAllData, 90000);
     </script>
 </body>
 </html>
