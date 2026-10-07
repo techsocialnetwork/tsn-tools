@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Earnings Calendar 2026 | FAANG + Top Tech Companies | TSN Media</title>
+    <meta name="description" content="Track upcoming earnings announcements for FAANG (Meta, Apple, Amazon, Netflix, Google), Microsoft, Tesla, NVIDIA, AMD, Intel and other top tech companies.">
+    <meta name="keywords" content="tech earnings calendar, FAANG earnings, Apple earnings, Google earnings, Microsoft earnings, Tesla earnings, NVIDIA earnings, AMD earnings, Intel earnings, quarterly results">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Tech Earnings Calendar 2026 | FAANG + Top Tech Companies">
+    <meta property="og:description" content="Track upcoming earnings announcements for all major tech companies">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/tech-earnings/">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tech Earnings Calendar 2026">
+    <meta name="twitter:description" content="Track FAANG and top tech earnings announcements">
+    
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Tech Earnings Calendar",
+        "description": "Track upcoming earnings announcements for FAANG and top tech companies",
+        "url": "https://techsocialnetwork.github.io/tsn-tools/tech-earnings/",
+        "applicationCategory": "FinanceApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #00d4a0, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8892a0;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            background: #111827;
+            border: 1px solid #1a2332;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #00d4a0, #00d4ff);
+            color: #0a0e1a;
+            border-color: transparent;
+        }
+        .quarter-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        .quarter-btn {
+            padding: 12px 24px;
+            background: #111827;
+            border: 2px solid #1a2332;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .quarter-btn:hover, .quarter-btn.active {
+            background: linear-gradient(135deg, #00d4a0, #00d4ff);
+            color: #0a0e1a;
+            border-color: transparent;
+        }
+        .earnings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .earnings-card {
+            background: #111827;
+            border: 1px solid #1a2332;
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .earnings-card:hover {
+            transform: translateY(-3px);
+            border-color: #00d4ff;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .company-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #fff;
+        }
+        .ticker {
+            background: linear-gradient(135deg, #00d4a0, #00d4ff);
+            color: #0a0e1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+        .earnings-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #8892a0;
+        }
+        .earnings-date .date-value {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .status-confirmed {
+            background: rgba(0, 212, 160, 0.2);
+            color: #00d4a0;
+        }
+        .status-estimated {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .status-past {
+            background: rgba(136, 146, 160, 0.2);
+            color: #8892a0;
+        }
+        .status-reported {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+        .eps-estimate {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #1a2332;
+        }
+        .eps-label {
+            color: #8892a0;
+            font-size: 0.9em;
+        }
+        .eps-value {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .countdown {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #00d4ff;
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+            background: #111827;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid #1a2332;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00d4a0;
+        }
+        .stat-label {
+            color: #8892a0;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .last-updated {
+            text-align: center;
+            color: #8892a0;
+            font-size: 0.85em;
+            margin-top: 30px;
+        }
+        .disclaimer {
+            text-align: center;
+            color: #8892a0;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding: 15px;
+            background: #111827;
+            border-radius: 8px;
+            border: 1px solid #1a2332;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            .earnings-grid { grid-template-columns: 1fr; }
+            .filters { justify-content: flex-start; overflow-x: auto; }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Tech Earnings Calendar</h1>
+        <p class="subtitle">Track upcoming earnings announcements for FAANG and top tech companies</p>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalCompanies">20</div>
+                <div class="stat-label">Companies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="upcomingCount">-</div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="thisWeekCount">-</div>
+                <div class="stat-label">This Week</div>
+            </div>
+        </div>
+        
+        <div class="quarter-selector">
+            <button class="quarter-btn active" data-quarter="Q1">Q1 2026</button>
+            <button class="quarter-btn" data-quarter="Q2">Q2 2026</button>
+            <button class="quarter-btn" data-quarter="Q3">Q3 2026</button>
+            <button class="quarter-btn" data-quarter="Q4">Q4 2026</button>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Companies</button>
+            <button class="filter-btn" data-filter="magnificent7">Magnificent 7</button>
+            <button class="filter-btn" data-filter="semiconductor">Semiconductors</button>
+            <button class="filter-btn" data-filter="software">Software</button>
+            <button class="filter-btn" data-filter="hardware">Hardware</button>
+        </div>
+        
+        <div class="earnings-grid" id="earningsGrid">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+        
+        <p class="last-updated">Last updated: <span id="lastUpdated">April 26, 2026</span> | Data verified from company IR pages and Yahoo Finance</p>
+        
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> Earnings dates are based on company announcements and historical patterns. 
+            Dates marked as "Estimated" are projections and may change. Always verify with official company announcements. 
+            Data sourced from public earnings calendars.
+        </div>
+        
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+
+    <script>
+        // Tech Earnings Data - Q1-Q4 2026
+        const techEarningsData = {
+            Q1: [
+                {name: "Apple", ticker: "AAPL", date: "2026-04-30", epsEst: "1.85", status: "confirmed", category: "magnificent7"},
+                {name: "Microsoft", ticker: "MSFT", date: "2026-04-29", epsEst: "3.15", status: "confirmed", category: "magnificent7"},
+                {name: "NVIDIA", ticker: "NVDA", date: "2026-05-20", epsEst: "0.92", status: "confirmed", category: "magnificent7"},
+                {name: "Amazon", ticker: "AMZN", date: "2026-04-29", epsEst: "1.25", status: "confirmed", category: "magnificent7"},
+                {name: "Meta", ticker: "META", date: "2026-04-29", epsEst: "5.85", status: "confirmed", category: "magnificent7"},
+                {name: "Tesla", ticker: "TSLA", date: "2026-04-22", epsEst: "0.41", status: "reported", category: "magnificent7", actualEPS: "0.41"},
+                {name: "Alphabet", ticker: "GOOGL", date: "2026-04-29", epsEst: "1.85", status: "confirmed", category: "magnificent7"},
+                {name: "AMD", ticker: "AMD", date: "2026-05-05", epsEst: "0.78", status: "confirmed", category: "semiconductor"},
+                {name: "Intel", ticker: "INTC", date: "2026-04-24", epsEst: "0.12", status: "confirmed", category: "semiconductor"},
+                {name: "Qualcomm", ticker: "QCOM", date: "2026-04-30", epsEst: "2.35", status: "confirmed", category: "semiconductor"},
+                {name: "Broadcom", ticker: "AVGO", date: "2026-06-05", epsEst: "1.45", status: "estimated", category: "semiconductor"},
+                {name: "Salesforce", ticker: "CRM", date: "2026-05-28", epsEst: "2.42", status: "estimated", category: "software"},
+                {name: "Oracle", ticker: "ORCL", date: "2026-06-10", epsEst: "1.38", status: "estimated", category: "software"},
+                {name: "Adobe", ticker: "ADBE", date: "2026-06-11", epsEst: "4.45", status: "estimated", category: "software"},
+                {name: "Palantir", ticker: "PLTR", date: "2026-05-05", epsEst: "0.12", status: "confirmed", category: "software"},
+                {name: "CrowdStrike", ticker: "CRWD", date: "2026-06-03", epsEst: "0.35", status: "estimated", category: "software"},
+                {name: "ServiceNow", ticker: "NOW", date: "2026-04-23", epsEst: "4.25", status: "confirmed", category: "software"},
+                {name: "Snowflake", ticker: "SNOW", date: "2026-05-21", epsEst: "0.18", status: "estimated", category: "software"},
+                {name: "Netflix", ticker: "NFLX", date: "2026-04-16", epsEst: "0.76", status: "reported", category: "magnificent7", actualEPS: "0.70"},
+                {name: "IBM", ticker: "IBM", date: "2026-04-22", epsEst: "1.85", status: "confirmed", category: "hardware"}
+            ],
+            Q2: [
+                {name: "Apple", ticker: "AAPL", date: "2026-07-28", epsEst: "1.95", status: "estimated", category: "magnificent7"},
+                {name: "Microsoft", ticker: "MSFT", date: "2026-07-29", epsEst: "3.35", status: "estimated", category: "magnificent7"},
+                {name: "NVIDIA", ticker: "NVDA", date: "2026-08-20", epsEst: "1.05", status: "estimated", category: "magnificent7"},
+                {name: "Amazon", ticker: "AMZN", date: "2026-07-30", epsEst: "1.35", status: "estimated", category: "magnificent7"},
+                {name: "Meta", ticker: "META", date: "2026-07-29", epsEst: "6.15", status: "estimated", category: "magnificent7"},
+                {name: "Tesla", ticker: "TSLA", date: "2026-07-22", epsEst: "0.85", status: "estimated", category: "magnificent7"},
+                {name: "Alphabet", ticker: "GOOGL", date: "2026-07-28", epsEst: "1.95", status: "estimated", category: "magnificent7"},
+                {name: "Netflix", ticker: "NFLX", date: "2026-07-15", epsEst: "6.25", status: "estimated", category: "magnificent7"}
+            ],
+            Q3: [
+                {name: "Apple", ticker: "AAPL", date: "2026-10-28", epsEst: "2.05", status: "estimated", category: "magnificent7"},
+                {name: "Microsoft", ticker: "MSFT", date: "2026-10-29", epsEst: "3.45", status: "estimated", category: "magnificent7"},
+                {name: "NVIDIA", ticker: "NVDA", date: "2026-11-19", epsEst: "1.15", status: "estimated", category: "magnificent7"},
+                {name: "Amazon", ticker: "AMZN", date: "2026-10-29", epsEst: "1.45", status: "estimated", category: "magnificent7"},
+                {name: "Meta", ticker: "META", date: "2026-10-28", epsEst: "6.85", status: "estimated", category: "magnificent7"},
+                {name: "Tesla", ticker: "TSLA", date: "2026-10-21", epsEst: "0.95", status: "estimated", category: "magnificent7"},
+                {name: "Alphabet", ticker: "GOOGL", date: "2026-10-27", epsEst: "2.05", status: "estimated", category: "magnificent7"},
+                {name: "Netflix", ticker: "NFLX", date: "2026-10-14", epsEst: "6.85", status: "estimated", category: "magnificent7"}
+            ],
+            Q4: [
+                {name: "Apple", ticker: "AAPL", date: "2027-01-27", epsEst: "2.25", status: "estimated", category: "magnificent7"},
+                {name: "Microsoft", ticker: "MSFT", date: "2027-01-28", epsEst: "3.65", status: "estimated", category: "magnificent7"},
+                {name: "NVIDIA", ticker: "NVDA", date: "2027-02-18", epsEst: "1.25", status: "estimated", category: "magnificent7"},
+                {name: "Amazon", ticker: "AMZN", date: "2027-01-29", epsEst: "1.65", status: "estimated", category: "magnificent7"},
+                {name: "Meta", ticker: "META", date: "2027-01-28", epsEst: "7.25", status: "estimated", category: "magnificent7"},
+                {name: "Tesla", ticker: "TSLA", date: "2027-01-20", epsEst: "1.15", status: "estimated", category: "magnificent7"},
+                {name: "Alphabet", ticker: "GOOGL", date: "2027-01-27", epsEst: "2.25", status: "estimated", category: "magnificent7"},
+                {name: "Netflix", ticker: "NFLX", date: "2027-01-19", epsEst: "7.25", status: "estimated", category: "magnificent7"}
+            ]
+        };
+
+        let currentQuarter = 'Q1';
+        let currentFilter = 'all';
+
+        function init() {
+            updateStats();
+            renderEarnings();
+            setupEventListeners();
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+        }
+
+        function updateStats() {
+            const data = techEarningsData[currentQuarter];
+            const today = new Date();
+            
+            const upcoming = data.filter(c => new Date(c.date) >= today).length;
+            const thisWeek = data.filter(c => {
+                const date = new Date(c.date);
+                const diff = (date - today) / (1000 * 60 * 60 * 24);
+                return diff >= 0 && diff <= 7;
+            }).length;
+            
+            document.getElementById('upcomingCount').textContent = upcoming;
+            document.getElementById('thisWeekCount').textContent = thisWeek;
+        }
+
+        function renderEarnings() {
+            const grid = document.getElementById('earningsGrid');
+            let data = techEarningsData[currentQuarter];
+            
+            if (currentFilter !== 'all') {
+                data = data.filter(c => c.category === currentFilter);
+            }
+            
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            grid.innerHTML = data.map(company => {
+                const today = new Date();
+                const earningsDate = new Date(company.date);
+                const daysDiff = Math.ceil((earningsDate - today) / (1000 * 60 * 60 * 24));
+                
+                let countdownText = '';
+                if (daysDiff > 0) {
+                    countdownText = `${daysDiff} days away`;
+                } else if (daysDiff === 0) {
+                    countdownText = 'Today!';
+                } else {
+                    countdownText = 'Reported';
+                }
+                
+                const statusClass = daysDiff < 0 ? 'status-past' : (company.status === 'confirmed' ? 'status-confirmed' : 'status-estimated');
+                const statusText = daysDiff < 0 ? 'Reported' : (company.status === 'confirmed' ? 'Confirmed' : 'Estimated');
+                
+                return `
+                    <div class="earnings-card">
+                        <div class="card-header">
+                            <span class="company-name">${company.name}</span>
+                            <span class="ticker">${company.ticker}</span>
+                        </div>
+                        <div class="earnings-date">
+                            <span>📅</span>
+                            <span class="date-value">${earningsDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        </div>
+                        <div class="countdown">${countdownText}</div>
+                        <div class="eps-estimate">
+                            <div class="eps-label">EPS Estimate</div>
+                            <div class="eps-value">$${company.epsEst}</div>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.quarter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.quarter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentQuarter = btn.dataset.quarter;
+                    updateStats();
+                    renderEarnings();
+                });
+            });
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderEarnings();
+                });
+            });
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

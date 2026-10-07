@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&P 500 Earnings Calendar 2026 | All 503 Companies by Sector | TSN Media</title>
+    <meta name="description" content="Complete S&P 500 earnings calendar with all 503 companies organized by 11 GICS sectors. Track earnings dates, EPS estimates, revenue forecasts, and results.">
+    <meta name="keywords" content="S&P 500 earnings, earnings calendar, stock earnings, FAANG earnings, tech earnings, sector earnings, quarterly results, EPS estimates">
+    <meta property="og:title" content="S&P 500 Earnings Calendar 2026 | All 503 Companies">
+    <meta property="og:description" content="Complete S&P 500 earnings calendar organized by sector with EPS estimates and revenue forecasts">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/">
+    <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="S&P 500 Earnings Calendar 2026">
+    <meta name="twitter:description" content="All 503 S&P 500 companies organized by sector">
+    <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/og-image.jpg">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"S&P 500 Earnings Calendar","description":"Complete S&P 500 earnings calendar with all 503 companies organized by GICS sector","url":"https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e1a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.5em; background: linear-gradient(135deg, #00d4a0, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; text-align: center; }
+        .subtitle { text-align: center; color: #8892a0; margin-bottom: 30px; font-size: 1.1em; }
+        .stats-bar { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .stat-item { text-align: center; background: #111827; padding: 15px 20px; border-radius: 10px; border: 1px solid #1a2332; min-width: 100px; }
+        .stat-value { font-size: 1.6em; font-weight: 700; color: #00d4a0; }
+        .stat-label { color: #8892a0; font-size: 0.8em; margin-top: 5px; }
+        .quarter-selector { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .quarter-btn { padding: 12px 24px; background: #111827; border: 2px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .quarter-btn:hover, .quarter-btn.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
+        .view-toggle { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .view-btn { padding: 10px 20px; background: #111827; border: 1px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .view-btn:hover, .view-btn.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; }
+        .sector-tabs { display: flex; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
+        .sector-tab { padding: 10px 16px; background: #111827; border: 1px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 0.9em; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
+        .sector-tab:hover, .sector-tab.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
+        .passed-section { background: #111827; border: 1px solid #1a2332; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
+        .passed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .passed-title { font-size: 1.3em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .passed-stats { display: flex; gap: 15px; flex-wrap: wrap; }
+        .passed-stat { background: #1a2332; padding: 8px 15px; border-radius: 8px; font-size: 0.9em; }
+        .passed-stat .label { color: #8892a0; font-size: 0.85em; }
+        .passed-stat .value { font-weight: 700; font-size: 1.1em; }
+        .beat { color: #00d4a0; } .miss { color: #ff4757; } .meet { color: #ffc107; }
+        .sector-section { margin-bottom: 40px; }
+        .sector-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #1a2332; }
+        .sector-title { font-size: 1.4em; font-weight: 700; color: #fff; }
+        .sector-count { background: #1a2332; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; color: #8892a0; }
+        .earnings-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 12px; overflow: hidden; font-size: 0.95em; }
+        .earnings-table th { background: #1a2332; padding: 12px; text-align: left; font-weight: 600; color: #8892a0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .earnings-table td { padding: 12px; border-bottom: 1px solid #1a2332; }
+        .earnings-table tr:hover { background: rgba(0, 212, 255, 0.05); }
+        .company-cell { display: flex; align-items: center; gap: 10px; }
+        .company-logo { width: 36px; height: 36px; background: #1a2332; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8em; color: #00d4ff; }
+        .company-info { display: flex; flex-direction: column; }
+        .company-name { font-weight: 600; color: #fff; font-size: 0.95em; }
+        .company-ticker { font-size: 0.8em; color: #8892a0; }
+        .date-cell { color: #00d4ff; font-weight: 600; font-size: 0.9em; }
+        .countdown-cell { font-size: 0.85em; }
+        .countdown-soon { color: #ff4757; font-weight: 600; }
+        .countdown-upcoming { color: #ffc107; }
+        .countdown-past { color: #8892a0; }
+        .eps-cell { font-weight: 600; color: #fff; }
+        .revenue-cell { color: #e0e0e0; font-size: 0.9em; }
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
+        .status-confirmed { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
+        .status-estimated { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .status-reported { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .result-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
+        .result-beat { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
+        .result-miss { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .result-meet { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .last-updated { text-align: center; color: #8892a0; font-size: 0.85em; margin-top: 30px; }
+        .disclaimer { text-align: center; color: #8892a0; font-size: 0.85em; margin-top: 20px; padding: 15px; background: #111827; border-radius: 8px; border: 1px solid #1a2332; }
+        .back-link { display: block; text-align: center; margin-top: 30px; color: #00d4ff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            .earnings-table { font-size: 0.8em; }
+            .earnings-table th, .earnings-table td { padding: 8px 6px; }
+            .company-logo { width: 28px; height: 28px; font-size: 0.7em; }
+            .sector-tabs { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
+            .passed-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 S&P 500 Earnings Calendar</h1>
+        <p class="subtitle">Complete earnings calendar for all 503 S&P 500 companies organized by GICS sector</p>
+        
+        <div class="stats-bar">
+            <div class="stat-item"><div class="stat-value">503</div><div class="stat-label">Companies</div></div>
+            <div class="stat-item"><div class="stat-value">11</div><div class="stat-label">Sectors</div></div>
+            <div class="stat-item"><div class="stat-value" id="upcomingCount">-</div><div class="stat-label">Upcoming</div></div>
+            <div class="stat-item"><div class="stat-value" id="thisWeekCount">-</div><div class="stat-label">This Week</div></div>
+            <div class="stat-item"><div class="stat-value" id="reportedCount">-</div><div class="stat-label">Reported</div></div>
+        </div>
+        
+        <div class="quarter-selector">
+            <button class="quarter-btn active" data-quarter="Q1">Q1 2026</button>
+            <button class="quarter-btn" data-quarter="Q2">Q2 2026</button>
+            <button class="quarter-btn" data-quarter="Q3">Q3 2026</button>
+            <button class="quarter-btn" data-quarter="Q4">Q4 2026</button>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="by-sector">By Sector</button>
+            <button class="view-btn" data-view="by-date">By Date</button>
+        </div>
+        
+        <div class="sector-tabs" id="sectorTabs">
+            <button class="sector-tab active" data-sector="all"><span>📊</span> All</button>
+            <button class="sector-tab" data-sector="technology"><span>💻</span> Tech</button>
+            <button class="sector-tab" data-sector="healthcare"><span>🏥</span> Health</button>
+            <button class="sector-tab" data-sector="financials"><span>🏦</span> Finance</button>
+            <button class="sector-tab" data-sector="consumer-discretionary"><span>🛍️</span> Disc.</button>
+            <button class="sector-tab" data-sector="communication"><span>📡</span> Comm</button>
+            <button class="sector-tab" data-sector="industrials"><span>🏭</span> Ind.</button>
+            <button class="sector-tab" data-sector="consumer-staples"><span>🛒</span> Staples</button>
+            <button class="sector-tab" data-sector="energy"><span>⚡</span> Energy</button>
+            <button class="sector-tab" data-sector="utilities"><span>💡</span> Utils</button>
+            <button class="sector-tab" data-sector="real-estate"><span>🏢</span> RE</button>
+            <button class="sector-tab" data-sector="materials"><span>⛏️</span> Mat.</button>
+        </div>
+        
+        <div id="passedEarnings"></div>
+        <div id="earningsContent"></div>
+        
+        <p class="last-updated">Last updated: <span id="lastUpdated">April 26, 2026</span> | Data verified from company IR pages and Yahoo Finance</p>
+        
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> Earnings dates are estimates based on historical reporting patterns. 
+            Actual dates may vary. Always verify with official company announcements. Data for educational purposes only.
+        </div>
+        
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+
+    <script src="sp500-data.js?v=2"></script>
+    <script>
+        let currentQuarter = 'Q1';
+        let currentSector = 'all';
+        let currentView = 'by-sector';
+        
+        function init() {
+            updateStats();
+            renderContent();
+            setupEventListeners();
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+        }
+        
+        function updateStats() {
+            const data = sp500Data[currentQuarter];
+            let allCompanies = [];
+            Object.values(data).forEach(sector => {
+                allCompanies = allCompanies.concat(sector);
+            });
+            
+            const today = new Date();
+            const upcoming = allCompanies.filter(c => new Date(c.date) >= today);
+            const thisWeek = allCompanies.filter(c => {
+                const date = new Date(c.date);
+                const diff = (date - today) / (1000 * 60 * 60 * 24);
+                return diff >= 0 && diff <= 7;
+            });
+            const reported = allCompanies.filter(c => new Date(c.date) < today);
+            
+            document.getElementById('upcomingCount').textContent = upcoming.length;
+            document.getElementById('thisWeekCount').textContent = thisWeek.length;
+            document.getElementById('reportedCount').textContent = reported.length;
+        }
+        
+        function renderContent() {
+            const data = sp500Data[currentQuarter];
+            
+            if (currentView === 'by-sector') {
+                renderBySector(data);
+            } else {
+                renderByDate(data);
+            }
+            
+            renderPassedEarnings(data);
+        }
+        
+        function renderBySector(data) {
+            const container = document.getElementById('earningsContent');
+            let html = '';
+            
+            Object.entries(data).forEach(([sector, companies]) => {
+                if (currentSector !== 'all' && sector !== currentSector) return;
+                
+                const sectorNames = {
+                    'technology': 'Technology',
+                    'healthcare': 'Healthcare',
+                    'financials': 'Financials',
+                    'consumer-discretionary': 'Consumer Discretionary',
+                    'communication': 'Communication Services',
+                    'industrials': 'Industrials',
+                    'consumer-staples': 'Consumer Staples',
+                    'energy': 'Energy',
+                    'utilities': 'Utilities',
+                    'real-estate': 'Real Estate',
+                    'materials': 'Materials'
+                };
+                
+                html += `
+                    <div class="sector-section">
+                        <div class="sector-header">
+                            <span class="sector-title">${sectorNames[sector] || sector}</span>
+                            <span class="sector-count">${companies.length} companies</span>
+                        </div>
+                        <table class="earnings-table">
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Date</th>
+                                    <th>EPS Est.</th>
+                                    <th>Revenue Est.</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${companies.map(company => `
+                                    <tr>
+                                        <td>
+                                            <div class="company-cell">
+                                                <div class="company-logo">${company.ticker.substring(0,2)}</div>
+                                                <div class="company-info">
+                                                    <span class="company-name">${company.name}</span>
+                                                    <span class="company-ticker">${company.ticker}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="date-cell">${formatDate(company.date)}</td>
+                                        <td class="eps-cell">$${company.epsEst}</td>
+                                        <td class="revenue-cell">${company.revenueEst}</td>
+                                        <td><span class="status-badge status-${company.status}">${company.status}</span></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function renderByDate(data) {
+            const container = document.getElementById('earningsContent');
+            let allCompanies = [];
+            Object.values(data).forEach(sector => {
+                allCompanies = allCompanies.concat(sector);
+            });
+            
+            allCompanies.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            container.innerHTML = `
+                <table class="earnings-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Company</th>
+                            <th>EPS Est.</th>
+                            <th>Revenue Est.</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${allCompanies.map(company => `
+                            <tr>
+                                <td class="date-cell">${formatDate(company.date)}</td>
+                                <td>
+                                    <div class="company-cell">
+                                        <div class="company-logo">${company.ticker.substring(0,2)}</div>
+                                        <div class="company-info">
+                                            <span class="company-name">${company.name}</span>
+                                            <span class="company-ticker">${company.ticker}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="eps-cell">$${company.epsEst}</td>
+                                <td class="revenue-cell">${company.revenueEst}</td>
+                                <td><span class="status-badge status-${company.status}">${company.status}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        function renderPassedEarnings(data) {
+            const container = document.getElementById('passedEarnings');
+            let allCompanies = [];
+            Object.values(data).forEach(sector => {
+                allCompanies = allCompanies.concat(sector);
+            });
+            
+            const today = new Date();
+            const passed = allCompanies.filter(c => new Date(c.date) < today);
+            
+            if (passed.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            const beat = passed.filter(c => c.result === 'beat').length;
+            const miss = passed.filter(c => c.result === 'miss').length;
+            const meet = passed.filter(c => c.result === 'meet').length;
+            
+            container.innerHTML = `
+                <div class="passed-section">
+                    <div class="passed-header">
+                        <span class="passed-title">📋 Recently Reported</span>
+                        <div class="passed-stats">
+                            <div class="passed-stat"><span class="label">Beat</span> <span class="value beat">${beat}</span></div>
+                            <div class="passed-stat"><span class="label">Miss</span> <span class="value miss">${miss}</span></div>
+                            <div class="passed-stat"><span class="label">Meet</span> <span class="value meet">${meet}</span></div>
+                        </div>
+                    </div>
+                    <table class="earnings-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Date</th>
+                                <th>Actual EPS</th>
+                                <th>Est. EPS</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${passed.slice(0, 10).map(company => `
+                                <tr>
+                                    <td>
+                                        <div class="company-cell">
+                                            <div class="company-logo">${company.ticker.substring(0,2)}</div>
+                                            <div class="company-info">
+                                                <span class="company-name">${company.name}</span>
+                                                <span class="company-ticker">${company.ticker}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="date-cell">${formatDate(company.date)}</td>
+                                    <td class="eps-cell">${company.actualEPS ? '$' + company.actualEPS : '-'}</td>
+                                    <td class="revenue-cell">$${company.epsEst}</td>
+                                    <td>${company.result ? `<span class="result-badge result-${company.result}">${company.result.toUpperCase()}</span>` : '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        function setupEventListeners() {
+            document.querySelectorAll('.quarter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.quarter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentQuarter = btn.dataset.quarter;
+                    updateStats();
+                    renderContent();
+                });
+            });
+            
+            document.querySelectorAll('.sector-tab').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.sector-tab').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentSector = btn.dataset.sector;
+                    renderContent();
+                });
+            });
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentView = btn.dataset.view;
+                    renderContent();
+                });
+            });
+        }
+        
+        // Initialize when data is loaded
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

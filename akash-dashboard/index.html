@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash Network Dashboard | DePIN Cloud Metrics | TSN Media</title>
+    <meta name="description" content="Real-time Akash Network dashboard showing decentralized cloud provider statistics, GPU availability, AKT price, and network metrics.">
+    <meta name="keywords" content="Akash Network, DePIN, decentralized cloud, GPU marketplace, AKT token, cloud providers">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Akash Network Dashboard | DePIN Cloud Metrics">
+    <meta property="og:description" content="Real-time Akash Network decentralized cloud infrastructure metrics">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/">
+    <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/akash-og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Akash Network Dashboard | DePIN Cloud Metrics">
+    <meta name="twitter:description" content="Real-time Akash Network decentralized cloud infrastructure metrics">
+    <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/akash-og.jpg">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a2332;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff4d4d, #f9cb28);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p { color: #8892a0; font-size: 1.1em; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: #111827;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #1a2332;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-4px); }
+        .stat-card h3 {
+            color: #8892a0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .stat-change {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .stat-change.positive { color: #00d4a0; }
+        .stat-change.negative { color: #ff4757; }
+        
+        .section {
+            background: #111827;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #1a2332;
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h2 .icon { font-size: 1.2em; }
+        
+        .provider-list {
+            display: grid;
+            gap: 15px;
+        }
+        .provider-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #0a0e1a;
+            border-radius: 8px;
+            border: 1px solid #1a2332;
+        }
+        .provider-info h4 { color: #fff; margin-bottom: 4px; }
+        .provider-info p { color: #8892a0; font-size: 0.9em; }
+        .provider-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .provider-status.online { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
+        .provider-status.offline { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            background: #1a2332;
+            border: 1px solid #1a2332;
+            color: #8892a0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff4d4d, #f9cb28);
+            color: white;
+            border-color: transparent;
+        }
+        .filter-btn:hover:not(.active) { background: #243447; }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8892a0;
+        }
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff4d4d;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #ff4d4d, #f9cb28);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .refresh-btn:hover { transform: translateY(-2px); }
+        
+        .last-updated {
+            text-align: center;
+            color: #8892a0;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #8892a0;
+            border-top: 1px solid #1a2332;
+            margin-top: 40px;
+        }
+        footer a { color: #ff4d4d; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .provider-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☁️ Akash Network Dashboard</h1>
+            <p>Real-time decentralized cloud infrastructure metrics</p>
+        </header>
+        
+        <div class="last-updated" id="last-updated"></div>
+        <button class="refresh-btn" onclick="loadAllData()">🔄 Refresh Data</button>
+        
+        <div class="stats-grid" id="stats-grid">
+            <div class="loading">Loading network statistics...</div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🖥️</span> Network Overview</h2>
+            <div id="network-info">
+                <div class="loading">Loading network info...</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">🏢</span> Active Providers</h2>
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterProviders('all')">All</button>
+                <button class="filter-btn" onclick="filterProviders('online')">Online</button>
+                <button class="filter-btn" onclick="filterProviders('audited')">Audited</button>
+            </div>
+            <div id="providers-list">
+                <div class="loading">Loading providers...</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><span class="icon">💰</span> AKT Price</h2>
+            <div id="price-info">
+                <div class="loading">Loading price data...</div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data from <a href="https://akash.network" target="_blank">Akash Network</a></p>
+            <p style="margin-top: 10px;"><a href="../">← Back to Tools</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'https://tsnmedia.org/tools/akash-dashboard/proxy.php';
+        const COINGECKO_API = 'https://api.coingecko.com/api/v3';
+        let providersData = [];
+        let currentFilter = 'all';
+        
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                // Akash API returns array directly, not wrapped in data property
+                return data;
+            } catch (error) {
+                console.error('Error fetching:', error);
+                return null;
+            }
+        }
+        
+        async function loadNetworkStats() {
+            const data = await fetchData(`${API_BASE}/v1/providers`);
+            const statsGrid = document.getElementById('stats-grid');
+            
+            if (!data || !Array.isArray(data)) {
+                statsGrid.innerHTML = '<div class="error">Failed to load network statistics</div>';
+                return;
+            }
+            
+            providersData = data;
+            
+            // Calculate stats
+            const totalProviders = data.length;
+            const onlineProviders = data.filter(p => p.isOnline).length;
+            const auditedProviders = data.filter(p => p.isAudited).length;
+            
+            // Count providers with GPUs (not total GPUs since stats are mostly 0)
+            const providersWithGPU = data.filter(p => p.gpuModels && p.gpuModels.length > 0).length;
+            
+            // Get unique GPU models
+            const gpuModels = [...new Set(data.flatMap(p => p.gpuModels || []))];
+            
+            // Average uptime
+            const avgUptime = data.reduce((sum, p) => sum + (p.uptime7d || 0), 0) / totalProviders;
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <h3>Total Providers</h3>
+                    <div class="stat-value">${totalProviders}</div>
+                    <div class="stat-change">Network Size</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Online Providers</h3>
+                    <div class="stat-value" style="color: #00d4a0;">${onlineProviders}</div>
+                    <div class="stat-change positive">${((onlineProviders/totalProviders)*100).toFixed(1)}% Uptime</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Audited Providers</h3>
+                    <div class="stat-value">${auditedProviders}</div>
+                    <div class="stat-change">Verified</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Providers with GPUs</h3>
+                    <div class="stat-value">${providersWithGPU}</div>
+                    <div class="stat-change">GPU Enabled</div>
+                </div>
+                <div class="stat-card">
+                    <h3>GPU Models</h3>
+                    <div class="stat-value">${gpuModels.length}</div>
+                    <div class="stat-change">Unique Types</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Network Regions</h3>
+                    <div class="stat-value">${[...new Set(data.map(p => {
+                        const regionAttr = p.attributes?.find(a => a.key === 'region');
+                        return regionAttr ? regionAttr.value : 'Unknown';
+                    }))].length}</div>
+                    <div class="stat-change">Geographic</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg Uptime (7d)</h3>
+                    <div class="stat-value">${(avgUptime * 100).toFixed(1)}%</div>
+                    <div class="stat-change positive">Reliability</div>
+                </div>
+            `;
+        }
+        
+        async function loadNetworkInfo() {
+            const data = await fetchData(`${API_BASE}/v1/providers`);
+            const networkInfo = document.getElementById('network-info');
+            
+            if (!data || !Array.isArray(data)) {
+                networkInfo.innerHTML = '<div class="error">Failed to load network info</div>';
+                return;
+            }
+            
+            // Get unique regions
+            const regions = [...new Set(data.map(p => {
+                const regionAttr = p.attributes?.find(a => a.key === 'region');
+                return regionAttr ? regionAttr.value : 'Unknown';
+            }))];
+            
+            // Get unique datacenters
+            const datacenters = [...new Set(data.map(p => {
+                const dcAttr = p.attributes?.find(a => a.key === 'datacenter');
+                return dcAttr ? dcAttr.value : 'Unknown';
+            }))];
+            
+            networkInfo.innerHTML = `
+                <div class="provider-list">
+                    <div class="provider-item">
+                        <div class="provider-info">
+                            <h4>Network Regions</h4>
+                            <p>${regions.length} unique regions</p>
+                        </div>
+                    </div>
+                    <div class="provider-item">
+                        <div class="provider-info">
+                            <h4>Datacenters</h4>
+                            <p>${datacenters.length} facilities</p>
+                        </div>
+                    </div>
+                    <div class="provider-item">
+                        <div class="provider-info">
+                            <h4>GPU Models</h4>
+                            <p>${[...new Set(data.flatMap(p => p.gpuModels || []))].length} different models</p>
+                        </div>
+                    </div>
+                    <div class="provider-item">
+                        <div class="provider-info">
+                            <h4>Network Type</h4>
+                            <p>Cosmos SDK-based DePIN</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function filterProviders(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(filter) || (filter === 'all' && btn.textContent === 'All')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderProviders();
+        }
+        
+        function renderProviders() {
+            const providersList = document.getElementById('providers-list');
+            
+            let filtered = providersData;
+            if (currentFilter === 'online') {
+                filtered = providersData.filter(p => p.isOnline);
+            } else if (currentFilter === 'audited') {
+                filtered = providersData.filter(p => p.isAudited);
+            }
+            
+            // Show top 20 providers
+            const displayProviders = filtered.slice(0, 20);
+            
+            providersList.innerHTML = `
+                <div class="provider-list">
+                    ${displayProviders.map(provider => {
+                        const regionAttr = provider.attributes?.find(a => a.key === 'region');
+                        const region = regionAttr ? regionAttr.value : 'Unknown';
+                        const tier = provider.tier || 'Community';
+                        
+                        return `
+                            <div class="provider-item">
+                                <div class="provider-info">
+                                    <h4>${provider.hostUri || 'Unknown Provider'}</h4>
+                                    <p>Region: ${region} | Tier: ${tier} | Uptime 7d: ${(provider.uptime7d * 100).toFixed(1)}%</p>
+                                </div>
+                                <div class="provider-status ${provider.isOnline ? 'online' : 'offline'}">
+                                    ${provider.isOnline ? '● Online' : '○ Offline'}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+        
+        async function loadProviders() {
+            const data = await fetchData(`${API_BASE}/v1/providers`);
+            
+            if (!data || !Array.isArray(data)) {
+                document.getElementById('providers-list').innerHTML = '<div class="error">Failed to load providers</div>';
+                return;
+            }
+            
+            providersData = data;
+            renderProviders();
+        }
+        
+        async function loadPrice() {
+            const data = await fetchData(`${COINGECKO_API}/coins/akash-network`);
+            const priceInfo = document.getElementById('price-info');
+            
+            if (!data || !data.market_data) {
+                priceInfo.innerHTML = '<div class="error">Failed to load price data</div>';
+                return;
+            }
+            
+            const price = data.market_data.current_price.usd;
+            const change24h = data.market_data.price_change_percentage_24h;
+            const marketCap = data.market_data.market_cap.usd;
+            const volume = data.market_data.total_volume.usd;
+            const ath = data.market_data.ath.usd;
+            const atl = data.market_data.atl.usd;
+            
+            priceInfo.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>AKT Price</h3>
+                        <div class="stat-value">$${price.toFixed(4)}</div>
+                        <div class="stat-change ${change24h >= 0 ? 'positive' : 'negative'}">
+                            ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}% (24h)
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Market Cap</h3>
+                        <div class="stat-value">$${(marketCap / 1000000).toFixed(2)}M</div>
+                        <div class="stat-change">Rank #${data.market_cap_rank || 'N/A'}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>24h Volume</h3>
+                        <div class="stat-value">$${(volume / 1000000).toFixed(2)}M</div>
+                        <div class="stat-change">Trading Volume</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>All-Time High</h3>
+                        <div class="stat-value">$${ath.toFixed(2)}</div>
+                        <div class="stat-change negative">${((price/ath - 1) * 100).toFixed(1)}% from ATH</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>All-Time Low</h3>
+                        <div class="stat-value">$${atl.toFixed(4)}</div>
+                        <div class="stat-change positive">+${((price/atl - 1) * 100).toFixed(1)}% from ATL</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Circulating Supply</h3>
+                        <div class="stat-value">${(data.market_data.circulating_supply / 1000000).toFixed(2)}M</div>
+                        <div class="stat-change">AKT Tokens</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function loadAllData() {
+            document.getElementById('last-updated').textContent = 'Loading...';
+            
+            await Promise.all([
+                loadNetworkStats(),
+                loadNetworkInfo(),
+                loadProviders(),
+                loadPrice()
+            ]);
+            
+            document.getElementById('last-updated').textContent = 
+                'Last updated: ' + new Date().toLocaleString();
+        }
+        
+        // Load data on page load
+        loadAllData();
+        
+        // Auto-refresh every 60 seconds
+        setInterval(loadAllData, 60000);
+    </script>
+</body>
+</html>

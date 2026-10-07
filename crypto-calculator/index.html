@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Profit Calculator | Top 100 Coins | TSN Media</title>
+    <meta name="description" content="Free cryptocurrency profit/loss calculator for the top 100 coins. Calculate Bitcoin, Ethereum, and altcoin gains with live prices.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e1a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; padding: 40px 0; border-bottom: 1px solid #1a2332; margin-bottom: 40px; }
+        header h1 { font-size: 2.5em; background: linear-gradient(135deg, #00d4ff, #7b2cbf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        header p { color: #8892a0; font-size: 1.1em; }
+        .calculator { background: #111827; border-radius: 16px; padding: 30px; border: 1px solid #1a2332; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+        .tab { flex: 1; padding: 12px; background: #1a2332; border: none; color: #8892a0; border-radius: 8px; cursor: pointer; font-size: 1em; transition: all 0.3s; }
+        .tab.active { background: linear-gradient(135deg, #00d4ff, #7b2cbf); color: white; }
+        .tab:hover:not(.active) { background: #243447; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #b0b8c8; font-size: 0.95em; }
+        input, select { width: 100%; padding: 14px; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; color: #e0e0e0; font-size: 1em; }
+        input:focus, select:focus { outline: none; border-color: #00d4ff; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .calculate-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #00d4ff, #7b2cbf); border: none; border-radius: 8px; color: white; font-size: 1.1em; font-weight: 600; cursor: pointer; margin-top: 20px; transition: transform 0.2s; }
+        .calculate-btn:hover { transform: translateY(-2px); }
+        .results { margin-top: 30px; padding: 25px; background: #0a0e1a; border-radius: 12px; border: 1px solid #1a2332; display: none; }
+        .results.show { display: block; }
+        .result-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a2332; }
+        .result-item:last-child { border-bottom: none; }
+        .result-label { color: #8892a0; }
+        .result-value { font-weight: 600; font-size: 1.1em; }
+        .profit { color: #00d4a0; }
+        .loss { color: #ff4757; }
+        .neutral { color: #ffd700; }
+        .dca-section { display: none; }
+        .dca-section.active { display: block; }
+        .dca-entry { background: #1a2332; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .add-dca { background: transparent; border: 2px dashed #1a2332; color: #8892a0; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        .add-dca:hover { border-color: #00d4ff; color: #00d4ff; }
+        .price-ticker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; background: #0a0e1a; border-radius: 12px; margin-bottom: 30px; border: 1px solid #1a2332; }
+        @media (max-width: 768px) { .price-ticker { grid-template-columns: repeat(2, 1fr); } }
+        .ticker-item { text-align: center; }
+        .ticker-coin { display: block; font-weight: 600; color: #00d4ff; font-size: 0.9em; margin-bottom: 5px; }
+        .ticker-price { display: block; font-size: 1.3em; font-weight: 700; color: #e0e0e0; }
+        .ticker-change { display: block; font-size: 0.85em; margin-top: 3px; }
+        .ticker-change.up { color: #00d4a0; }
+        .ticker-change.down { color: #ff4757; }
+        footer { text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px; }
+        footer a { color: #00d4ff; text-decoration: none; }
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } header h1 { font-size: 1.8em; } }
+        .coin-search { position: relative; }
+        .coin-dropdown { max-height: 300px; overflow-y: auto; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; position: absolute; width: 100%; z-index: 100; display: none; }
+        .coin-dropdown.show { display: block; }
+        .coin-option { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .coin-option:hover { background: #1a2332; }
+        .coin-option img { width: 24px; height: 24px; border-radius: 50%; }
+        .coin-option .coin-name { flex: 1; }
+        .coin-option .coin-symbol { color: #8892a0; font-size: 0.9em; }
+        .coin-option .coin-price { color: #00d4ff; font-size: 0.9em; }
+        .search-input { width: 100%; padding: 14px; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; color: #e0e0e0; font-size: 1em; margin-bottom: 10px; }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Crypto Profit Calculator</h1>
+            <p>Calculate your cryptocurrency gains, losses, and DCA strategy for the top 100 coins</p>
+        </header>
+
+        <div class="calculator">
+            <div class="price-ticker" id="price-ticker">
+                <div class="ticker-item">
+                    <span class="ticker-coin">BTC</span>
+                    <span class="ticker-price" id="btc-price">Loading...</span>
+                    <span class="ticker-change" id="btc-change">--</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-coin">ETH</span>
+                    <span class="ticker-price" id="eth-price">Loading...</span>
+                    <span class="ticker-change" id="eth-change">--</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-coin">SOL</span>
+                    <span class="ticker-price" id="sol-price">Loading...</span>
+                    <span class="ticker-change" id="sol-change">--</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-coin">XRP</span>
+                    <span class="ticker-price" id="xrp-price">Loading...</span>
+                    <span class="ticker-change" id="xrp-change">--</span>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('simple')">Simple</button>
+                <button class="tab" onclick="switchTab('dca')">DCA (Dollar Cost Averaging)</button>
+            </div>
+
+            <!-- Simple Calculator -->
+            <div id="simple-calc">
+                <div class="row">
+                    <div class="input-group">
+                        <label>Cryptocurrency</label>
+                        <div class="coin-search">
+                            <input type="text" id="coin-search" class="search-input" placeholder="Search coins (e.g. Bitcoin, BTC)..." autocomplete="off">
+                            <div class="coin-dropdown" id="coin-dropdown"></div>
+                            <input type="hidden" id="selected-coin-id" value="bitcoin">
+                            <input type="hidden" id="selected-coin-symbol" value="BTC">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Investment Amount ($)</label>
+                        <input type="number" id="investment" placeholder="1000" step="0.01">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Entry Price ($)</label>
+                        <input type="number" id="entry-price" placeholder="50000" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label>Exit Price ($)</label>
+                        <input type="number" id="exit-price" placeholder="75000" step="0.01">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Quantity</label>
+                        <input type="number" id="quantity" placeholder="0.02" step="0.00000001">
+                    </div>
+                    <div class="input-group">
+                        <label>Fees (%)</label>
+                        <input type="number" id="fees" placeholder="0.5" step="0.01" value="0.5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- DCA Calculator -->
+            <div id="dca-calc" class="dca-section">
+                <div class="input-group">
+                    <label>Current Price ($)</label>
+                    <input type="number" id="dca-current-price" placeholder="75000" step="0.01">
+                </div>
+                <div id="dca-entries">
+                    <div class="dca-entry">
+                        <div class="row">
+                            <div class="input-group">
+                                <label>Entry 1 - Price ($)</label>
+                                <input type="number" class="dca-price" placeholder="50000" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label>Entry 1 - Amount ($)</label>
+                                <input type="number" class="dca-amount" placeholder="1000" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="add-dca" onclick="addDCAEntry()">+ Add Entry</button>
+            </div>
+
+            <button class="calculate-btn" onclick="calculate()">Calculate</button>
+
+            <div id="results" class="results">
+                <div class="result-item">
+                    <span class="result-label">Total Investment</span>
+                    <span class="result-value" id="total-investment">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Current Value</span>
+                    <span class="result-value" id="current-value">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Profit/Loss</span>
+                    <span class="result-value" id="profit-loss">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">ROI</span>
+                    <span class="result-value" id="roi">0%</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Fees Paid</span>
+                    <span class="result-value" id="fees-paid">$0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data for educational purposes only</p>
+            <p style="margin-top: 10px;"><a href="https://tsnmedia.org/tools/">← Back to Tools</a></p>
+        </footer>
+    </div>
+
+    <script>
+        let currentTab = 'simple';
+        let dcaEntryCount = 1;
+        let top100Coins = [];
+        let livePrices = {};
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'simple') {
+                document.getElementById('simple-calc').style.display = 'block';
+                document.getElementById('dca-calc').classList.remove('active');
+            } else {
+                document.getElementById('simple-calc').style.display = 'none';
+                document.getElementById('dca-calc').classList.add('active');
+            }
+        }
+
+        function addDCAEntry() {
+            dcaEntryCount++;
+            const entries = document.getElementById('dca-entries');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'dca-entry';
+            newEntry.innerHTML = `
+                <div class="row">
+                    <div class="input-group">
+                        <label>Entry ${dcaEntryCount} - Price ($)</label>
+                        <input type="number" class="dca-price" placeholder="50000" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label>Entry ${dcaEntryCount} - Amount ($)</label>
+                        <input type="number" class="dca-amount" placeholder="1000" step="0.01">
+                    </div>
+                </div>
+            `;
+            entries.appendChild(newEntry);
+        }
+
+        function calculate() {
+            if (currentTab === 'simple') {
+                calculateSimple();
+            } else {
+                calculateDCA();
+            }
+        }
+
+        function calculateSimple() {
+            const investment = parseFloat(document.getElementById('investment').value) || 0;
+            const entryPrice = parseFloat(document.getElementById('entry-price').value) || 0;
+            const exitPrice = parseFloat(document.getElementById('exit-price').value) || 0;
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const feePercent = parseFloat(document.getElementById('fees').value) || 0;
+
+            let totalInvestment, totalValue, feesPaid;
+
+            if (quantity > 0) {
+                totalInvestment = quantity * entryPrice;
+                totalValue = quantity * exitPrice;
+            } else if (investment > 0 && entryPrice > 0) {
+                const qty = investment / entryPrice;
+                totalInvestment = investment;
+                totalValue = qty * exitPrice;
+            } else {
+                alert('Please enter either quantity or investment amount + entry price');
+                return;
+            }
+
+            feesPaid = totalInvestment * (feePercent / 100);
+            const profitLoss = totalValue - totalInvestment - feesPaid;
+            const roi = ((profitLoss / totalInvestment) * 100);
+
+            displayResults(totalInvestment, totalValue, profitLoss, roi, feesPaid);
+        }
+
+        function calculateDCA() {
+            const currentPrice = parseFloat(document.getElementById('dca-current-price').value) || 0;
+            const prices = document.querySelectorAll('.dca-price');
+            const amounts = document.querySelectorAll('.dca-amount');
+
+            let totalInvested = 0;
+            let totalQuantity = 0;
+
+            for (let i = 0; i < prices.length; i++) {
+                const price = parseFloat(prices[i].value) || 0;
+                const amount = parseFloat(amounts[i].value) || 0;
+                
+                if (price > 0 && amount > 0) {
+                    totalInvested += amount;
+                    totalQuantity += amount / price;
+                }
+            }
+
+            if (totalQuantity === 0) {
+                alert('Please enter at least one valid DCA entry');
+                return;
+            }
+
+            const avgPrice = totalInvested / totalQuantity;
+            const currentValue = totalQuantity * currentPrice;
+            const profitLoss = currentValue - totalInvested;
+            const roi = ((profitLoss / totalInvested) * 100);
+
+            displayResults(totalInvested, currentValue, profitLoss, roi, 0);
+        }
+
+        function displayResults(investment, value, profit, roi, fees) {
+            document.getElementById('total-investment').textContent = formatCurrency(investment);
+            document.getElementById('current-value').textContent = formatCurrency(value);
+            
+            const profitEl = document.getElementById('profit-loss');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + formatCurrency(profit);
+            profitEl.className = 'result-value ' + (profit > 0 ? 'profit' : profit < 0 ? 'loss' : 'neutral');
+            
+            const roiEl = document.getElementById('roi');
+            roiEl.textContent = (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%';
+            roiEl.className = 'result-value ' + (roi > 0 ? 'profit' : roi < 0 ? 'loss' : 'neutral');
+            
+            document.getElementById('fees-paid').textContent = formatCurrency(fees);
+            document.getElementById('results').classList.add('show');
+        }
+
+        function formatCurrency(num) {
+            return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Fetch top 100 coins from CoinGecko
+        async function fetchTop100Coins() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h');
+                const data = await response.json();
+                top100Coins = data;
+                
+                // Store prices for ticker
+                data.forEach(coin => {
+                    livePrices[coin.id] = coin;
+                });
+                
+                // Update ticker with top 4
+                updateTicker(data.slice(0, 4));
+                
+                // Populate dropdown
+                populateCoinDropdown(data);
+                
+            } catch (error) {
+                console.error('Error fetching coins:', error);
+                document.getElementById('btc-price').textContent = 'Error';
+            }
+        }
+
+        function updateTicker(coins) {
+            const tickerIds = ['btc', 'eth', 'sol', 'xrp'];
+            coins.forEach((coin, index) => {
+                if (index < 4) {
+                    const priceEl = document.getElementById(tickerIds[index] + '-price');
+                    const changeEl = document.getElementById(tickerIds[index] + '-change');
+                    
+                    if (priceEl) {
+                        priceEl.textContent = '$' + coin.current_price.toLocaleString();
+                    }
+                    if (changeEl) {
+                        const change = coin.price_change_percentage_24h || 0;
+                        changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                        changeEl.className = 'ticker-change ' + (change >= 0 ? 'up' : 'down');
+                    }
+                }
+            });
+        }
+
+        function populateCoinDropdown(coins) {
+            const dropdown = document.getElementById('coin-dropdown');
+            dropdown.innerHTML = coins.map(coin => `
+                <div class="coin-option" data-id="${coin.id}" data-symbol="${coin.symbol.toUpperCase()}" data-price="${coin.current_price}">
+                    <img src="${coin.image}" alt="${coin.name}">
+                    <span class="coin-name">${coin.name}</span>
+                    <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+                    <span class="coin-price">$${coin.current_price.toLocaleString()}</span>
+                </div>
+            `).join('');
+            
+            // Add click handlers
+            dropdown.querySelectorAll('.coin-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const id = option.dataset.id;
+                    const symbol = option.dataset.symbol;
+                    const price = parseFloat(option.dataset.price);
+                    
+                    document.getElementById('coin-search').value = option.querySelector('.coin-name').textContent + ' (' + symbol + ')';
+                    document.getElementById('selected-coin-id').value = id;
+                    document.getElementById('selected-coin-symbol').value = symbol;
+                    document.getElementById('exit-price').value = price;
+                    dropdown.classList.remove('show');
+                });
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('coin-search');
+        const dropdown = document.getElementById('coin-dropdown');
+        
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 1) {
+                dropdown.classList.remove('show');
+                return;
+            }
+            
+            const filtered = top100Coins.filter(coin => 
+                coin.name.toLowerCase().includes(query) || 
+                coin.symbol.toLowerCase().includes(query)
+            );
+            
+            if (filtered.length > 0) {
+                populateCoinDropdown(filtered);
+                dropdown.classList.add('show');
+            } else {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        searchInput.addEventListener('focus', () => {
+            if (top100Coins.length > 0) {
+                populateCoinDropdown(top100Coins.slice(0, 20));
+                dropdown.classList.add('show');
+            }
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.coin-search')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Fetch on load and every 60 seconds
+        fetchTop100Coins();
+        setInterval(fetchTop100Coins, 60000);
+    </script>
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+</body>
+</html>

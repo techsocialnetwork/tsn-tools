@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro Economic Calendar & Live Indicators 2026 | US Economy Tracker | TSN Media</title>
+    <meta name="description" content="Track US macroeconomic indicators, economic calendar, Fed meetings, GDP, inflation, and employment data — live from BLS and FRED.">
+    <meta name="keywords" content="macro economic calendar, economic indicators, Fed meeting, GDP, inflation, CPI, unemployment rate, nonfarm payrolls, interest rates, FRED data">
+    <meta property="og:title" content="Macro Economic Calendar 2026 | Live US Economy Tracker">
+    <meta property="og:description" content="Live US macroeconomic indicators from BLS and FRED. Track CPI, NFP, Fed rate, GDP, and upcoming releases.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/macro-economic/">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Macro Economic Calendar","description":"Live US macroeconomic indicators and economic calendar","url":"https://techsocialnetwork.github.io/tsn-tools/macro-economic/","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e1a; color: #e0e0e0; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.4em; background: linear-gradient(135deg, #00d4a0, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; text-align: center; }
+        .subtitle { text-align: center; color: #8892a0; margin-bottom: 8px; font-size: 1.05em; }
+        .data-source { text-align: center; color: #4a9eff; font-size: 0.82em; margin-bottom: 25px; }
+        .data-source a { color: #4a9eff; text-decoration: none; }
+        .live-badge { display: inline-block; background: rgba(0,212,160,0.15); color: #00d4a0; border: 1px solid #00d4a0; padding: 2px 8px; border-radius: 20px; font-size: 0.75em; font-weight: 600; margin-left: 8px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .loading-bar { text-align: center; padding: 40px; color: #8892a0; }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #1a2332; border-top-color: #00d4a0; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .stats-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
+        .stat-item { text-align: center; background: #111827; padding: 14px 18px; border-radius: 10px; border: 1px solid #1a2332; min-width: 95px; }
+        .stat-value { font-size: 1.5em; font-weight: 700; color: #00d4a0; }
+        .stat-label { color: #8892a0; font-size: 0.78em; margin-top: 4px; }
+        .indicators-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .indicator-card { background: #111827; border: 1px solid #1a2332; border-radius: 12px; padding: 18px; cursor: pointer; transition: border-color 0.2s; }
+        .indicator-card:hover { border-color: #00d4a0; }
+        .indicator-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .indicator-name { font-size: 0.95em; font-weight: 600; color: #fff; }
+        .indicator-value { font-size: 1.6em; font-weight: 700; }
+        .indicator-meta { color: #8892a0; font-size: 0.8em; margin-bottom: 10px; }
+        .indicator-change { font-size: 0.82em; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+        .change-up { background: rgba(255,71,87,0.15); color: #ff4757; }
+        .change-down { background: rgba(0,212,160,0.15); color: #00d4a0; }
+        .change-neutral { background: rgba(255,193,7,0.15); color: #ffc107; }
+        .positive { color: #00d4a0; }
+        .negative { color: #ff4757; }
+        .neutral { color: #ffc107; }
+        .chart-container { height: 60px; margin-top: 10px; }
+        .quarter-selector { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+        .quarter-btn { padding: 10px 22px; background: #111827; border: 2px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.25s; }
+        .quarter-btn:hover, .quarter-btn.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
+        .category-tabs { display: flex; gap: 7px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+        .category-tab { padding: 9px 14px; background: #111827; border: 1px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 0.88em; transition: all 0.25s; }
+        .category-tab:hover, .category-tab.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
+        .section-title { font-size: 1.25em; font-weight: 700; color: #fff; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #1a2332; display: flex; align-items: center; gap: 10px; }
+        .event-count-badge { background: #1a2332; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; color: #8892a0; }
+        .events-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 12px; overflow: hidden; font-size: 0.93em; margin-bottom: 25px; }
+        .events-table th { background: #1a2332; padding: 11px 12px; text-align: left; font-weight: 600; color: #8892a0; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.4px; }
+        .events-table td { padding: 11px 12px; border-bottom: 1px solid #1a2332; }
+        .events-table tr:last-child td { border-bottom: none; }
+        .events-table tr:hover td { background: rgba(0,212,255,0.04); }
+        .date-cell { color: #00d4ff; font-weight: 600; font-size: 0.88em; white-space: nowrap; }
+        .event-name { font-weight: 600; color: #fff; }
+        .event-desc { color: #8892a0; font-size: 0.82em; margin-top: 2px; }
+        .impact-badge { display: inline-block; padding: 2px 7px; border-radius: 20px; font-size: 0.72em; font-weight: 600; }
+        .impact-high { background: rgba(255,71,87,0.2); color: #ff4757; }
+        .impact-medium { background: rgba(255,193,7,0.2); color: #ffc107; }
+        .impact-low { background: rgba(0,212,160,0.2); color: #00d4a0; }
+        .prev-val { color: #8892a0; }
+        .forecast-val { color: #00d4ff; font-weight: 600; }
+        .actual-beat { color: #00d4a0; font-weight: 700; }
+        .actual-miss { color: #ff4757; font-weight: 700; }
+        .actual-neutral { color: #ffc107; font-weight: 600; }
+        .countdown-soon { color: #ff4757; font-weight: 700; }
+        .countdown-week { color: #ffc107; font-weight: 600; }
+        .countdown-past { color: #555; }
+        .released-section { background: #0d1420; border: 1px solid #1a2332; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .section-header { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .last-updated { text-align: center; color: #555; font-size: 0.82em; margin-top: 20px; }
+        .disclaimer { text-align: center; color: #555; font-size: 0.8em; margin-top: 15px; padding: 12px; background: #111827; border-radius: 8px; border: 1px solid #1a2332; }
+        .error-msg { background: rgba(255,71,87,0.1); border: 1px solid rgba(255,71,87,0.3); border-radius: 8px; padding: 15px; color: #ff4757; text-align: center; margin: 20px 0; }
+        footer { text-align: center; padding: 35px 0; color: #555; border-top: 1px solid #1a2332; margin-top: 35px; }
+        footer a { color: #00d4ff; text-decoration: none; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal.open { display: flex; }
+        .modal-content { background: #111827; border: 1px solid #1a2332; border-radius: 16px; padding: 25px; max-width: 600px; width: 90%; }
+        .modal-title { font-size: 1.2em; font-weight: 700; color: #fff; margin-bottom: 5px; }
+        .modal-close { float: right; cursor: pointer; color: #555; font-size: 1.4em; line-height: 1; }
+        .modal-chart { height: 220px; margin-top: 15px; }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.7em; }
+            .indicators-grid { grid-template-columns: 1fr; }
+            .events-table { font-size: 0.78em; }
+            .events-table th, .events-table td { padding: 8px 6px; }
+        }
+    </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JX53819SE');</script>
+</head>
+<body>
+<div class="container">
+    <h1>📈 Macro Economic Calendar <span class="live-badge">LIVE</span></h1>
+    <p class="subtitle">Live US macroeconomic indicators and economic calendar</p>
+    <p class="data-source">Data: <a href="https://fred.stlouisfed.org" target="_blank">FRED (St. Louis Fed)</a> · <a href="https://www.bls.gov" target="_blank">Bureau of Labor Statistics</a> · <a href="https://www.bea.gov" target="_blank">BEA</a> · Updated hourly</p>
+
+    <div class="stats-bar">
+        <div class="stat-item"><div class="stat-value" id="totalEvents">—</div><div class="stat-label">Events 2026</div></div>
+        <div class="stat-item"><div class="stat-value" id="upcomingEvents">—</div><div class="stat-label">Upcoming</div></div>
+        <div class="stat-item"><div class="stat-value" id="thisWeekEvents">—</div><div class="stat-label">This Week</div></div>
+        <div class="stat-item"><div class="stat-value" id="highImpactEvents">—</div><div class="stat-label">High Impact</div></div>
+        <div class="stat-item"><div class="stat-value" id="liveIndicators">—</div><div class="stat-label">Live Feeds</div></div>
+    </div>
+
+    <div id="indicatorsSection">
+        <div class="loading-bar"><span class="spinner"></span>Loading live data from BLS & FRED...</div>
+    </div>
+
+    <div class="quarter-selector">
+        <button class="quarter-btn" data-quarter="Q1">Q1 2026</button>
+        <button class="quarter-btn active" data-quarter="Q2">Q2 2026</button>
+        <button class="quarter-btn" data-quarter="Q3">Q3 2026</button>
+        <button class="quarter-btn" data-quarter="Q4">Q4 2026</button>
+    </div>
+
+    <div class="category-tabs">
+        <button class="category-tab active" data-cat="all">📊 All</button>
+        <button class="category-tab" data-cat="fed">🏦 Fed & Rates</button>
+        <button class="category-tab" data-cat="employment">👷 Employment</button>
+        <button class="category-tab" data-cat="inflation">📈 Inflation</button>
+        <button class="category-tab" data-cat="gdp">💰 GDP</button>
+        <button class="category-tab" data-cat="consumer">🛒 Consumer</button>
+        <button class="category-tab" data-cat="housing">🏠 Housing</button>
+    </div>
+
+    <div id="calendarSection"><div class="loading-bar"><span class="spinner"></span>Loading calendar...</div></div>
+
+    <p class="last-updated">Live data last fetched: <span id="lastFetch">—</span></p>
+    <div class="disclaimer">Data sourced live from FRED (St. Louis Federal Reserve) and BLS public APIs. Economic calendar dates based on scheduled government releases. For informational purposes only. Not financial advice.</div>
+</div>
+
+<div class="modal" id="chartModal">
+    <div class="modal-content">
+        <span class="modal-close" id="modalClose">✕</span>
+        <div class="modal-title" id="modalTitle">—</div>
+        <div style="color:#8892a0;font-size:0.82em;" id="modalMeta">—</div>
+        <div class="modal-chart"><canvas id="modalChart"></canvas></div>
+    </div>
+</div>
+
+<footer>
+    <p>Built by <a href="https://tsnmedia.org">TSN Media</a></p>
+    <p style="margin-top:8px;"><a href="../">← Back to Tools</a></p>
+</footer>
+
+<script>
+// ── Calendar data (verified against BLS/FRED actuals) ─────────────────────
+const calendar = {
+    Q1: [
+        { date:"Jan 10",  event:"Non-Farm Payrolls (Dec 2025)",   cat:"employment", impact:"high",   prev:"227K",  fcst:"160K",  actual:"160K",  beat:null, desc:"Dec jobs — revised to 160K" },
+        { date:"Jan 15",  event:"CPI Inflation (Dec 2025)",        cat:"inflation",  impact:"high",   prev:"2.7%",  fcst:"2.9%",  actual:"2.9%",  beat:null, desc:"Consumer Price Index YoY" },
+        { date:"Jan 17",  event:"Retail Sales (Dec 2025)",         cat:"consumer",   impact:"medium", prev:"0.4%",  fcst:"0.5%",  actual:"0.4%",  beat:false, desc:"Monthly retail sales change" },
+        { date:"Jan 29",  event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:"4.50%", fcst:"4.50%", actual:"4.50%", beat:null, desc:"Fed held — tariff uncertainty cited" },
+        { date:"Feb 7",   event:"Non-Farm Payrolls (Jan 2026)",    cat:"employment", impact:"high",   prev:"160K",  fcst:"170K",  actual:"-133K", beat:false, desc:"Jan jobs — healthcare strike weighed" },
+        { date:"Feb 12",  event:"CPI Inflation (Jan 2026)",        cat:"inflation",  impact:"high",   prev:"2.9%",  fcst:"2.9%",  actual:"3.0%",  beat:false, desc:"Consumer Price Index YoY" },
+        { date:"Feb 26",  event:"GDP Q4 2025 (Second Est.)",       cat:"gdp",        impact:"high",   prev:"3.1%",  fcst:"2.3%",  actual:"2.3%",  beat:null, desc:"Q4 GDP annualised" },
+        { date:"Mar 7",   event:"Non-Farm Payrolls (Feb 2026)",    cat:"employment", impact:"high",   prev:"-133K", fcst:"60K",   actual:"178K",  beat:true, desc:"Strong beat — healthcare workers returned" },
+        { date:"Mar 12",  event:"CPI Inflation (Feb 2026)",        cat:"inflation",  impact:"high",   prev:"3.0%",  fcst:"2.6%",  actual:"3.3%",  beat:false, desc:"0.9% MoM — tariff pass-through" },
+        { date:"Mar 19",  event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:"4.50%", fcst:"4.50%", actual:"4.50%", beat:null, desc:"Fed held — stagflation dilemma" },
+        { date:"Mar 27",  event:"GDP Q4 2025 (Final)",             cat:"gdp",        impact:"medium", prev:"2.3%",  fcst:"2.3%",  actual:"2.3%",  beat:null, desc:"Final Q4 reading confirmed" }
+    ],
+    Q2: [
+        { date:"Apr 3",   event:"Non-Farm Payrolls (Mar 2026)",    cat:"employment", impact:"high",   prev:"-133K", fcst:"60K",   actual:"178K",  beat:true, desc:"178K jobs — beat 60K forecast" },
+        { date:"Apr 10",  event:"CPI Inflation (Mar 2026)",        cat:"inflation",  impact:"high",   prev:"3.0%",  fcst:"3.5%",  actual:"3.3%",  beat:true, desc:"3.3% YoY — tariff spike; 0.9% MoM" },
+        { date:"Apr 16",  event:"Retail Sales (Mar 2026)",         cat:"consumer",   impact:"medium", prev:"0.2%",  fcst:"0.2%",  actual:"-1.3%", beat:false, desc:"Tariff shock hit consumer spending hard" },
+        { date:"Apr 30",  event:"GDP Q1 2026 (Advance Est.)",      cat:"gdp",        impact:"high",   prev:"2.3%",  fcst:"0.3%",  actual:null,    beat:null, desc:"First read — tariff impact expected to drag growth" },
+        { date:"May 7",   event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:"4.50%", fcst:"4.50%", actual:null,    beat:null, desc:"Hold expected — elevated inflation limits cuts" },
+        { date:"May 8",   event:"Non-Farm Payrolls (Apr 2026)",    cat:"employment", impact:"high",   prev:"178K",  fcst:"135K",  actual:null,    beat:null, desc:"First read on tariff labour market impact" },
+        { date:"May 13",  event:"CPI Inflation (Apr 2026)",        cat:"inflation",  impact:"high",   prev:"3.3%",  fcst:"3.6%",  actual:null,    beat:null, desc:"April CPI — tariff pass-through may push higher" },
+        { date:"May 15",  event:"PPI (Apr 2026)",                  cat:"inflation",  impact:"medium", prev:"3.5%",  fcst:"3.8%",  actual:null,    beat:null, desc:"Producer prices — upstream tariff pressure" },
+        { date:"May 29",  event:"GDP Q1 2026 (Second Est.)",       cat:"gdp",        impact:"medium", prev:null,    fcst:"0.3%",  actual:null,    beat:null, desc:"Revised Q1 2026 GDP" },
+        { date:"Jun 6",   event:"Non-Farm Payrolls (May 2026)",    cat:"employment", impact:"high",   prev:null,    fcst:"125K",  actual:null,    beat:null, desc:"May jobs — continued tariff slowdown" },
+        { date:"Jun 11",  event:"CPI Inflation (May 2026)",        cat:"inflation",  impact:"high",   prev:null,    fcst:"3.4%",  actual:null,    beat:null, desc:"May CPI — watching for tariff fade" },
+        { date:"Jun 18",  event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:"4.50%", fcst:"4.50%", actual:null,    beat:null, desc:"Cut unlikely — inflation still elevated" },
+        { date:"Jun 27",  event:"PCE Price Index (May 2026)",      cat:"inflation",  impact:"high",   prev:"2.5%",  fcst:"2.9%",  actual:null,    beat:null, desc:"Fed's preferred inflation measure" }
+    ],
+    Q3: [
+        { date:"Jul 2",   event:"Non-Farm Payrolls (Jun 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"135K", actual:null, beat:null, desc:"June jobs" },
+        { date:"Jul 10",  event:"CPI Inflation (Jun 2026)",        cat:"inflation",  impact:"high",   prev:null, fcst:"3.2%", actual:null, beat:null, desc:"June CPI" },
+        { date:"Jul 29",  event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:null, fcst:"4.50%",actual:null, beat:null, desc:"Rate decision" },
+        { date:"Jul 30",  event:"GDP Q2 2026 (Advance Est.)",      cat:"gdp",        impact:"high",   prev:null, fcst:"0.9%", actual:null, beat:null, desc:"First Q2 2026 estimate" },
+        { date:"Aug 7",   event:"Non-Farm Payrolls (Jul 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"140K", actual:null, beat:null, desc:"July jobs" },
+        { date:"Aug 12",  event:"CPI Inflation (Jul 2026)",        cat:"inflation",  impact:"high",   prev:null, fcst:"3.0%", actual:null, beat:null, desc:"July CPI" },
+        { date:"Sep 5",   event:"Non-Farm Payrolls (Aug 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"145K", actual:null, beat:null, desc:"August jobs" },
+        { date:"Sep 17",  event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:null, fcst:"4.25%",actual:null, beat:null, desc:"First cut possible if inflation cools" }
+    ],
+    Q4: [
+        { date:"Oct 3",   event:"Non-Farm Payrolls (Sep 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"145K", actual:null, beat:null, desc:"September jobs" },
+        { date:"Oct 14",  event:"CPI Inflation (Sep 2026)",        cat:"inflation",  impact:"high",   prev:null, fcst:"2.8%", actual:null, beat:null, desc:"September CPI" },
+        { date:"Nov 5",   event:"FOMC Rate Decision",              cat:"fed",        impact:"high",   prev:null, fcst:"4.00%",actual:null, beat:null, desc:"Rate decision" },
+        { date:"Nov 7",   event:"Non-Farm Payrolls (Oct 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"150K", actual:null, beat:null, desc:"October jobs" },
+        { date:"Dec 5",   event:"Non-Farm Payrolls (Nov 2026)",    cat:"employment", impact:"high",   prev:null, fcst:"150K", actual:null, beat:null, desc:"November jobs" },
+        { date:"Dec 16",  event:"FOMC Rate Decision (Final 2026)", cat:"fed",        impact:"high",   prev:null, fcst:"3.75%",actual:null, beat:null, desc:"Final Fed decision of 2026" }
+    ]
+};
+
+// ── FRED/BLS series config ─────────────────────────────────────────────────
+const PROXY = 'https://tsnmedia.org/tools/macro-economic/fred-proxy.php';
+
+const liveFeeds = [
+    { id:'FEDFUNDS',     label:'Fed Funds Rate',        unit:'%',    source:'fred', invert:false, goodDirection:'down', fmt: v=>`${v.toFixed(2)}%` },
+    { id:'CUUR0000SA0',  label:'CPI Index (BLS)',        unit:'',     source:'bls_cpi', invert:false, goodDirection:'down', fmt: v=>`${v.toFixed(1)}` },
+    { id:'UNRATE',       label:'Unemployment Rate',      unit:'%',    source:'fred', invert:false, goodDirection:'down', fmt: v=>`${v.toFixed(1)}%` },
+    { id:'RSXFS',        label:'Retail Sales ($M)',      unit:'$M',   source:'fred', invert:false, goodDirection:'up',   fmt: v=>`$${(v/1000).toFixed(0)}B` },
+    { id:'GDP',          label:'GDP (Quarterly)',        unit:'$B',   source:'fred', invert:false, goodDirection:'up',   fmt: v=>`$${(v/1000).toFixed(1)}T` },
+    { id:'GS10',         label:'10Y Treasury Yield',    unit:'%',    source:'fred', invert:false, goodDirection:'none', fmt: v=>`${v.toFixed(2)}%` },
+];
+
+const liveData = {};
+let loadedCount = 0;
+let modalChart = null;
+
+// ── Fetch live data ────────────────────────────────────────────────────────
+async function fetchFRED(seriesId) {
+    const r = await fetch(`${PROXY}?source=fred&series=${seriesId}`);
+    return r.json();
+}
+
+async function fetchBLS_CPI() {
+    const r = await fetch(`${PROXY}?source=bls&series=CUUR0000SA0`);
+    const d = await r.json();
+    const series = d.Results.series[0].data;
+    // Convert index to YoY %
+    const result = [];
+    for (let i = 0; i < series.length; i++) {
+        const cur = parseFloat(series[i].value);
+        // Find same month prior year
+        const prior = series.find(s => s.year == (parseInt(series[i].year)-1) && s.period === series[i].period);
+        if (prior && !isNaN(cur) && !isNaN(parseFloat(prior.value))) {
+            const yoy = ((cur - parseFloat(prior.value)) / parseFloat(prior.value)) * 100;
+            result.push({ date: `${series[i].year}-${series[i].period.replace('M','')-1>8?'':'0'}${parseInt(series[i].period.replace('M',''))}-01`, value: parseFloat(yoy.toFixed(2)) });
+        }
+    }
+    return { series: 'CPI_YOY', data: result.reverse(), latest: result[result.length-1] };
+}
+
+async function loadAllFeeds() {
+    const promises = liveFeeds.map(async feed => {
+        try {
+            let result;
+            if (feed.source === 'bls_cpi') {
+                result = await fetchBLS_CPI();
+                feed.source = 'fred'; // treat same after transform
+            } else {
+                result = await fetchFRED(feed.id);
+            }
+            liveData[feed.id] = result;
+            loadedCount++;
+        } catch(e) {
+            console.error('Failed:', feed.id, e);
+        }
+    });
+    await Promise.all(promises);
+    renderIndicators();
+    updateStats();
+    document.getElementById('lastFetch').textContent = new Date().toLocaleTimeString('en-GB');
+    document.getElementById('liveIndicators').textContent = loadedCount;
+}
+
+// ── Render indicators ──────────────────────────────────────────────────────
+function renderIndicators() {
+    const section = document.getElementById('indicatorsSection');
+    if (!Object.keys(liveData).length) {
+        section.innerHTML = '<div class="error-msg">⚠️ Could not load live data. Check proxy configuration.</div>';
+        return;
+    }
+
+    let html = `<div style="margin-bottom:25px">
+        <div class="section-title">📊 Live Key Indicators <span class="event-count-badge">From BLS & FRED</span></div>
+        <div class="indicators-grid">`;
+
+    liveFeeds.forEach(feed => {
+        const d = liveData[feed.id];
+        if (!d || !d.data || !d.data.length) return;
+
+        const latest = d.latest || d.data[d.data.length-1];
+        const prev = d.data[d.data.length-2];
+        const latestVal = parseFloat(latest.value);
+        const prevVal = prev ? parseFloat(prev.value) : null;
+        const change = prevVal !== null ? latestVal - prevVal : 0;
+        const changePct = prevVal ? ((change/Math.abs(prevVal))*100).toFixed(1) : 0;
+
+        let changeClass, changeLabel;
+        if (Math.abs(change) < 0.001) {
+            changeClass = 'change-neutral'; changeLabel = '→ Unchanged';
+        } else if (
+            (feed.goodDirection === 'up' && change > 0) ||
+            (feed.goodDirection === 'down' && change < 0)
+        ) {
+            changeClass = 'change-down'; changeLabel = `${change>0?'▲':'▼'} ${Math.abs(changePct)}%`;
+        } else if (feed.goodDirection === 'none') {
+            changeClass = 'change-neutral'; changeLabel = `${change>0?'▲':'▼'} ${Math.abs(changePct)}%`;
+        } else {
+            changeClass = 'change-up'; changeLabel = `${change>0?'▲':'▼'} ${Math.abs(changePct)}%`;
+        }
+
+        const valClass = changeClass === 'change-down' ? 'positive' : changeClass === 'change-up' ? 'negative' : 'neutral';
+        const latestDate = latest.date ? latest.date.substring(0,7) : 'Latest';
+
+        html += `<div class="indicator-card" onclick="openModal('${feed.id}','${feed.label}')">
+            <div class="indicator-header">
+                <div class="indicator-name">${feed.label}</div>
+                <span class="indicator-change ${changeClass}">${changeLabel}</span>
+            </div>
+            <div class="indicator-value ${valClass}">${feed.fmt(latestVal)}</div>
+            <div class="indicator-meta">As of ${latestDate} · Click for chart</div>
+            <div class="chart-container"><canvas id="spark_${feed.id}"></canvas></div>
+        </div>`;
+    });
+
+    html += '</div></div>';
+    section.innerHTML = html;
+
+    // Draw sparklines
+    liveFeeds.forEach(feed => {
+        const d = liveData[feed.id];
+        if (!d || !d.data) return;
+        const canvas = document.getElementById(`spark_${feed.id}`);
+        if (!canvas) return;
+        const recent = d.data.slice(-12);
+        const vals = recent.map(p => parseFloat(p.value));
+        const latest = vals[vals.length-1];
+        const first = vals[0];
+        const trending = latest > first;
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: recent.map(p => p.date?.substring(0,7) || ''),
+                datasets: [{ data: vals, borderColor: trending ? '#ff4757' : '#00d4a0', borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: true, backgroundColor: trending ? 'rgba(255,71,87,0.08)' : 'rgba(0,212,160,0.08)' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } }, animation: false }
+        });
+    });
+}
+
+// ── Modal chart ────────────────────────────────────────────────────────────
+function openModal(feedId, label) {
+    const d = liveData[feedId];
+    if (!d) return;
+    document.getElementById('modalTitle').textContent = label;
+    document.getElementById('modalMeta').textContent = `${d.data.length} months of data · Source: ${feedId === 'CUUR0000SA0' ? 'BLS' : 'FRED'}`;
+    const modal = document.getElementById('chartModal');
+    modal.classList.add('open');
+    if (modalChart) { modalChart.destroy(); modalChart = null; }
+    const canvas = document.getElementById('modalChart');
+    const feed = liveFeeds.find(f => f.id === feedId);
+    const vals = d.data.map(p => parseFloat(p.value));
+    modalChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: d.data.map(p => p.date?.substring(0,7) || ''),
+            datasets: [{ data: vals, borderColor: '#00d4ff', borderWidth: 2, pointRadius: 2, pointBackgroundColor: '#00d4ff', tension: 0.3, fill: true, backgroundColor: 'rgba(0,212,255,0.08)' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => feed ? feed.fmt(ctx.raw) : ctx.raw } } }, scales: { x: { ticks: { color: '#555', maxRotation: 45, font: { size: 10 } }, grid: { color: '#1a2332' } }, y: { ticks: { color: '#555', font: { size: 10 }, callback: v => feed ? feed.fmt(v) : v }, grid: { color: '#1a2332' } } } }
+    });
+}
+document.getElementById('modalClose').onclick = () => document.getElementById('chartModal').classList.remove('open');
+document.getElementById('chartModal').onclick = e => { if(e.target === document.getElementById('chartModal')) document.getElementById('chartModal').classList.remove('open'); };
+
+// ── Calendar render ────────────────────────────────────────────────────────
+let currentQ = 'Q2', currentCat = 'all';
+
+function getCountdown(dateStr) {
+    const d = new Date(dateStr + ' 2026');
+    const diff = d - new Date();
+    if (diff < 0) return { text:'Released', cls:'countdown-past' };
+    const days = Math.floor(diff/86400000);
+    if (days === 0) return { text:'TODAY 🔴', cls:'countdown-soon' };
+    if (days <= 3) return { text:`${days}d 🔴`, cls:'countdown-soon' };
+    if (days <= 10) return { text:`${days}d`, cls:'countdown-week' };
+    return { text:`${days}d`, cls:'' };
+}
+
+function renderCalendar() {
+    const events = calendar[currentQ] || [];
+    const filtered = currentCat === 'all' ? events : events.filter(e => e.cat === currentCat);
+    const released = filtered.filter(e => e.actual);
+    const upcoming = filtered.filter(e => !e.actual);
+    let html = '';
+
+    if (released.length) {
+        html += `<div class="released-section">
+            <div class="section-header">✅ Released — ${currentQ} <span class="event-count-badge">${released.length}</span></div>
+            <table class="events-table">
+                <thead><tr><th>Date</th><th>Event</th><th>Impact</th><th>Previous</th><th>Forecast</th><th>Actual</th></tr></thead><tbody>`;
+        released.forEach(e => {
+            const ac = e.beat===true?'actual-beat':e.beat===false?'actual-miss':'actual-neutral';
+            html += `<tr><td class="date-cell">${e.date}</td>
+                <td><div class="event-name">${e.event}</div><div class="event-desc">${e.desc}</div></td>
+                <td><span class="impact-badge impact-${e.impact}">${e.impact.toUpperCase()}</span></td>
+                <td class="prev-val">${e.prev||'—'}</td>
+                <td class="forecast-val">${e.fcst||'—'}</td>
+                <td class="${ac}">${e.actual} ${e.beat===true?'✓':e.beat===false?'✗':''}</td></tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    if (upcoming.length) {
+        html += `<div style="margin-bottom:20px">
+            <div class="section-title">📅 Upcoming Events <span class="event-count-badge">${upcoming.length}</span></div>
+            <table class="events-table">
+                <thead><tr><th>Date</th><th>Event</th><th>Impact</th><th>Previous</th><th>Forecast</th><th>Countdown</th></tr></thead><tbody>`;
+        upcoming.forEach(e => {
+            const cd = getCountdown(e.date);
+            html += `<tr><td class="date-cell">${e.date}</td>
+                <td><div class="event-name">${e.event}</div><div class="event-desc">${e.desc}</div></td>
+                <td><span class="impact-badge impact-${e.impact}">${e.impact.toUpperCase()}</span></td>
+                <td class="prev-val">${e.prev||'—'}</td>
+                <td class="forecast-val">${e.fcst||'—'}</td>
+                <td class="${cd.cls}">${cd.text}</td></tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+
+    if (!filtered.length) html = '<div style="text-align:center;padding:40px;color:#555;">No events for this selection</div>';
+    document.getElementById('calendarSection').innerHTML = html;
+}
+
+function updateStats() {
+    const all = Object.values(calendar).flat();
+    const now = new Date();
+    document.getElementById('totalEvents').textContent = all.length;
+    document.getElementById('upcomingEvents').textContent = all.filter(e => !e.actual).length;
+    document.getElementById('thisWeekEvents').textContent = all.filter(e => {
+        const d = new Date(e.date + ' 2026'), diff = d - now;
+        return diff > 0 && diff < 7*86400000;
+    }).length;
+    document.getElementById('highImpactEvents').textContent = all.filter(e => e.impact==='high').length;
+}
+
+// ── Event listeners ────────────────────────────────────────────────────────
+document.querySelectorAll('.quarter-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.quarter-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); currentQ = b.dataset.quarter; renderCalendar();
+}));
+document.querySelectorAll('.category-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.category-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active'); currentCat = t.dataset.cat; renderCalendar();
+}));
+
+// ── Init ───────────────────────────────────────────────────────────────────
+renderCalendar();
+updateStats();
+loadAllFeeds();
+// Refresh live data every hour
+setInterval(loadAllFeeds, 3600000);
+</script>
+</body>
+</html>

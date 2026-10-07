@@ -1,24 +1,42 @@
 # TSN Tools
 
-Free-hosted tools and dashboards for [TSN](https://tsnmedia.org).
+Free browser-based tools and dashboards for [TSN Media](https://tsnmedia.org).
 
-These pages used to live in the tsnmedia.org footer. This public repo is the new home so they can be published with GitHub Pages.
+These pages used to live under `tsnmedia.org/tools/*`. This public repo is the new home, published with **GitHub Pages**.
 
-## Planned tools
+## Live site
 
-- Crypto Calculator
-- Bitcoin Halving Countdown
-- AI Model Comparison
-- AI Image Comparison
-- AI Token Calculator
-- Tech Earnings
-- S&P 500 Earnings
-- Macro Economic
-- Macro News
-- Flux Dashboard
-- Akash Dashboard
-- Ostium Dashboard
+**https://techsocialnetwork.github.io/tsn-tools/**
+
+| Tool | Pages URL |
+|------|-----------|
+| Hub | https://techsocialnetwork.github.io/tsn-tools/ |
+| Crypto Profit Calculator | https://techsocialnetwork.github.io/tsn-tools/crypto-calculator/ |
+| Bitcoin Halving Countdown | https://techsocialnetwork.github.io/tsn-tools/bitcoin-halving-countdown/ |
+| AI Model Comparison | https://techsocialnetwork.github.io/tsn-tools/ai-model-comparison/ |
+| AI Image Comparison | https://techsocialnetwork.github.io/tsn-tools/ai-image-comparison/ |
+| AI Token Calculator | https://techsocialnetwork.github.io/tsn-tools/ai-token-calculator/ |
+| Tech Earnings Calendar | https://techsocialnetwork.github.io/tsn-tools/tech-earnings/ |
+| S&P 500 Earnings Calendar | https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/ |
+| Macro Economic Calendar | https://techsocialnetwork.github.io/tsn-tools/macro-economic/ |
+| Macro News Scanner | https://techsocialnetwork.github.io/tsn-tools/macro-news/ |
+| Flux Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/ |
+| Akash Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/ |
+| Ostium Trading Dashboard | https://techsocialnetwork.github.io/tsn-tools/ostium-dashboard/ |
+
+## Data sources
+
+Most tools are fully static or call public CORS-friendly APIs (CoinGecko, mempool.space, Flux, Chart.js CDN).
+
+These tools still load live data through CORS proxies hosted on `tsnmedia.org` (PHP backends that cannot run on GitHub Pages):
+
+- **Macro Economic** → FRED / BLS via `tsnmedia.org/tools/macro-economic/fred-proxy.php`
+- **Macro News** → news feed via `tsnmedia.org/tools/macro-news/proxy.php`
+- **Akash Dashboard** → providers via `tsnmedia.org/tools/akash-dashboard/proxy.php`
+- **Ostium Dashboard** → prices via `tsnmedia.org/tools/ostium-dashboard/proxy.php` (upstream Ostium PricePublish lacks browser CORS)
+
+If those proxies are retired, those four tools will need new backends or public CORS-enabled APIs.
 
 ## Hosting
 
-GitHub Pages will serve the static tools from this repository.
+GitHub Pages serves `main` from `/` (project site at `/tsn-tools/`).

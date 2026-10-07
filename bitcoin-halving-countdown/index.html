@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Halving Countdown 2028 | TSN Media</title>
+    <meta name="description" content="Live Bitcoin halving countdown. Track the next BTC halving in 2028 with real-time block data, historical halving analysis, and price impact insights.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a2332;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #f7931a, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p {
+            color: #8892a0;
+            font-size: 1.1em;
+        }
+        .countdown-box {
+            background: #111827;
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid #1a2332;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .countdown-label {
+            font-size: 1.2em;
+            color: #8892a0;
+            margin-bottom: 20px;
+        }
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .time-unit {
+            background: #0a0e1a;
+            border-radius: 12px;
+            padding: 20px 30px;
+            min-width: 100px;
+            border: 1px solid #1a2332;
+        }
+        .time-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: #f7931a;
+            display: block;
+        }
+        .time-label {
+            font-size: 0.9em;
+            color: #8892a0;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #111827;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #1a2332;
+        }
+        .stat-label {
+            color: #8892a0;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        .stat-sub {
+            font-size: 0.85em;
+            color: #00d4a0;
+            margin-top: 5px;
+        }
+        .history-section {
+            background: #111827;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #1a2332;
+            margin-bottom: 30px;
+        }
+        .history-section h2 {
+            color: #f7931a;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .halving-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #1a2332;
+        }
+        .halving-item:last-child {
+            border-bottom: none;
+        }
+        .halving-date {
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+        .halving-price {
+            color: #00d4a0;
+            font-weight: 600;
+        }
+        .halving-change {
+            color: #8892a0;
+            font-size: 0.9em;
+        }
+        .info-box {
+            background: linear-gradient(135deg, rgba(247, 147, 26, 0.1), rgba(0, 212, 255, 0.1));
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            margin-bottom: 30px;
+        }
+        .info-box h3 {
+            color: #f7931a;
+            margin-bottom: 10px;
+        }
+        .info-box p {
+            color: #b0b8c8;
+            line-height: 1.6;
+        }
+        .btc-price-live {
+            text-align: center;
+            padding: 20px;
+            background: #0a0e1a;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #1a2332;
+        }
+        .btc-price-live .price {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #f7931a;
+        }
+        .btc-price-live .change {
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #8892a0;
+            border-top: 1px solid #1a2332;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #f7931a;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .time-value { font-size: 2em; }
+            .time-unit { padding: 15px 20px; min-width: 80px; }
+            header h1 { font-size: 1.8em; }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bitcoin Halving Countdown</h1>
+            <p>Track the next BTC halving event with live blockchain data</p>
+        </header>
+
+        <div class="btc-price-live">
+            <div class="price" id="btc-live-price">Loading...</div>
+            <div class="change" id="btc-live-change">--</div>
+        </div>
+
+        <div class="countdown-box">
+            <div class="countdown-label">Next Halving Expected</div>
+            <div class="countdown-timer">
+                <div class="time-unit">
+                    <span class="time-value" id="days">--</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="hours">--</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">--</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">--</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Current Block Height</div>
+                <div class="stat-value" id="block-height">Loading...</div>
+                <div class="stat-sub" id="blocks-remaining">-- blocks to go</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Block Reward</div>
+                <div class="stat-value">3.125 BTC</div>
+                <div class="stat-sub">Will drop to 1.5625 BTC</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Est. Halving Date</div>
+                <div class="stat-value" id="halving-date">April 2028</div>
+                <div class="stat-sub">Block 1,050,000</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">BTC Issued Per Day</div>
+                <div class="stat-value">450 BTC</div>
+                <div class="stat-sub">Will drop to 225 BTC</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>What is the Bitcoin Halving?</h3>
+            <p>The Bitcoin halving is a programmed event that occurs every 210,000 blocks (approximately every 4 years). It cuts the block reward miners receive in half, reducing the rate at which new Bitcoin enters circulation. This creates artificial scarcity and has historically preceded major bull runs. The 2028 halving will reduce the block reward from 3.125 BTC to 1.5625 BTC.</p>
+        </div>
+
+        <div class="history-section">
+            <h2>Historical Halving Performance</h2>
+            <div class="halving-item">
+                <div>
+                    <div class="halving-date">1st Halving — November 28, 2012</div>
+                    <div class="halving-change">Reward: 50 → 25 BTC</div>
+                </div>
+                <div class="halving-price">$12.35 → $1,100+</div>
+            </div>
+            <div class="halving-item">
+                <div>
+                    <div class="halving-date">2nd Halving — July 9, 2016</div>
+                    <div class="halving-change">Reward: 25 → 12.5 BTC</div>
+                </div>
+                <div class="halving-price">$650 → $19,000+</div>
+            </div>
+            <div class="halving-item">
+                <div>
+                    <div class="halving-date">3rd Halving — May 11, 2020</div>
+                    <div class="halving-change">Reward: 12.5 → 6.25 BTC</div>
+                </div>
+                <div class="halving-price">$8,600 → $69,000+</div>
+            </div>
+            <div class="halving-item">
+                <div>
+                    <div class="halving-date">4th Halving — April 19, 2024</div>
+                    <div class="halving-change">Reward: 6.25 → 3.125 BTC</div>
+                </div>
+                <div class="halving-price">$64,000 → TBD</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data from CoinGecko & Blockchain APIs</p>
+            <p style="margin-top: 10px;">
+                <a href="https://tsnmedia.org/bitcoin-in-2025-institutional-adoption-regulatory-clarity-and-global-trends-pave-the-way-for-an-exciting-2026/">Bitcoin Investing Guide</a> | 
+                <a href="https://tsnmedia.org/the-saylor-era-how-michael-saylor-turned-microstrategy-into-the-worlds-largest-bitcoin-treasury/">The Saylor Era</a> | 
+                <a href="https://tsnmedia.org/tools/crypto-calculator/">Crypto Calculator</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const HALVING_BLOCK = 1050000;
+        const BLOCKS_PER_DAY = 144; // 10 min per block average
+        
+        async function fetchBlockData() {
+            try {
+                // Fetch current block height from mempool.space
+                const response = await fetch('https://mempool.space/api/blocks/tip/height');
+                const currentBlock = parseInt(await response.text());
+                
+                document.getElementById('block-height').textContent = currentBlock.toLocaleString();
+                
+                const blocksRemaining = HALVING_BLOCK - currentBlock;
+                document.getElementById('blocks-remaining').textContent = blocksRemaining.toLocaleString() + ' blocks to go';
+                
+                // Calculate estimated halving date
+                const daysRemaining = blocksRemaining / BLOCKS_PER_DAY;
+                const halvingDate = new Date();
+                halvingDate.setDate(halvingDate.getDate() + daysRemaining);
+                
+                document.getElementById('halving-date').textContent = halvingDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Start countdown
+                startCountdown(halvingDate);
+                
+            } catch (error) {
+                console.error('Error fetching block data:', error);
+                document.getElementById('block-height').textContent = 'Error';
+                // Fallback to April 2028
+                startCountdown(new Date('2028-04-15T00:00:00Z'));
+            }
+        }
+        
+        async function fetchBTCPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const data = await response.json();
+                
+                document.getElementById('btc-live-price').textContent = '$' + data.bitcoin.usd.toLocaleString();
+                
+                const change = data.bitcoin.usd_24h_change;
+                const changeEl = document.getElementById('btc-live-change');
+                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24h)';
+                changeEl.style.color = change >= 0 ? '#00d4a0' : '#ff4757';
+                
+            } catch (error) {
+                console.error('Error fetching BTC price:', error);
+                document.getElementById('btc-live-price').textContent = 'Error';
+            }
+        }
+        
+        function startCountdown(targetDate) {
+            function update() {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+                
+                if (distance < 0) {
+                    document.getElementById('days').textContent = '0';
+                    document.getElementById('hours').textContent = '0';
+                    document.getElementById('minutes').textContent = '0';
+                    document.getElementById('seconds').textContent = '0';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }
+            
+            update();
+            setInterval(update, 1000);
+        }
+        
+        // Initialize
+        fetchBlockData();
+        fetchBTCPrice();
+        setInterval(fetchBTCPrice, 60000);
+    </script>
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+</body>
+</html>

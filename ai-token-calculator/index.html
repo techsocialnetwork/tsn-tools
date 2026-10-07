@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Token Calculator 2026 | Free Token Counter & Cost Estimator</title>
+    <meta name="description" content="Free AI token calculator. Count tokens for GPT-4, Claude, Gemini, Kimi, DeepSeek. Estimate API costs per 1K, 10K, 100K tokens. Paste text and calculate instantly.">
+    <meta name="keywords" content="AI token calculator, token counter, GPT token count, Claude tokens, API cost estimator, LLM pricing calculator, token estimator">
+    <link rel="canonical" href="https://techsocialnetwork.github.io/tsn-tools/ai-token-calculator/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI Token Calculator 2026 | Free Token Counter & Cost Estimator">
+    <meta property="og:description" content="Count tokens and estimate API costs for GPT-4, Claude, Gemini, Kimi, DeepSeek. Free tool.">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/ai-token-calculator/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Token Calculator 2026">
+    <meta name="twitter:description" content="Count tokens and estimate API costs. Free tool.">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AI Token Calculator",
+      "description": "Count tokens and estimate API costs for major LLMs including GPT-4, Claude, Gemini, Kimi, and DeepSeek",
+      "url": "https://techsocialnetwork.github.io/tsn-tools/ai-token-calculator/",
+      "applicationCategory": "DeveloperApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "TSN Media",
+        "url": "https://tsnmedia.org"
+      }
+    }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a2332;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p {
+            color: #8892a0;
+            font-size: 1.1em;
+        }
+        .input-section {
+            background: #111827;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #1a2332;
+            margin-bottom: 30px;
+        }
+        .input-section label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: #0a0e1a;
+            border: 1px solid #2a3342;
+            border-radius: 8px;
+            padding: 15px;
+            color: #e0e0e0;
+            font-size: 1em;
+            resize: vertical;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: #0a0e1a;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #1a2332;
+        }
+        .stat-label {
+            font-size: 0.85em;
+            color: #8892a0;
+        }
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .model-card {
+            background: #111827;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #1a2332;
+            transition: transform 0.2s;
+        }
+        .model-card:hover {
+            transform: translateY(-2px);
+            border-color: #2a3342;
+        }
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .model-name {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .model-price {
+            font-size: 0.85em;
+            color: #00d4a0;
+            font-weight: 600;
+        }
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a2332;
+        }
+        .cost-row:last-child {
+            border-bottom: none;
+        }
+        .cost-label {
+            color: #8892a0;
+            font-size: 0.9em;
+        }
+        .cost-value {
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 44, 191, 0.1));
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            margin-bottom: 30px;
+        }
+        .highlight-box h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        .seo-content {
+            margin-top: 40px;
+            padding: 30px;
+            background: #111827;
+            border-radius: 12px;
+            border: 1px solid #1a2332;
+        }
+        .seo-content h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+        .seo-content h3 {
+            color: #00d4ff;
+            margin: 20px 0 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #8892a0;
+            border-top: 1px solid #1a2332;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8em; }
+            .models-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Token Calculator</h1>
+            <p>Paste your text → count tokens → estimate API costs across all major models</p>
+        </header>
+
+        <div class="input-section">
+            <label for="text-input">Paste your prompt or text:</label>
+            <textarea id="text-input" placeholder="Paste your prompt, document, or code here...&#10;&#10;Example: Explain quantum computing in simple terms, suitable for a 10-year-old. Include analogies and avoid technical jargon."></textarea>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-label">Characters</div>
+                    <div class="stat-value" id="char-count">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Words</div>
+                    <div class="stat-value" id="word-count">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Est. Tokens</div>
+                    <div class="stat-value" id="token-count">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>💡 How Token Counting Works</h3>
+            <p>Most LLMs use roughly <strong>1 token per 4 characters</strong> (or ~0.75 tokens per word) for English text. This is an estimate — actual token counts vary by model tokenizer.</p>
+            <p style="margin-top: 10px;"><strong>GPT-4/Claude:</strong> ~1 token per 4 chars | <strong>Kimi/DeepSeek:</strong> Similar ratios | <strong>Code:</strong> Often more tokens per char</p>
+        </div>
+
+        <div class="models-grid">
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">GPT-5.4</span>
+                    <span class="model-price">$5.00 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="gpt54-1k">$0.005</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="gpt54-10k">$0.05</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="gpt54-100k">$0.50</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="gpt54-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">Claude Opus 4.6</span>
+                    <span class="model-price">$15.00 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="opus-1k">$0.015</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="opus-10k">$0.15</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="opus-100k">$1.50</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="opus-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">Claude Sonnet 4.6</span>
+                    <span class="model-price">$3.00 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="sonnet-1k">$0.003</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="sonnet-10k">$0.03</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="sonnet-100k">$0.30</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="sonnet-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">Kimi K2.6</span>
+                    <span class="model-price">$0.50 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="kimi-1k">$0.0005</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="kimi-10k">$0.005</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="kimi-100k">$0.05</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="kimi-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">DeepSeek V4</span>
+                    <span class="model-price">$0.20 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="deepseek-1k">$0.0002</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="deepseek-10k">$0.002</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="deepseek-100k">$0.02</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="deepseek-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">Gemini 3.1 Pro</span>
+                    <span class="model-price">$3.50 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="gemini-1k">$0.0035</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="gemini-10k">$0.035</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="gemini-100k">$0.35</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="gemini-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">GPT-4.1</span>
+                    <span class="model-price">$2.50 / 1M</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value" id="gpt41-1k">$0.0025</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value" id="gpt41-10k">$0.025</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value" id="gpt41-100k">$0.25</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value" id="gpt41-custom">$0.00</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-header">
+                    <span class="model-name">Llama 3.1 405B</span>
+                    <span class="model-price">Free</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">1K tokens</span>
+                    <span class="cost-value">$0.00</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">10K tokens</span>
+                    <span class="cost-value">$0.00</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">100K tokens</span>
+                    <span class="cost-value">$0.00</span>
+                </div>
+                <div class="cost-row">
+                    <span class="cost-label">Your text</span>
+                    <span class="cost-value">$0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="seo-content">
+            <h2>About This AI Token Calculator</h2>
+            <p style="margin-bottom: 15px; line-height: 1.7;">
+                Our <strong>AI token calculator</strong> helps developers and businesses estimate the cost of using large language models (LLMs). 
+                Simply paste your text, and we calculate the approximate token count and show pricing across 8 major AI models.
+            </p>
+            <h3>What Are Tokens?</h3>
+            <p style="margin-bottom: 15px; line-height: 1.7;">
+                Tokens are the basic units of text that AI models process. A token can be a word, part of a word, or even a single character. 
+                For English text, 1 token is roughly 4 characters or 0.75 words. Code and non-English languages may use more tokens per character.
+            </p>
+            <h3>Why Token Count Matters</h3>
+            <ul style="margin-left: 20px; line-height: 1.8; color: #b0b8c8;">
+                <li><strong>API Costs:</strong> Most LLMs charge per million tokens consumed</li>
+                <li><strong>Context Limits:</strong> Models have maximum token windows (4K to 1M tokens)</li>
+                <li><strong>Performance:</strong> Longer prompts = slower responses and higher costs</li>
+                <li><strong>Budgeting:</strong> Estimate monthly spend before scaling your AI application</li>
+            </ul>
+            <h3>Popular Comparisons</h3>
+            <p style="line-height: 1.7;">
+                <a href="https://tsnmedia.org/tools/ai-model-comparison/" style="color: #00d4ff;">AI Model Comparison Tool</a> — 
+                <a href="https://tsnmedia.org/why-kimi-k2-6-became-my-daily-driver-a-real-world-review/" style="color: #00d4ff;">Kimi K2.6 Review</a> — 
+                <a href="https://tsnmedia.org/chinas-ai-stack-goes-vertical-how-deepseek-v4-just-changed-the-game-2/" style="color: #00d4ff;">DeepSeek V4 Analysis</a>
+            </p>
+            <h3>Data Accuracy & Disclaimer</h3>
+            <p style="margin-bottom: 15px; line-height: 1.7; color: #b0b8c8;">
+                Token counts are estimates based on character count. Actual tokenization varies by model. 
+                Pricing is approximate and subject to change. Last updated: April 2026.
+            </p>
+        </section>
+
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data updated April 2026</p>
+            <p style="margin-top: 10px;">
+                <a href="https://tsnmedia.org/tools/ai-model-comparison/">AI Model Comparison</a> | 
+                <a href="https://tsnmedia.org/tools/ai-image-comparison/">AI Image Comparison</a> | 
+                <a href="https://tsnmedia.org/tools/crypto-calculator/">Crypto Calculator</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const charCount = document.getElementById('char-count');
+        const wordCount = document.getElementById('word-count');
+        const tokenCount = document.getElementById('token-count');
+
+        // Pricing per 1M tokens
+        const pricing = {
+            gpt54: 5.00,
+            opus: 15.00,
+            sonnet: 3.00,
+            kimi: 0.50,
+            deepseek: 0.20,
+            gemini: 3.50,
+            gpt41: 2.50
+        };
+
+        function calculateCosts(tokens) {
+            for (const [model, pricePerM] of Object.entries(pricing)) {
+                const cost = (tokens / 1000000) * pricePerM;
+                const element = document.getElementById(`${model}-custom`);
+                if (element) {
+                    element.textContent = cost < 0.0001 ? '<$0.0001' : '$' + cost.toFixed(4);
+                }
+            }
+        }
+
+        function updateStats() {
+            const text = textInput.value;
+            const chars = text.length;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const tokens = Math.ceil(chars / 4); // Rough estimate: 1 token per 4 chars
+
+            charCount.textContent = chars.toLocaleString();
+            wordCount.textContent = words.toLocaleString();
+            tokenCount.textContent = tokens.toLocaleString();
+
+            calculateCosts(tokens);
+        }
+
+        textInput.addEventListener('input', updateStats);
+        
+        // Initialize
+        updateStats();
+    </script>
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+</body>
+</html>

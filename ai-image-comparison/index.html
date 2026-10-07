@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator Comparison 2026 | Compare 25+ Models</title>
+    <meta name="description" content="Free AI image generator comparison tool. Compare Midjourney, DALL-E 3, Stable Diffusion 3, Flux, Ideogram and 20+ image AI models. Pricing, quality, speed, features.">
+    <meta name="keywords" content="AI image generator comparison, Midjourney vs DALL-E, best AI image model 2026, Stable Diffusion 3, Flux AI, image generation pricing, AI art tools">
+    <link rel="canonical" href="https://techsocialnetwork.github.io/tsn-tools/ai-image-comparison/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI Image Generator Comparison 2026 | Compare 25+ Models">
+    <meta property="og:description" content="Compare 25+ AI image generators side-by-side. Pricing, quality, speed, and features. Free tool.">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/ai-image-comparison/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Image Generator Comparison 2026">
+    <meta name="twitter:description" content="Compare 25+ AI image generators. Free tool.">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AI Image Generator Comparison Tool",
+      "description": "Compare 25+ AI image generation models with pricing, quality ratings, and features",
+      "url": "https://techsocialnetwork.github.io/tsn-tools/ai-image-comparison/",
+      "applicationCategory": "DesignApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "TSN Media",
+        "url": "https://tsnmedia.org"
+      }
+    }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a2332;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p {
+            color: #8892a0;
+            font-size: 1.1em;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            background: #1a2332;
+            border: 1px solid #2a3342;
+            color: #8892a0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: #0a0e1a;
+            border-color: transparent;
+            font-weight: 600;
+        }
+        .comparison-table {
+            background: #111827;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1a2332;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #0a0e1a;
+            padding: 16px;
+            text-align: left;
+            color: #ff6b6b;
+            font-weight: 600;
+            border-bottom: 2px solid #1a2332;
+        }
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #1a2332;
+        }
+        tr:hover {
+            background: rgba(255, 107, 107, 0.05);
+        }
+        .model-name {
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        .provider {
+            font-size: 0.85em;
+            color: #8892a0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .badge-premium { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .badge-free { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
+        .badge-open { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .price {
+            font-weight: 700;
+            color: #00d4a0;
+        }
+        .quality {
+            font-weight: 700;
+        }
+        .quality-high { color: #00d4a0; }
+        .quality-mid { color: #feca57; }
+        .quality-low { color: #ff4757; }
+        .check { color: #00d4a0; font-size: 1.2em; }
+        .cross { color: #ff4757; font-size: 1.2em; }
+        .stars {
+            color: #feca57;
+            letter-spacing: 2px;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(254, 202, 87, 0.1));
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            margin-bottom: 30px;
+        }
+        .highlight-box h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+        .winner-card {
+            background: #111827;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #1a2332;
+            margin-bottom: 15px;
+        }
+        .winner-title {
+            color: #feca57;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .seo-content {
+            margin-top: 40px;
+            padding: 30px;
+            background: #111827;
+            border-radius: 12px;
+            border: 1px solid #1a2332;
+        }
+        .seo-content h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        .seo-content h3 {
+            color: #ff6b6b;
+            margin: 20px 0 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #8892a0;
+            border-top: 1px solid #1a2332;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+        @media (max-width: 768px) {
+            .comparison-table { overflow-x: auto; }
+            table { min-width: 900px; }
+            header h1 { font-size: 1.8em; }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Image Generator Comparison</h1>
+            <p>Compare 25+ AI image models — pricing, quality, speed, and features</p>
+        </header>
+
+        <div class="highlight-box">
+            <h3>🏆 Category Winners</h3>
+            <div class="winner-card">
+                <div class="winner-title">Best Overall Quality</div>
+                <div><strong>Midjourney V7</strong> — Stunning aesthetics, best for creative work</div>
+            </div>
+            <div class="winner-card">
+                <div class="winner-title">Best Value</div>
+                <div><strong>Stable Diffusion 3.5</strong> — Free, open-source, runs locally</div>
+            </div>
+            <div class="winner-card">
+                <div class="winner-title">Best for Text in Images</div>
+                <div><strong>Ideogram 3.0</strong> — Near-perfect text rendering</div>
+            </div>
+            <div class="winner-card">
+                <div class="winner-title">Fastest Generation</div>
+                <div><strong>FLUX.1 [schnell]</strong> — 1-2 seconds per image</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterModels('all')">All Models</button>
+            <button class="filter-btn" onclick="filterModels('premium')">Premium</button>
+            <button class="filter-btn" onclick="filterModels('free')">Free/Open</button>
+            <button class="filter-btn" onclick="filterModels('fast')">Fast</button>
+            <button class="filter-btn" onclick="filterModels('text')">Text Support</button>
+        </div>
+
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Provider</th>
+                        <th>Price/Image</th>
+                        <th>Quality</th>
+                        <th>Speed</th>
+                        <th>Text</th>
+                        <th>NSFW</th>
+                        <th>Open</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Midjourney V7</div>
+                            <span class="badge badge-premium">Best Quality</span>
+                        </td>
+                        <td class="provider">Midjourney</td>
+                        <td class="price">$0.03</td>
+                        <td class="quality quality-high">★★★★★</td>
+                        <td>30-60s</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="premium text">
+                        <td>
+                            <div class="model-name">GPT Image 1.5</div>
+                            <span class="badge badge-premium">OpenAI</span>
+                        </td>
+                        <td class="provider">OpenAI</td>
+                        <td class="price">$0.04</td>
+                        <td class="quality quality-high">★★★★★</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="premium text">
+                        <td>
+                            <div class="model-name">Ideogram 3.0</div>
+                            <span class="badge badge-premium">Text King</span>
+                        </td>
+                        <td class="provider">Ideogram</td>
+                        <td class="price">$0.03</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>15-30s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free fast">
+                        <td>
+                            <div class="model-name">FLUX.1 [pro]</div>
+                            <span class="badge badge-premium">Professional</span>
+                        </td>
+                        <td class="provider">Black Forest Labs</td>
+                        <td class="price">$0.03</td>
+                        <td class="quality quality-high">★★★★★</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free fast">
+                        <td>
+                            <div class="model-name">FLUX.1 [dev]</div>
+                            <span class="badge badge-open">Open</span>
+                        </td>
+                        <td class="provider">Black Forest Labs</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>5-10s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free fast">
+                        <td>
+                            <div class="model-name">FLUX.1 [schnell]</div>
+                            <span class="badge badge-open">Fastest</span>
+                        </td>
+                        <td class="provider">Black Forest Labs</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>1-2s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Stable Diffusion 3.5</div>
+                            <span class="badge badge-open">Open Source</span>
+                        </td>
+                        <td class="provider">Stability AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>5-15s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Stable Diffusion XL</div>
+                            <span class="badge badge-open">Popular</span>
+                        </td>
+                        <td class="provider">Stability AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>3-8s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="premium text">
+                        <td>
+                            <div class="model-name">Imagen 3</div>
+                            <span class="badge badge-premium">Google</span>
+                        </td>
+                        <td class="provider">Google</td>
+                        <td class="price">$0.02</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Firefly Image 3</div>
+                            <span class="badge badge-premium">Adobe</span>
+                        </td>
+                        <td class="provider">Adobe</td>
+                        <td class="price">$0.02</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>5-10s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Playground v3</div>
+                            <span class="badge badge-open">Free Tier</span>
+                        </td>
+                        <td class="provider">Playground AI</td>
+                        <td class="price">$0.00*</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Recraft V3</div>
+                            <span class="badge badge-premium">Vector</span>
+                        </td>
+                        <td class="provider">Recraft</td>
+                        <td class="price">$0.02</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>10-15s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Kandinsky 3</div>
+                            <span class="badge badge-open">Russian</span>
+                        </td>
+                        <td class="provider">Sber AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-20s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free fast">
+                        <td>
+                            <div class="model-name">PixArt-Σ</div>
+                            <span class="badge badge-open">Lightweight</span>
+                        </td>
+                        <td class="provider">Huawei</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>3-5s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">DeepFloyd IF</div>
+                            <span class="badge badge-open">Modular</span>
+                        </td>
+                        <td class="provider">Stability AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>30-60s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Amazon Titan v3</div>
+                            <span class="badge badge-premium">AWS</span>
+                        </td>
+                        <td class="provider">Amazon</td>
+                        <td class="price">$0.01</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-20s</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Würstchen</div>
+                            <span class="badge badge-open">Efficient</span>
+                        </td>
+                        <td class="provider">Stability AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>5-10s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">SSD-1B</div>
+                            <span class="badge badge-open">Distilled</span>
+                        </td>
+                        <td class="provider">Segmind</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-low">★★☆☆☆</td>
+                        <td>2-4s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">LCM-LoRA</div>
+                            <span class="badge badge-open">Real-time</span>
+                        </td>
+                        <td class="provider">Community</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-low">★★☆☆☆</td>
+                        <td>0.5s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Gemini Image 2</div>
+                            <span class="badge badge-premium">Multimodal</span>
+                        </td>
+                        <td class="provider">Google</td>
+                        <td class="price">$0.03</td>
+                        <td class="quality quality-high">★★★★☆</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">AuraFlow</div>
+                            <span class="badge badge-open">New</span>
+                        </td>
+                        <td class="provider">Fal AI</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>5-10s</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Hunyuan-DiT</div>
+                            <span class="badge badge-open">Tencent</span>
+                        </td>
+                        <td class="provider">Tencent</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">Kolors</div>
+                            <span class="badge badge-open">Kwai</span>
+                        </td>
+                        <td class="provider">Kwai</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-15s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="free">
+                        <td>
+                            <div class="model-name">OmniGen</div>
+                            <span class="badge badge-open">Unified</span>
+                        </td>
+                        <td class="provider">Community</td>
+                        <td class="price">$0.00</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>15-30s</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr data-category="premium">
+                        <td>
+                            <div class="model-name">Copilot Image</div>
+                            <span class="badge badge-premium">Microsoft</span>
+                        </td>
+                        <td class="provider">Microsoft</td>
+                        <td class="price">$0.02</td>
+                        <td class="quality quality-mid">★★★☆☆</td>
+                        <td>10-20s</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 30px;">
+            <h3>💡 How to Choose</h3>
+            <p><strong>Best quality:</strong> Midjourney V7 or GPT Image 1.5 — stunning, photorealistic results</p>
+            <p><strong>Free & private:</strong> Stable Diffusion 3.5 or FLUX.1 [dev] — run on your own hardware</p>
+            <p><strong>Text in images:</strong> Ideogram 3.0 or FLUX.1 — near-perfect typography</p>
+            <p><strong>Speed:</strong> FLUX.1 [schnell] or LCM-LoRA — sub-second generation</p>
+            <p><strong>Commercial use:</strong> Adobe Firefly Image 3 — trained on licensed images, legally safe</p>
+        </div>
+
+        <section class="seo-content">
+            <h2>About This AI Image Generator Comparison Tool</h2>
+            <p style="margin-bottom: 15px; line-height: 1.7;">
+                Our <strong>AI image generator comparison tool</strong> helps designers, marketers, and developers find the best AI image model for their creative projects. 
+                We compare <strong>25+ image generation models</strong> including Midjourney V7, GPT Image 1.5, Stable Diffusion 3.5, FLUX.1, Ideogram 3.0, and many open-source alternatives.
+            </p>
+            <h3>What We Compare</h3>
+            <ul style="margin-left: 20px; line-height: 1.8; color: #b0b8c8;">
+                <li><strong>Price per Image:</strong> Cost per generation (some are free to run locally)</li>
+                <li><strong>Quality Rating:</strong> Overall aesthetic and photorealism score</li>
+                <li><strong>Generation Speed:</strong> Time from prompt to finished image</li>
+                <li><strong>Text Support:</strong> Can the model render readable text in images?</li>
+                <li><strong>NSFW Support:</strong> Does the model allow adult content?</li>
+                <li><strong>Open Source:</strong> Can you self-host or fine-tune the model?</li>
+            </ul>
+            <h3>Popular Comparisons</h3>
+            <p style="line-height: 1.7;">
+                <a href="https://tsnmedia.org/" style="color: #ff6b6b;">Midjourney vs GPT Image</a> — 
+                <a href="https://tsnmedia.org/" style="color: #ff6b6b;">Stable Diffusion vs FLUX</a> — 
+                <a href="https://tsnmedia.org/" style="color: #ff6b6b;">Best Free AI Image Generators</a> — 
+                <a href="https://tsnmedia.org/" style="color: #ff6b6b;">AI Image Models for Commercial Use</a>
+            </p>
+            <h3>Data Accuracy & Disclaimer</h3>
+            <p style="margin-bottom: 15px; line-height: 1.7; color: #b0b8c8;">
+                <strong>Pricing and quality ratings are approximate</strong> and subject to change. Quality is subjective and varies by prompt. 
+                Last updated: April 2026.
+            </p>
+            <p style="margin-bottom: 15px; line-height: 1.7; color: #b0b8c8;">
+                <strong>Free models marked as $0.00</strong> are free to download but require GPU/CPU resources. API pricing may vary by hosting provider.
+            </p>
+            <p style="margin-top: 15px; color: #8892a0; font-size: 0.9em;">
+                This tool is free to use and share. Verify current pricing with providers before making decisions.
+            </p>
+        </section>
+
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data updated April 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        function filterModels(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                if (category === 'all') {
+                    row.style.display = '';
+                } else {
+                    const categories = row.getAttribute('data-category');
+                    row.style.display = categories && categories.includes(category) ? '' : 'none';
+                }
+            });
+        }
+    </script>
+
+    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
+        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
+        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
+    </footer>
+</body>
+</html>
