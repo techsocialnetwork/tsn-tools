@@ -1319,8 +1319,8 @@
         let fluxMap = null;
         let fluxMapLayer = null;
         let fluxBaseLayer = null;
-        // Persist across refreshes; default Satellite (Esri World Imagery)
-        let fluxBasemapMode = 'satellite';
+        // Persist across refreshes; default Dark (Carto)
+        let fluxBasemapMode = 'dark';
 
         const FLUX_BASEMAPS = {
             satellite: {
@@ -1470,8 +1470,8 @@
                                 <span class="map-legend-dot large"></span> denser
                             </span>
                             <div class="map-basemap-toggle" role="group" aria-label="Basemap">
-                                <button type="button" data-basemap="satellite" aria-pressed="true" class="active">Satellite</button>
-                                <button type="button" data-basemap="dark" aria-pressed="false">Dark</button>
+                                <button type="button" data-basemap="satellite" aria-pressed="false">Satellite</button>
+                                <button type="button" data-basemap="dark" aria-pressed="true" class="active">Dark</button>
                             </div>
                         </div>
                     </div>
@@ -1522,7 +1522,7 @@
                 minZoom: 2
             }).setView([20, 0], 2);
             fluxMapLayer = L.layerGroup().addTo(fluxMap);
-            setFluxBasemap(fluxBasemapMode || 'satellite');
+            setFluxBasemap(fluxBasemapMode || 'dark');
 
             document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
                 btn.addEventListener('click', () => {
