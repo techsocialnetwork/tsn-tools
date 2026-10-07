@@ -263,7 +263,151 @@
             white-space: nowrap;
         }
         .launch-link:hover { background: rgba(0, 212, 255, 0.22); }
-        
+
+        /* App category segmentation */
+        .category-layout {
+            display: grid;
+            grid-template-columns: minmax(200px, 280px) 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+        .donut-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 260px;
+            margin: 0 auto;
+            aspect-ratio: 1;
+        }
+        .donut-wrap svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .donut-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            text-align: center;
+            padding: 20%;
+        }
+        .donut-center .donut-total {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+        }
+        .donut-center .donut-label {
+            font-size: 0.75em;
+            color: #8892a0;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .category-bars {
+            display: grid;
+            gap: 10px;
+        }
+        .category-row {
+            display: grid;
+            grid-template-columns: minmax(90px, 140px) 1fr auto;
+            gap: 10px;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            width: 100%;
+        }
+        .category-row:hover,
+        .category-row:focus-visible {
+            background: rgba(0, 212, 255, 0.06);
+            border-color: #1a2332;
+            outline: none;
+        }
+        .category-row.active {
+            background: rgba(0, 212, 255, 0.12);
+            border-color: rgba(0, 212, 255, 0.35);
+        }
+        .category-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+            color: #e0e0e0;
+            min-width: 0;
+        }
+        .category-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .category-bar-track {
+            height: 10px;
+            background: #0a0e1a;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid #1a2332;
+        }
+        .category-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            min-width: 2px;
+            transition: width 0.35s ease;
+        }
+        .category-count {
+            font-size: 0.8em;
+            color: #8892a0;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+        .category-count strong { color: #fff; font-weight: 600; }
+        .category-filter-note {
+            margin-top: 14px;
+            font-size: 0.85em;
+            color: #8892a0;
+        }
+        .category-filter-note button {
+            background: none;
+            border: none;
+            color: #00d4ff;
+            cursor: pointer;
+            font: inherit;
+            text-decoration: underline;
+            padding: 0;
+        }
+        .cat-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.72em;
+            font-weight: 600;
+            background: rgba(136, 146, 160, 0.18);
+            color: #c0c8d4;
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .category-layout {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .donut-wrap { max-width: 220px; }
+            .category-row {
+                grid-template-columns: minmax(80px, 120px) 1fr auto;
+                padding: 8px 6px;
+            }
+        }
+
         .loading {
             text-align: center;
             padding: 40px;
@@ -362,6 +506,21 @@
             <div class="loading">Loading network statistics...</div>
         </div>
         
+
+        <div class="section">
+            <h2><span class="icon">📊</span> App categories</h2>
+            <p class="section-sub">
+                The Flux global registry has <strong>no official category field</strong>.
+                Groups below are derived client-side from Docker image tags (<code>compose[].repotag</code>),
+                app name/description keywords, and known marketplace templates
+                (e.g. descriptions ending in “on Flux Decentralized Cloud”). Treat as an approximate segmentation, not marketplace taxonomy.
+                Click a category to filter the launches list.
+            </p>
+            <div id="category-chart">
+                <div class="loading">Loading category breakdown...</div>
+            </div>
+        </div>
+
         <div class="section">
             <h2><span class="icon">🚀</span> Latest app launches</h2>
             <p class="section-sub">
@@ -474,6 +633,154 @@
             if (running > 0) return { label: 'Partial', cls: 'partial' };
             return { label: 'Offline', cls: 'offline' };
         }
+
+
+        // --- Category heuristics (API has no category field) ---
+        // Order matters: specific image/keyword matches before the generic marketplace games suffix.
+        const CATEGORY_COLORS = {
+            'Games': '#7b2cbf',
+            'Deploy / Orbit': '#00d4ff',
+            'Blockchain / Web3': '#00d4a0',
+            'VPN / Networking': '#ff9f43',
+            'Databases': '#54a0ff',
+            'DevOps / Monitoring': '#5f27cd',
+            'AI / ML': '#ff6b81',
+            'Scientific / Compute': '#1dd1a1',
+            'Web / CMS': '#feca57',
+            'Media / Storage': '#48dbfb',
+            'Other / Uncategorized': '#8892a0'
+        };
+
+        const CATEGORY_RULES = [
+            { name: 'Deploy / Orbit', patterns: ['runonflux/orbit', 'orbit deployment'] },
+            { name: 'AI / ML', patterns: ['ollama', 'ownllm', 'comfyui', 'comfy', 'vllm', 'whisper', 'stable-diffusion', 'automatic1111', 'text-generation', 'hermes agent', 'openclaw', 'llm'] },
+            { name: 'VPN / Networking', patterns: ['cumulusvpn', 'wireguard', 'softether', 'shadowsocks', 'vless', 'trojan', 'hiddenonion', 'openvpn', 'tailscale', 'socks5', 'tor-socks', 'vpn'] },
+            { name: 'Databases', patterns: ['mysql', 'postgres', 'mongodb', 'mongo', 'redis', 'shared-db', 'mariadb', 'influx', 'clickhouse', 'couchdb'] },
+            { name: 'Web / CMS', patterns: ['wordpress', 'wp-nginx', 'ghost', 'n8n', 'discourse'] },
+            { name: 'Scientific / Compute', patterns: ['folding', 'boinc', 'distributivenetwork/dcp'] },
+            { name: 'Media / Storage', patterns: ['plex', 'jellyfin', 'nextcloud', 'immich', 'photoprism', 'minio', 'seafile'] },
+            { name: 'DevOps / Monitoring', patterns: ['grafana', 'prometheus', 'portainer', 'uptime', 'metrics', 'collector', 'traefik', 'cors-anywhere', 'nginx'] },
+            { name: 'Blockchain / Web3', patterns: ['blockbook', 'kaspa', 'presearch', 'bittensor', 'simplex', 'timpi', 'makdi', 'bitcoin', 'ethereum', 'electrum', 'ipfs', 'nostr', 'handshake', 'ravencoin', 'monero', 'solana', 'ergo', 'firo', 'kusama', 'polkadot', 'nethermind', 'rosetta', 'rpc node', 'blockchain'] },
+            { name: 'Games', patterns: ['palworld', 'minecraft', 'valheim', 'zomboid', 'enshrouded', 'satisfactory', '7dtd', '7 days to die', 'tshock', 'terraria', 'factorio', 'abioticfactor', 'soulmask', 'vrising', 'v rising', 'dragonwilds', 'runescape', 'fivem', 'hytale', 'arma reforger', 'windrose', 'project zomboid', 'rust-server', 'ark:', 'survival ascended'] }
+        ];
+
+        let categoryFilter = null;
+        let launchesCache = null;
+
+        function appSearchText(app) {
+            const parts = [app?.name || '', app?.description || ''];
+            for (const c of (app?.compose || [])) {
+                if (c && typeof c === 'object') {
+                    parts.push(c.repotag || '', c.name || '', c.description || '');
+                }
+            }
+            return parts.join(' ').toLowerCase();
+        }
+
+        function categorizeApp(app) {
+            const t = appSearchText(app);
+            for (const rule of CATEGORY_RULES) {
+                for (const p of rule.patterns) {
+                    if (t.includes(p)) return rule.name;
+                }
+            }
+            // Marketplace templates (mostly games) share this description suffix
+            if (t.includes('on flux decentralized cloud')) return 'Games';
+            return 'Other / Uncategorized';
+        }
+
+        function buildCategoryCounts(apps) {
+            const counts = {};
+            for (const app of apps) {
+                const cat = categorizeApp(app);
+                counts[cat] = (counts[cat] || 0) + 1;
+            }
+            return Object.entries(counts)
+                .map(([name, count]) => ({ name, count, color: CATEGORY_COLORS[name] || '#8892a0' }))
+                .sort((a, b) => b.count - a.count);
+        }
+
+        function donutPaths(segments, total) {
+            if (!total) return '';
+            const cx = 100, cy = 100, r = 78, stroke = 28;
+            const C = 2 * Math.PI * r;
+            let offset = 0;
+            // Start at top
+            const rotate = -90;
+            return segments.map(seg => {
+                const len = (seg.count / total) * C;
+                const dash = `${len} ${C - len}`;
+                const el = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${stroke}" stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(${rotate} ${cx} ${cy})"></circle>`;
+                offset += len;
+                return el;
+            }).join('');
+        }
+
+        function setCategoryFilter(name) {
+            categoryFilter = (categoryFilter === name) ? null : name;
+            if (launchesCache) {
+                renderLaunches(launchesCache.apps, launchesCache.locationCounts, launchesCache.currentHeight);
+                renderCategoryChart(launchesCache.apps);
+            }
+        }
+
+        function clearCategoryFilter() {
+            categoryFilter = null;
+            if (launchesCache) {
+                renderLaunches(launchesCache.apps, launchesCache.locationCounts, launchesCache.currentHeight);
+                renderCategoryChart(launchesCache.apps);
+            }
+        }
+
+        function renderCategoryChart(apps) {
+            const el = document.getElementById('category-chart');
+            if (!apps || !Array.isArray(apps)) {
+                el.innerHTML = '<div class="error">Category chart unavailable — app registry failed to load.</div>';
+                return;
+            }
+            const segments = buildCategoryCounts(apps);
+            const total = apps.length;
+            const filterNote = categoryFilter
+                ? `<div class="category-filter-note">Filtering launches to <strong style="color:#fff">${escapeHtml(categoryFilter)}</strong>. <button type="button" onclick="clearCategoryFilter()">Show all</button></div>`
+                : `<div class="category-filter-note">Showing all categories in the launches list below.</div>`;
+
+            el.innerHTML = `
+                <div class="category-layout">
+                    <div class="donut-wrap" aria-hidden="true">
+                        <svg viewBox="0 0 200 200" role="img">
+                            <circle cx="100" cy="100" r="78" fill="none" stroke="#0a0e1a" stroke-width="28"></circle>
+                            ${donutPaths(segments, total)}
+                        </svg>
+                        <div class="donut-center">
+                            <div class="donut-total">${total.toLocaleString()}</div>
+                            <div class="donut-label">apps</div>
+                        </div>
+                    </div>
+                    <div class="category-bars" role="list" aria-label="App category counts">
+                        ${segments.map(seg => {
+                            const pct = total ? (seg.count / total) * 100 : 0;
+                            const active = categoryFilter === seg.name ? ' active' : '';
+                            return `
+                                <button type="button" class="category-row${active}" role="listitem"
+                                    onclick="setCategoryFilter('${seg.name.replace(/'/g, "\\'")}')"
+                                    aria-pressed="${categoryFilter === seg.name}">
+                                    <span class="category-name">
+                                        <span class="category-swatch" style="background:${seg.color}"></span>
+                                        <span>${escapeHtml(seg.name)}</span>
+                                    </span>
+                                    <span class="category-bar-track" title="${pct.toFixed(1)}%">
+                                        <span class="category-bar-fill" style="width:${pct}%;background:${seg.color}"></span>
+                                    </span>
+                                    <span class="category-count"><strong>${seg.count.toLocaleString()}</strong> · ${pct.toFixed(1)}%</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                ${filterNote}
+            `;
+        }
+
 
         function composeResources(app) {
             const parts = Array.isArray(app.compose) && app.compose.length ? app.compose : [app];
@@ -636,11 +943,16 @@
                 return;
             }
 
-            const sorted = [...apps].sort((a, b) => (b.height || 0) - (a.height || 0));
+            launchesCache = { apps, locationCounts, currentHeight };
+
+            const filtered = categoryFilter
+                ? apps.filter(a => categorizeApp(a) === categoryFilter)
+                : apps;
+            const sorted = [...filtered].sort((a, b) => (b.height || 0) - (a.height || 0));
             const newest = sorted.slice(0, LAUNCHES_LIMIT);
 
             toolbar.innerHTML = `
-                <span>Showing ${newest.length.toLocaleString()} of ${apps.length.toLocaleString()} apps · newest by height</span>
+                <span>Showing ${newest.length.toLocaleString()} of ${filtered.length.toLocaleString()}${categoryFilter ? ' filtered' : ''} apps (registry ${apps.length.toLocaleString()}) · newest by height${categoryFilter ? ' · filter: ' + escapeHtml(categoryFilter) : ''}</span>
                 <span>Current height: ${currentHeight ? currentHeight.toLocaleString() : '—'}</span>
             `;
 
@@ -648,6 +960,7 @@
                 <div class="launches-list" role="list" aria-label="Latest Flux app launches">
                     ${newest.map(app => {
                         const name = app.name || 'unnamed';
+                        const appCategory = categorizeApp(app);
                         const owner = app.owner || '';
                         const requested = app.instances ?? null;
                         const running = locationCounts[name] ?? 0;
@@ -666,6 +979,7 @@
                             <article class="launch-item" role="listitem">
                                 <div class="launch-main">
                                     <h4><a href="${visitUrl}" target="_blank" rel="noopener">${escapeHtml(name)}</a></h4>
+                                    <span class="cat-badge" style="background:${(CATEGORY_COLORS[appCategory] || '#8892a0')}33;color:${CATEGORY_COLORS[appCategory] || '#8892a0'}">${escapeHtml(appCategory)}</span>
                                     <p class="launch-desc">${escapeHtml(desc)}</p>
                                     <div class="launch-meta">
                                         <span title="Owner Zel ID / address">👤 <span class="mono">${escapeHtml(truncateMiddle(owner, 10, 8))}</span></span>
@@ -705,10 +1019,12 @@
 
             if (!appsPayload || appsPayload.status === 'error' || !Array.isArray(appsPayload.data)) {
                 renderLaunches(null, locationCounts, currentHeight);
+                renderCategoryChart(null);
                 return;
             }
 
             shared.appsCount = appsPayload.data.length;
+            renderCategoryChart(appsPayload.data);
             renderLaunches(appsPayload.data, locationCounts, currentHeight);
         }
         
@@ -743,6 +1059,8 @@
         async function loadAllData() {
             document.getElementById('last-updated').textContent = 'Loading...';
             document.getElementById('apps-list').innerHTML = '<div class="loading">Loading latest launches...</div>';
+            const catEl = document.getElementById('category-chart');
+            if (catEl) catEl.innerHTML = '<div class="loading">Loading category breakdown...</div>';
 
             const [nodeCount, appsPayload, locationsPayload, fluxInfo, daemonInfo] = await Promise.all([
                 fetchData(`${API_BASE}/daemon/getfluxnodecount`),
