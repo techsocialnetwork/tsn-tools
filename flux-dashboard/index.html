@@ -471,6 +471,45 @@
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
         }
         .map-legend strong { color: #fff; font-weight: 600; }
+        .map-basemap-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            margin-left: auto;
+            border: 1px solid #2a3548;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #111827;
+        }
+        .map-basemap-toggle button {
+            appearance: none;
+            border: none;
+            background: transparent;
+            color: #a8b2c0;
+            font: inherit;
+            font-size: 0.82em;
+            font-weight: 600;
+            padding: 7px 12px;
+            cursor: pointer;
+            line-height: 1.2;
+            transition: background 0.15s, color 0.15s;
+        }
+        .map-basemap-toggle button + button {
+            border-left: 1px solid #2a3548;
+        }
+        .map-basemap-toggle button:hover {
+            color: #e0e0e0;
+            background: rgba(0, 212, 255, 0.08);
+        }
+        .map-basemap-toggle button.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.28), rgba(192, 132, 252, 0.28));
+            color: #fff;
+        }
+        .map-basemap-toggle button:focus-visible {
+            outline: 2px solid #00d4ff;
+            outline-offset: -2px;
+            z-index: 1;
+        }
         .map-side {
             display: flex;
             flex-direction: column;
@@ -1279,6 +1318,46 @@
 
         let fluxMap = null;
         let fluxMapLayer = null;
+        let fluxBaseLayer = null;
+        // Persist across refreshes; default Satellite (Esri World Imagery)
+        let fluxBasemapMode = 'satellite';
+
+        const FLUX_BASEMAPS = {
+            satellite: {
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                options: {
+                    attribution: 'Tiles &copy; Esri',
+                    maxZoom: 19
+                }
+            },
+            dark: {
+                url: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+                options: {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                    subdomains: 'abcd',
+                    maxZoom: 19
+                }
+            }
+        };
+
+        function setFluxBasemap(mode) {
+            if (!fluxMap || !FLUX_BASEMAPS[mode]) return;
+            fluxBasemapMode = mode;
+            if (fluxBaseLayer) {
+                fluxMap.removeLayer(fluxBaseLayer);
+                fluxBaseLayer = null;
+            }
+            const cfg = FLUX_BASEMAPS[mode];
+            fluxBaseLayer = L.tileLayer(cfg.url, cfg.options);
+            fluxBaseLayer.addTo(fluxMap);
+            // Keep markers above the basemap
+            if (fluxMapLayer) fluxMapLayer.bringToFront();
+            document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
+                const active = btn.getAttribute('data-basemap') === mode;
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+        }
 
         function majorityKey(counts) {
             let best = '', n = 0;
@@ -1313,10 +1392,10 @@
                 fillColor: `rgb(${r},${g},${b})`,
                 fillOpacity: 0.62 + 0.3 * t,
                 radius: Math.max(7, Math.min(38, 6 + Math.sqrt(count) * 2.8)),
-                weight: 1.75 + t * 2.25,
-                // light stroke / glow so dense clusters separate from the basemap
-                color: t > 0.45 ? '#ffffff' : '#7dd3fc',
-                opacity: 0.75 + 0.2 * t
+                weight: 2 + t * 2.5,
+                // strong stroke so markers stay visible on satellite imagery
+                color: t > 0.45 ? '#ffffff' : '#e0f9ff',
+                opacity: 0.9 + 0.1 * t
             };
         }
 
@@ -1325,6 +1404,7 @@
                 fluxMap.remove();
                 fluxMap = null;
                 fluxMapLayer = null;
+                fluxBaseLayer = null;
             }
         }
 
@@ -1389,6 +1469,10 @@
                                 <span class="map-legend-dot small"></span> fewer
                                 <span class="map-legend-dot large"></span> denser
                             </span>
+                            <div class="map-basemap-toggle" role="group" aria-label="Basemap">
+                                <button type="button" data-basemap="satellite" aria-pressed="true" class="active">Satellite</button>
+                                <button type="button" data-basemap="dark" aria-pressed="false">Dark</button>
+                            </div>
                         </div>
                     </div>
                     <div class="map-side">
@@ -1437,13 +1521,15 @@
                 scrollWheelZoom: true,
                 minZoom: 2
             }).setView([20, 0], 2);
-            // dark_nolabels: clearer markers, less label clutter on the basemap
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 19
-            }).addTo(fluxMap);
             fluxMapLayer = L.layerGroup().addTo(fluxMap);
+            setFluxBasemap(fluxBasemapMode || 'satellite');
+
+            document.querySelectorAll('.map-basemap-toggle button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.getAttribute('data-basemap');
+                    if (mode) setFluxBasemap(mode);
+                });
+            });
 
             const clusterArr = Array.from(clusters.values());
             const maxCount = Math.max(...clusterArr.map(c => c.count), 1);
