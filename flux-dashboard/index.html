@@ -1319,7 +1319,7 @@
         let fluxMap = null;
         let fluxMapLayer = null;
         let fluxBaseLayer = null;
-        // Persist across refreshes; default Dark (Carto)
+        // Persist across refreshes; default Dark (Esri Canvas Dark Gray)
         let fluxBasemapMode = 'dark';
 
         const FLUX_BASEMAPS = {
@@ -1331,11 +1331,10 @@
                 }
             },
             dark: {
-                url: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
                 options: {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 19
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+                    maxZoom: 16
                 }
             }
         };
