@@ -415,17 +415,62 @@
         /* Node location map */
         .map-layout {
             display: grid;
-            grid-template-columns: 1fr minmax(220px, 320px);
+            grid-template-columns: 1fr minmax(240px, 340px);
             gap: 20px;
             align-items: start;
         }
+        .map-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+        }
         #flux-leaflet-map {
-            height: 420px;
+            height: 500px;
             border-radius: 12px;
             border: 1px solid #1a2332;
             background: #0a0e1a;
             z-index: 0;
         }
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 16px;
+            padding: 10px 14px;
+            background: #0a0e1a;
+            border: 1px solid #1a2332;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+        .map-legend-swatches {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .map-legend-dot {
+            display: inline-block;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+        .map-legend-dot.small {
+            width: 10px;
+            height: 10px;
+            background: #00d4ff;
+            border-width: 1.5px;
+            border-color: #7dd3fc;
+        }
+        .map-legend-dot.large {
+            width: 18px;
+            height: 18px;
+            background: #c084fc;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+        }
+        .map-legend strong { color: #fff; font-weight: 600; }
         .map-side {
             display: flex;
             flex-direction: column;
@@ -433,9 +478,9 @@
             min-height: 0;
         }
         .map-meta {
-            font-size: 0.85em;
-            color: #8892a0;
-            line-height: 1.4;
+            font-size: 0.95em;
+            color: #c0c8d4;
+            line-height: 1.45;
         }
         .continent-chips {
             display: flex;
@@ -446,28 +491,29 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 999px;
             background: #0a0e1a;
-            border: 1px solid #1a2332;
-            font-size: 0.78em;
-            color: #c0c8d4;
+            border: 1px solid #2a3548;
+            font-size: 0.88em;
+            color: #e0e0e0;
         }
         .continent-chip strong {
             color: #00d4ff;
-            font-weight: 600;
+            font-weight: 700;
         }
         .country-list-heading {
-            font-size: 0.85em;
-            color: #8892a0;
+            font-size: 0.9em;
+            color: #c0c8d4;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
         .country-list {
             display: grid;
-            gap: 8px;
-            max-height: 340px;
+            gap: 10px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 4px;
             scrollbar-width: thin;
@@ -476,41 +522,43 @@
         .country-list::-webkit-scrollbar { width: 8px; }
         .country-list::-webkit-scrollbar-track { background: #0a0e1a; border-radius: 8px; }
         .country-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #00d4ff, #7b2cbf);
+            background: linear-gradient(180deg, #00d4ff, #c084fc);
             border-radius: 8px;
         }
         .country-row {
             display: grid;
-            grid-template-columns: minmax(80px, 1fr) auto;
-            gap: 6px 10px;
+            grid-template-columns: minmax(90px, 1fr) auto;
+            gap: 8px 12px;
             align-items: center;
-            padding: 8px 10px;
+            padding: 10px 12px;
             background: #0a0e1a;
             border-radius: 8px;
-            border: 1px solid #1a2332;
-            font-size: 0.85em;
+            border: 1px solid #2a3548;
+            font-size: 0.95em;
         }
-        .country-name { color: #e0e0e0; min-width: 0; }
+        .country-name { color: #e0e0e0; min-width: 0; font-weight: 500; }
         .country-count {
-            color: #8892a0;
+            color: #a8b2c0;
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
             text-align: right;
+            font-size: 0.92em;
         }
-        .country-count strong { color: #fff; font-weight: 600; }
+        .country-count strong { color: #fff; font-weight: 700; }
         .country-bar-track {
             grid-column: 1 / -1;
-            height: 6px;
+            height: 10px;
             background: #111827;
             border-radius: 999px;
             overflow: hidden;
-            border: 1px solid #1a2332;
+            border: 1px solid #2a3548;
         }
         .country-bar-fill {
             height: 100%;
             border-radius: 999px;
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
-            min-width: 2px;
+            background: linear-gradient(90deg, #00d4ff, #a78bfa 55%, #c084fc);
+            min-width: 3px;
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.35);
         }
         .leaflet-container {
             background: #0a0e1a;
@@ -519,16 +567,30 @@
         .leaflet-popup-content-wrapper {
             background: #111827;
             color: #e0e0e0;
-            border: 1px solid #1a2332;
+            border: 1px solid #2a3548;
             border-radius: 10px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }
         .leaflet-popup-tip { background: #111827; }
         .leaflet-popup-content {
-            margin: 10px 12px;
-            font-size: 0.85em;
-            line-height: 1.45;
+            margin: 12px 14px;
+            font-size: 1em;
+            line-height: 1.5;
+            min-width: 140px;
         }
+        .leaflet-popup-content .popup-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 4px;
+        }
+        .leaflet-popup-content .popup-region { color: #e0e0e0; }
+        .leaflet-popup-content .popup-org { color: #a8b2c0; font-size: 0.92em; }
+        .leaflet-popup-content .popup-count {
+            margin-top: 6px;
+            color: #e0e0e0;
+        }
+        .leaflet-popup-content .popup-count strong { color: #c084fc; font-weight: 700; }
         .leaflet-popup-content strong { color: #00d4ff; }
         .leaflet-control-attribution {
             background: rgba(17, 24, 39, 0.92) !important;
@@ -549,8 +611,8 @@
 
         @media (max-width: 900px) {
             .map-layout { grid-template-columns: 1fr; }
-            #flux-leaflet-map { height: 320px; }
-            .country-list { max-height: 260px; }
+            #flux-leaflet-map { height: 360px; }
+            .country-list { max-height: 280px; }
         }
 
         .loading {
@@ -1227,14 +1289,34 @@
         }
 
         function clusterStyle(count, maxCount) {
+            // t: 0 = few nodes (cyan), 1 = dense cluster (bright purple)
             const t = Math.min(1, Math.log(count + 1) / Math.log((maxCount || 1) + 1));
-            const r = Math.round(0 + (123 - 0) * t);
-            const g = Math.round(212 + (44 - 212) * t);
-            const b = Math.round(255 + (191 - 255) * t);
+            // #00d4ff → #a78bfa → #c084fc
+            const stops = [
+                [0, 212, 255],   // #00d4ff
+                [167, 139, 250], // #a78bfa
+                [192, 132, 252]  // #c084fc
+            ];
+            let r, g, b;
+            if (t < 0.5) {
+                const u = t / 0.5;
+                r = Math.round(stops[0][0] + (stops[1][0] - stops[0][0]) * u);
+                g = Math.round(stops[0][1] + (stops[1][1] - stops[0][1]) * u);
+                b = Math.round(stops[0][2] + (stops[1][2] - stops[0][2]) * u);
+            } else {
+                const u = (t - 0.5) / 0.5;
+                r = Math.round(stops[1][0] + (stops[2][0] - stops[1][0]) * u);
+                g = Math.round(stops[1][1] + (stops[2][1] - stops[1][1]) * u);
+                b = Math.round(stops[1][2] + (stops[2][2] - stops[1][2]) * u);
+            }
             return {
                 fillColor: `rgb(${r},${g},${b})`,
-                fillOpacity: 0.35 + 0.5 * t,
-                radius: Math.max(4, Math.min(28, Math.sqrt(count) * 2.2))
+                fillOpacity: 0.62 + 0.3 * t,
+                radius: Math.max(7, Math.min(38, 6 + Math.sqrt(count) * 2.8)),
+                weight: 1.75 + t * 2.25,
+                // light stroke / glow so dense clusters separate from the basemap
+                color: t > 0.45 ? '#ffffff' : '#7dd3fc',
+                opacity: 0.75 + 0.2 * t
             };
         }
 
@@ -1299,7 +1381,16 @@
             destroyFluxMap();
             container.innerHTML = `
                 <div class="map-layout">
-                    <div id="flux-leaflet-map" role="img" aria-label="Flux node world map"></div>
+                    <div class="map-column">
+                        <div id="flux-leaflet-map" role="img" aria-label="Flux node world map"></div>
+                        <div class="map-legend" id="map-legend">
+                            <span><strong>Dot size = node count</strong> at that location</span>
+                            <span class="map-legend-swatches" aria-hidden="true">
+                                <span class="map-legend-dot small"></span> fewer
+                                <span class="map-legend-dot large"></span> denser
+                            </span>
+                        </div>
+                    </div>
                     <div class="map-side">
                         <div class="map-meta" id="map-meta"></div>
                         <div class="continent-chips" id="continent-chips"></div>
@@ -1341,8 +1432,13 @@
             }
 
             const mapEl = document.getElementById('flux-leaflet-map');
-            fluxMap = L.map(mapEl, { worldCopyJump: true, scrollWheelZoom: true }).setView([20, 0], 2);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            fluxMap = L.map(mapEl, {
+                worldCopyJump: true,
+                scrollWheelZoom: true,
+                minZoom: 2
+            }).setView([20, 0], 2);
+            // dark_nolabels: clearer markers, less label clutter on the basemap
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
                 subdomains: 'abcd',
                 maxZoom: 19
@@ -1353,6 +1449,9 @@
             const maxCount = Math.max(...clusterArr.map(c => c.count), 1);
             const bounds = [];
 
+            // Draw smaller clusters first so large dense ones sit on top
+            clusterArr.sort((a, b) => a.count - b.count);
+
             for (const c of clusterArr) {
                 const style = clusterStyle(c.count, maxCount);
                 const country = majorityKey(c.countries) || 'Unknown';
@@ -1360,17 +1459,17 @@
                 const org = majorityKey(c.orgs);
                 const marker = L.circleMarker([c.lat, c.lon], {
                     radius: style.radius,
-                    color: '#00d4ff',
-                    weight: 1,
-                    opacity: 0.85,
+                    color: style.color,
+                    weight: style.weight,
+                    opacity: style.opacity,
                     fillColor: style.fillColor,
                     fillOpacity: style.fillOpacity
                 });
                 marker.bindPopup(
-                    `<strong>${escapeHtml(country)}</strong><br>` +
-                    (region ? `${escapeHtml(region)}<br>` : '') +
-                    (org ? `<span style="color:#8892a0">${escapeHtml(org)}</span><br>` : '') +
-                    `Nodes: <strong>${c.count.toLocaleString()}</strong>`
+                    `<div class="popup-title">${escapeHtml(country)}</div>` +
+                    (region ? `<div class="popup-region">${escapeHtml(region)}</div>` : '') +
+                    (org ? `<div class="popup-org">${escapeHtml(org)}</div>` : '') +
+                    `<div class="popup-count">Nodes: <strong>${c.count.toLocaleString()}</strong></div>`
                 );
                 fluxMapLayer.addLayer(marker);
                 bounds.push([c.lat, c.lon]);
@@ -1378,17 +1477,22 @@
 
             if (bounds.length) {
                 try {
-                    fluxMap.fitBounds(bounds, { padding: [24, 24], maxZoom: 6 });
+                    fluxMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 5 });
+                    // Avoid ultra-zoomed-out world view that makes dots tiny
+                    if (fluxMap.getZoom() < 2.4) fluxMap.setZoom(2.4);
                 } catch (e) {
-                    fluxMap.setView([20, 0], 2);
+                    fluxMap.setView([20, 0], 2.4);
                 }
             } else {
-                fluxMap.setView([20, 0], 2);
+                fluxMap.setView([20, 0], 2.4);
             }
 
-            setTimeout(() => {
-                if (fluxMap) fluxMap.invalidateSize();
-            }, 80);
+            const refreshSize = () => { if (fluxMap) fluxMap.invalidateSize(); };
+            requestAnimationFrame(() => {
+                refreshSize();
+                setTimeout(refreshSize, 120);
+                setTimeout(refreshSize, 400);
+            });
         }
 
         async function loadAllData() {
