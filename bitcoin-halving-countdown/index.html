@@ -184,6 +184,60 @@
             .time-unit { padding: 15px 20px; min-width: 80px; }
             header h1 { font-size: 1.8em; }
         }
+        .tsn-follow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto 16px;
+        }
+        .tsn-follow a {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            min-width: 0;
+            max-width: 100%;
+            padding: 8px 14px;
+            border: 1px solid #1a2332;
+            border-radius: 999px;
+            background: #111827;
+            color: #f7931a;
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.25;
+            text-align: center;
+            text-decoration: none;
+        }
+        .tsn-follow a svg { flex: 0 0 auto; }
+        .tsn-follow a:hover {
+            border-color: #f7931a;
+            text-decoration: underline;
+        }
+        .tsn-follow a:focus-visible {
+            outline: 2px solid #f7931a;
+            outline-offset: 3px;
+        }
+        .tsn-follow-ext {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        @media (max-width: 414px) {
+            .tsn-follow { flex-direction: column; align-items: stretch; }
+            .tsn-follow a { width: 100%; }
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
@@ -289,6 +343,10 @@
         </div>
 
         <footer>
+            <nav class="tsn-follow" aria-label="TSN Media">
+                <a href="https://x.com/tsnmediahub" target="_blank" rel="noopener"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Follow @tsnmediahub on X<span class="tsn-follow-ext"> (opens in a new tab)</span></a>
+                <a href="https://tsnmedia.org">tsnmedia.org</a>
+            </nav>
             <p>Built by <a href="https://tsnmedia.org">TSN Media</a> | Data from CoinGecko & Blockchain APIs</p>
             <p style="margin-top: 10px;">
                 <a href="https://tsnmedia.org/bitcoin-in-2025-institutional-adoption-regulatory-clarity-and-global-trends-pave-the-way-for-an-exciting-2026/">Bitcoin Investing Guide</a> | 
