@@ -42,7 +42,7 @@
         .country-flag { font-size: 1.2em; margin-right: 6px; }
         .news-country { display: inline-flex; align-items: center; color: #8892a0; font-size: 0.85em; margin-top: 8px; }
         .news-time { color: #8892a0; font-size: 0.85em; }
-        .news-title { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.4; }
+        .news-title { font-size: 1.1em; font-weight: 700; color: #fff; margin: 0 0 8px; line-height: 1.4; }
         .news-summary { color: #8892a0; font-size: 0.95em; line-height: 1.5; margin-bottom: 12px; }
         .news-impact { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
         .impact-label { color: #8892a0; font-size: 0.85em; }
@@ -56,7 +56,7 @@
         .impact-score-medium { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
         .impact-score-low { background: rgba(0, 212, 160, 0.2); color: #00d4a0; }
         .methodology-box { background: linear-gradient(135deg, #1a2332, #111827); border: 1px solid #1a2332; border-radius: 12px; padding: 20px; margin-bottom: 30px; }
-        .methodology-title { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .methodology-title { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; background: none; border: 0; font-family: inherit; width: 100%; text-align: left; padding: 0; }
         .methodology-title:hover { color: #00d4ff; }
         .methodology-content { display: none; }
         .methodology-content.expanded { display: block; animation: fadeIn 0.3s ease; }
@@ -65,7 +65,9 @@
         .methodology-item { background: #0a0e1a; padding: 12px; border-radius: 8px; border: 1px solid #1a2332; }
         .methodology-item-title { color: #00d4ff; font-weight: 600; font-size: 0.9em; margin-bottom: 4px; }
         .methodology-item-desc { color: #8892a0; font-size: 0.8em; line-height: 1.4; }
-        .methodology-toggle { font-size: 0.8em; color: #00d4ff; cursor: pointer; text-align: center; margin-top: 10px; }
+        .methodology-toggle { font-size: 0.8em; color: #00d4ff; cursor: pointer; text-align: center; margin-top: 10px; background: none; border: 0; font-family: inherit; width: 100%; padding: 8px; }
+        .score-scale { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.8em; }
+        .methodology-title:focus-visible, .methodology-toggle:focus-visible, .category-tab:focus-visible, .refresh-btn:focus-visible, .news-link:focus-visible, .share-btn:focus-visible { outline: 2px solid #00d4ff; outline-offset: 2px; }
         .methodology-toggle:hover { text-decoration: underline; }
         .impact-metrics { margin-top: 8px; padding: 8px; background: #0a0e1a; border-radius: 6px; font-size: 0.8em; }
         .impact-metric { display: flex; justify-content: space-between; margin-bottom: 4px; }
@@ -79,7 +81,7 @@
         .share-btn:hover { background: #00d4ff; color: #0a0e1a; border-color: #00d4ff; }
         .featured-section { background: linear-gradient(135deg, #1a2332, #111827); border: 1px solid #1a2332; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
         .featured-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .featured-title { font-size: 1.3em; font-weight: 700; color: #fff; }
+        .featured-title { font-size: 1.3em; font-weight: 700; color: #fff; margin: 0; }
         .featured-badge { background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
         .loading-spinner { text-align: center; padding: 40px; }
         .spinner { border: 3px solid #1a2332; border-top: 3px solid #00d4ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
@@ -91,7 +93,8 @@
         @media (max-width: 768px) {
             h1 { font-size: 1.8em; }
             .news-grid { grid-template-columns: 1fr; }
-            .category-tabs { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
+            .category-tabs { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; max-width: 100%; }
+            .score-scale { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -101,7 +104,7 @@
         <p class="subtitle">Daily macroeconomic news and market-moving events</p>
         
         <div class="methodology-box">
-            <div class="methodology-title" onclick="toggleMethodology()">📊 Impact Scoring Methodology <span style="font-size: 0.7em; color: #8892a0;">(click to expand)</span></div>
+            <button type="button" class="methodology-title" onclick="toggleMethodology()">📊 Impact Scoring Methodology <span style="font-size: 0.7em; color: #8892a0;">(click to expand)</span></button>
             <div class="methodology-content" id="methodologyContent">
                 <div class="methodology-grid">
                     <div class="methodology-item">
@@ -131,14 +134,14 @@
                 </div>
                 <div style="background: #0a0e1a; padding: 12px; border-radius: 8px; border: 1px solid #1a2332; margin-top: 10px;">
                     <div style="color: #00d4ff; font-weight: 600; font-size: 0.9em; margin-bottom: 8px;">Score Interpretation</div>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.8em;">
+                    <div class="score-scale">
                         <div style="color: #ff4757;"><strong>85-100:</strong> 🔴 Major market mover — immediate action required</div>
                         <div style="color: #ffc107;"><strong>50-84:</strong> 🟡 Notable impact — monitor positions closely</div>
                         <div style="color: #00d4a0;"><strong>&lt;50:</strong> 🟢 Limited impact — routine market noise</div>
                     </div>
                 </div>
             </div>
-            <div class="methodology-toggle" onclick="toggleMethodology()">Click to expand methodology details</div>
+            <button type="button" class="methodology-toggle" onclick="toggleMethodology()">Click to expand methodology details</button>
         </div>
         
         <div class="last-updated-bar">
@@ -361,7 +364,7 @@
                 summary: "Treasury Department refunding announcements affect bond market liquidity and yields. Large auction sizes can pressure yields higher as market absorbs new supply.",
                 time: "Apr 25",
                 source: "Treasury.gov / WSJ",
-                sourceUrl: "https://home.treasury.gov/data/treasury-statements",
+                sourceUrl: "https://home.treasury.gov/policy-issues/financing-the-government/quarterly-refunding/most-recent-quarterly-refunding-documents",
                 impact: "medium",
                 impactScore: 60,
                 marketImpact: "10Y Treasury +2-5bps around announcement",
@@ -551,11 +554,11 @@
                 featuredNews.innerHTML = `
                     <div class="featured-section">
                         <div class="featured-header">
-                            <span class="featured-title">🔥 Breaking News</span>
+                            <h2 class="featured-title">🔥 Breaking News</h2>
                             <span class="featured-badge">HIGH IMPACT</span>
                         </div>
                         <div class="news-grid">
-                            ${featured.map(news => renderNewsCard(news)).join('')}
+                            ${featured.map(news => renderNewsCard(news, 'h3')).join('')}
                         </div>
                     </div>
                 `;
@@ -571,7 +574,7 @@
             `;
         }
 
-        function renderNewsCard(news) {
+        function renderNewsCard(news, headingTag = 'h2') {
             const categoryLabels = {
                 'fed': 'Fed & Rates',
                 'inflation': 'Inflation',
@@ -605,7 +608,7 @@
                         <span class="news-category cat-${news.category}">${categoryLabels[news.category]}</span>
                         <span class="news-time">${news.time}</span>
                     </div>
-                    <div class="news-title">${news.title}</div>
+                    <${headingTag} class="news-title">${news.title}</${headingTag}>
                     <div class="news-summary">${news.summary}</div>
                     <div class="news-impact impact-${news.impact}">
                         <span class="impact-label">Impact:</span>

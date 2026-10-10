@@ -89,6 +89,7 @@
             gap: 10px;
             margin-bottom: 30px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         .quarter-btn {
             padding: 12px 24px;
@@ -132,6 +133,7 @@
             font-size: 1.3em;
             font-weight: 700;
             color: #fff;
+            margin: 0;
         }
         .ticker {
             background: linear-gradient(135deg, #00d4a0, #00d4ff);
@@ -425,7 +427,7 @@
                 return `
                     <div class="earnings-card">
                         <div class="card-header">
-                            <span class="company-name">${company.name}</span>
+                            <h2 class="company-name">${company.name}</h2>
                             <span class="ticker">${company.ticker}</span>
                         </div>
                         <div class="earnings-date">

@@ -13,8 +13,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/">
     <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/akash-og.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:width" content="1376">
+    <meta property="og:image:height" content="768">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -70,9 +70,10 @@
             transition: transform 0.2s;
         }
         .stat-card:hover { transform: translateY(-4px); }
-        .stat-card h3 {
+        .stat-card .stat-label {
             color: #8892a0;
             font-size: 0.9em;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 12px;
@@ -119,9 +120,11 @@
             background: #0a0e1a;
             border-radius: 8px;
             border: 1px solid #1a2332;
+            max-width: 100%;
         }
-        .provider-info h4 { color: #fff; margin-bottom: 4px; }
-        .provider-info p { color: #8892a0; font-size: 0.9em; }
+        .provider-info { min-width: 0; max-width: 100%; }
+        .provider-info h4, .provider-info .provider-name { color: #fff; margin: 0 0 4px; font-weight: 700; font-size: 1em; overflow-wrap: anywhere; }
+        .provider-info p { color: #8892a0; font-size: 0.9em; overflow-wrap: anywhere; }
         .provider-status {
             padding: 6px 12px;
             border-radius: 20px;
@@ -149,9 +152,10 @@
         }
         .filter-btn.active {
             background: linear-gradient(135deg, #ff4d4d, #f9cb28);
-            color: white;
+            color: #0a0e1a;
             border-color: transparent;
         }
+        .filter-btn:focus-visible, .refresh-btn:focus-visible { outline: 2px solid #ff4d4d; outline-offset: 2px; }
         .filter-btn:hover:not(.active) { background: #243447; }
         
         .loading {
@@ -183,7 +187,7 @@
         
         .refresh-btn {
             background: linear-gradient(135deg, #ff4d4d, #f9cb28);
-            color: white;
+            color: #0a0e1a;
             border: none;
             padding: 12px 24px;
             border-radius: 8px;
@@ -308,32 +312,32 @@
             
             statsGrid.innerHTML = `
                 <div class="stat-card">
-                    <h3>Total Providers</h3>
+                    <p class="stat-label">Total Providers</p>
                     <div class="stat-value">${totalProviders}</div>
                     <div class="stat-change">Network Size</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Online Providers</h3>
+                    <p class="stat-label">Online Providers</p>
                     <div class="stat-value" style="color: #00d4a0;">${onlineProviders}</div>
                     <div class="stat-change positive">${((onlineProviders/totalProviders)*100).toFixed(1)}% Uptime</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Audited Providers</h3>
+                    <p class="stat-label">Audited Providers</p>
                     <div class="stat-value">${auditedProviders}</div>
                     <div class="stat-change">Verified</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Providers with GPUs</h3>
+                    <p class="stat-label">Providers with GPUs</p>
                     <div class="stat-value">${providersWithGPU}</div>
                     <div class="stat-change">GPU Enabled</div>
                 </div>
                 <div class="stat-card">
-                    <h3>GPU Models</h3>
+                    <p class="stat-label">GPU Models</p>
                     <div class="stat-value">${gpuModels.length}</div>
                     <div class="stat-change">Unique Types</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Network Regions</h3>
+                    <p class="stat-label">Network Regions</p>
                     <div class="stat-value">${[...new Set(data.map(p => {
                         const regionAttr = p.attributes?.find(a => a.key === 'region');
                         return regionAttr ? regionAttr.value : 'Unknown';
@@ -341,7 +345,7 @@
                     <div class="stat-change">Geographic</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Avg Uptime (7d)</h3>
+                    <p class="stat-label">Avg Uptime (7d)</p>
                     <div class="stat-value">${(avgUptime * 100).toFixed(1)}%</div>
                     <div class="stat-change positive">Reliability</div>
                 </div>
@@ -373,25 +377,25 @@
                 <div class="provider-list">
                     <div class="provider-item">
                         <div class="provider-info">
-                            <h4>Network Regions</h4>
+                            <p class="provider-name">Network Regions</p>
                             <p>${regions.length} unique regions</p>
                         </div>
                     </div>
                     <div class="provider-item">
                         <div class="provider-info">
-                            <h4>Datacenters</h4>
+                            <p class="provider-name">Datacenters</p>
                             <p>${datacenters.length} facilities</p>
                         </div>
                     </div>
                     <div class="provider-item">
                         <div class="provider-info">
-                            <h4>GPU Models</h4>
+                            <p class="provider-name">GPU Models</p>
                             <p>${[...new Set(data.flatMap(p => p.gpuModels || []))].length} different models</p>
                         </div>
                     </div>
                     <div class="provider-item">
                         <div class="provider-info">
-                            <h4>Network Type</h4>
+                            <p class="provider-name">Network Type</p>
                             <p>Cosmos SDK-based DePIN</p>
                         </div>
                     </div>
@@ -436,7 +440,7 @@
                         return `
                             <div class="provider-item">
                                 <div class="provider-info">
-                                    <h4>${provider.hostUri || 'Unknown Provider'}</h4>
+                                    <p class="provider-name">${provider.hostUri || 'Unknown Provider'}</p>
                                     <p>Region: ${region} | Tier: ${tier} | Uptime 7d: ${(provider.uptime7d * 100).toFixed(1)}%</p>
                                 </div>
                                 <div class="provider-status ${provider.isOnline ? 'online' : 'offline'}">
@@ -480,34 +484,34 @@
             priceInfo.innerHTML = `
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>AKT Price</h3>
+                        <p class="stat-label">AKT Price</p>
                         <div class="stat-value">$${price.toFixed(4)}</div>
                         <div class="stat-change ${change24h >= 0 ? 'positive' : 'negative'}">
                             ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}% (24h)
                         </div>
                     </div>
                     <div class="stat-card">
-                        <h3>Market Cap</h3>
+                        <p class="stat-label">Market Cap</p>
                         <div class="stat-value">$${(marketCap / 1000000).toFixed(2)}M</div>
                         <div class="stat-change">Rank #${data.market_cap_rank || 'N/A'}</div>
                     </div>
                     <div class="stat-card">
-                        <h3>24h Volume</h3>
+                        <p class="stat-label">24h Volume</p>
                         <div class="stat-value">$${(volume / 1000000).toFixed(2)}M</div>
                         <div class="stat-change">Trading Volume</div>
                     </div>
                     <div class="stat-card">
-                        <h3>All-Time High</h3>
+                        <p class="stat-label">All-Time High</p>
                         <div class="stat-value">$${ath.toFixed(2)}</div>
                         <div class="stat-change negative">${((price/ath - 1) * 100).toFixed(1)}% from ATH</div>
                     </div>
                     <div class="stat-card">
-                        <h3>All-Time Low</h3>
+                        <p class="stat-label">All-Time Low</p>
                         <div class="stat-value">$${atl.toFixed(4)}</div>
                         <div class="stat-change positive">+${((price/atl - 1) * 100).toFixed(1)}% from ATL</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Circulating Supply</h3>
+                        <p class="stat-label">Circulating Supply</p>
                         <div class="stat-value">${(data.market_data.circulating_supply / 1000000).toFixed(2)}M</div>
                         <div class="stat-change">AKT Tokens</div>
                     </div>

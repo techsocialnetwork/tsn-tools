@@ -13,8 +13,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/">
     <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/tools-hero.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:width" content="1376">
+    <meta property="og:image:height" content="768">
     <meta property="og:image:alt" content="TSN Media Free Tools Dashboard">
     
     <!-- Twitter Card -->
@@ -134,6 +134,14 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .tool-card:focus-visible,
+        .share-btn:focus-visible,
+        .copy-btn:focus-visible,
+        .back-link:focus-visible,
+        .copy-link input:focus-visible {
+            outline: 2px solid #00d4ff;
+            outline-offset: 3px;
+        }
         @media (max-width: 768px) {
             h1 { font-size: 1.8em; }
             .tools-grid { grid-template-columns: 1fr; }
@@ -156,10 +164,10 @@
         </div>
         <p class="subtitle">Browser-based tools for crypto, AI, and market analysis. No downloads required.</p>
         
-        <div class="section-title">
+        <h2 class="section-title">
             <span class="section-icon">💰</span>
             Crypto Tools
-        </div>
+        </h2>
         <div class="tools-grid">
             <a href="crypto-calculator/" class="tool-card">
                 <div class="tool-icon">🧮</div>
@@ -182,10 +190,10 @@
             </a>
         </div>
         
-        <div class="section-title">
+        <h2 class="section-title">
             <span class="section-icon">🤖</span>
             AI Tools
-        </div>
+        </h2>
         <div class="tools-grid">
             <a href="ai-model-comparison/" class="tool-card">
                 <div class="tool-icon">🆚</div>
@@ -238,10 +246,10 @@
             </a>
         </div>
         
-        <div class="section-title">
+        <h2 class="section-title">
             <span class="section-icon">📊</span>
             Market Tools
-        </div>
+        </h2>
         <div class="tools-grid">
             <a href="tech-earnings/" class="tool-card">
                 <div class="tool-icon">📅</div>
@@ -284,10 +292,10 @@
             </a>
         </div>
         
-        <div class="section-title">
+        <h2 class="section-title">
             <span class="section-icon">🌐</span>
             Web3 Infrastructure
-        </div>
+        </h2>
         <div class="tools-grid">
             <a href="depin-scorecard/" class="tool-card">
                 <div class="tool-icon">🌐</div>
@@ -355,8 +363,8 @@
                     Share on WhatsApp
                 </a>
             </div>
-            <div class="copy-link" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; align-items: center;">
-                <input type="text" value="https://techsocialnetwork.github.io/tsn-tools/" readonly style="padding: 10px 15px; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; color: #e0e0e0; width: 300px; font-size: 0.9em;">
+            <div class="copy-link" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <input id="share-url" type="text" aria-label="Tools page URL" value="https://techsocialnetwork.github.io/tsn-tools/" readonly style="padding: 10px 15px; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; color: #e0e0e0; width: min(100%, 300px); max-width: 100%; flex: 1 1 180px; min-width: 0; font-size: 0.9em;">
                 <button onclick="copyLink()" class="copy-btn" style="padding: 10px 20px; background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Copy Link</button>
             </div>
         </div>
