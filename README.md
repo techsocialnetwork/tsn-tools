@@ -22,20 +22,19 @@ These pages used to live under `tsnmedia.org/tools/*`. This public repo is the n
 | Macro News Scanner | https://techsocialnetwork.github.io/tsn-tools/macro-news/ |
 | Flux Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/ |
 | Akash Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/ |
-| Ostium Trading Dashboard | https://techsocialnetwork.github.io/tsn-tools/ostium-dashboard/ |
+| Hyperliquid Dashboard | https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/ |
 
 ## Data sources
 
-Most tools are fully static or call public CORS-friendly APIs (CoinGecko, mempool.space, Flux, Chart.js CDN).
+Most tools are fully static or call public CORS-friendly APIs (CoinGecko, mempool.space, Flux, Chart.js CDN). The Hyperliquid dashboard calls `https://api.hyperliquid.xyz/info` directly from the browser (`metaAndAssetCtxs` for perps and `spotMetaAndAssetCtxs` for spot). No API key.
 
 These tools still load live data through CORS proxies hosted on `tsnmedia.org` (PHP backends that cannot run on GitHub Pages):
 
 - **Macro Economic** → FRED / BLS via `tsnmedia.org/tools/macro-economic/fred-proxy.php`
 - **Macro News** → news feed via `tsnmedia.org/tools/macro-news/proxy.php`
 - **Akash Dashboard** → providers via `tsnmedia.org/tools/akash-dashboard/proxy.php`
-- **Ostium Dashboard** → prices via `tsnmedia.org/tools/ostium-dashboard/proxy.php` (upstream Ostium PricePublish lacks browser CORS)
 
-If those proxies are retired, those four tools will need new backends or public CORS-enabled APIs.
+If those proxies are retired, those three tools will need new backends or public CORS-enabled APIs.
 
 ## Hosting
 

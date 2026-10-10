@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperliquid Dashboard | Perp Markets, Funding & Open Interest | TSN Media</title>
+    <meta name="description" content="Live Hyperliquid perp and spot markets: mark price, 24h change, volume, open interest, and hourly funding. Public data in your browser, no API key.">
+    <meta name="keywords" content="Hyperliquid, perpetual futures, funding rate, open interest, crypto dashboard, mark price, spot markets">
+    <meta name="theme-color" content="#0a0e1a">
+    <link rel="canonical" href="https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Hyperliquid Dashboard | Perp Markets, Funding & Open Interest">
+    <meta property="og:description" content="Live Hyperliquid perp and spot markets with mark price, 24h volume, open interest, and funding.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/">
+    <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/hyperliquid-og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Hyperliquid dashboard preview covering perp markets, funding, and open interest">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hyperliquid Dashboard | Perp Markets, Funding & Open Interest">
+    <meta name="twitter:description" content="Live Hyperliquid perp and spot markets with mark price, 24h volume, open interest, and funding.">
+    <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/hyperliquid-og.jpg">
+    <meta name="twitter:image:alt" content="Hyperliquid dashboard preview covering perp markets, funding, and open interest">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hyperliquid Dashboard",
+        "url": "https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/",
+        "description": "Live Hyperliquid perpetual and spot markets with mark price, 24h change, volume, open interest, and funding.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "provider": {
+            "@type": "Organization",
+            "name": "TSN Media",
+            "url": "https://tsnmedia.org"
+        }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JX53819SE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3JX53819SE');
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { color-scheme: dark; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            background: #7ee7ff;
+            color: #0a0e1a;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            z-index: 10;
+            transform: translateY(-150%);
+        }
+        .skip-link:focus { transform: none; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a2332;
+            margin-bottom: 28px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #7ee7ff;
+            margin-bottom: 10px;
+            text-wrap: balance;
+        }
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+            header h1 {
+                background: linear-gradient(135deg, #7ee7ff, #d4b4ff);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+        header p { color: #8892a0; font-size: 1.1em; }
+        .sponsor {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 44, 191, 0.1));
+            border-radius: 12px;
+            border: 1px solid #1a2332;
+        }
+        .sponsor p { color: #8892a0; font-size: 0.95em; }
+        a { color: #00d4ff; }
+        a:hover { text-decoration-thickness: 2px; }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 10px 20px;
+            min-height: 44px;
+            background: linear-gradient(135deg, #155e75, #7b2cbf);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+        .cta:hover { transform: translateY(-2px); }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .last-updated { color: #8892a0; font-size: 0.95em; }
+        .refresh-btn {
+            background: linear-gradient(135deg, #155e75, #7b2cbf);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            min-height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1em;
+        }
+        .refresh-btn:hover { transform: translateY(-2px); }
+        .refresh-btn:disabled { opacity: 0.7; cursor: progress; transform: none; }
+
+        .notice {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .notice-error {
+            background: rgba(255, 71, 87, 0.12);
+            border: 1px solid #ff8b95;
+            color: #ffd0d4;
+        }
+        .notice-rate {
+            background: rgba(249, 203, 40, 0.1);
+            border: 1px solid #f9cb28;
+            color: #ffe28a;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: #111827;
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid #1a2332;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-label {
+            color: #8892a0;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-detail { color: #8892a0; font-size: 0.9em; }
+        .fine-print { color: #8892a0; font-size: 0.9em; margin-bottom: 28px; }
+        .fine-print code {
+            font-family: ui-monospace, 'Courier New', monospace;
+            color: #d5dde6;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 18px;
+            min-height: 44px;
+            background: #1a2332;
+            border: 1px solid #1a2332;
+            color: #d5dde6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        .tab[aria-selected="true"] {
+            background: linear-gradient(135deg, #155e75, #7b2cbf);
+            color: #fff;
+            border-color: transparent;
+        }
+        .tab:hover:not([aria-selected="true"]) { background: #243447; }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .search-wrap { display: flex; align-items: center; gap: 8px; }
+        .search-wrap label { color: #8892a0; font-weight: 600; }
+        .search-wrap input {
+            background: #111827;
+            color: #fff;
+            border: 1px solid #1a2332;
+            border-radius: 8px;
+            padding: 10px 12px;
+            min-height: 44px;
+            min-width: 220px;
+            font-size: 16px;
+        }
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filters[hidden],
+        .tab-panel[hidden] { display: none !important; }
+        .filter-btn {
+            padding: 10px 16px;
+            min-height: 44px;
+            background: #1a2332;
+            border: 1px solid #1a2332;
+            color: #d5dde6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+        .filter-btn[aria-pressed="true"] {
+            background: linear-gradient(135deg, #155e75, #7b2cbf);
+            color: #fff;
+            border-color: transparent;
+        }
+        .filter-btn:hover:not([aria-pressed="true"]) { background: #243447; }
+
+        .result-count { color: #8892a0; font-size: 0.9em; margin-bottom: 8px; }
+        .scroll-hint { display: none; color: #8892a0; font-size: 0.85em; margin-bottom: 8px; }
+
+        .section {
+            background: #111827;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #1a2332;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-sub { color: #8892a0; font-size: 0.92em; margin-bottom: 16px; }
+
+        .table-scroll {
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            max-width: 100%;
+        }
+        .price-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+        .price-table th,
+        .price-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #1a2332;
+            vertical-align: top;
+        }
+        .price-table th {
+            color: #8892a0;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.78em;
+            letter-spacing: 0.06em;
+        }
+        .price-table th button {
+            background: none;
+            border: 0;
+            color: inherit;
+            font: inherit;
+            letter-spacing: inherit;
+            text-transform: inherit;
+            cursor: pointer;
+            padding: 4px 0;
+            text-align: inherit;
+            width: 100%;
+        }
+        .price-table th.num button { text-align: right; }
+        .price-table tr:hover td { background: #162033; }
+        .price-table th:not(:first-child),
+        .price-table td:not(:first-child) { position: relative; }
+        .price-table th:first-child,
+        .price-table td:first-child {
+            position: sticky;
+            left: 0;
+            background: #111827;
+            z-index: 1;
+            min-width: 7.5rem;
+        }
+        .price-table tr:hover td:first-child { background: #162033; }
+        .pair-name { font-weight: 700; }
+        .pair-name a { color: #fff; text-underline-offset: 3px; }
+        .num {
+            text-align: right;
+            font-family: ui-monospace, 'Courier New', monospace;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .sub {
+            display: block;
+            color: #8892a0;
+            font-size: 0.78em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .positive { color: #00d4a0; }
+        .negative { color: #ff8b95; }
+        .badge {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #1a2332;
+            color: #d5dde6;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+
+        .loading { text-align: center; padding: 32px 8px; color: #8892a0; }
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00d4ff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: -3px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty { text-align: center; padding: 28px 8px; color: #8892a0; }
+        .stats-grid > .loading { grid-column: 1 / -1; }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #8892a0;
+            border-top: 1px solid #1a2332;
+            margin-top: 28px;
+        }
+        footer a { color: #00d4ff; }
+        .disclaimer {
+            margin: 24px auto 0;
+            padding: 20px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.35);
+            border-radius: 12px;
+            max-width: 800px;
+            text-align: left;
+        }
+        .disclaimer strong { color: #ffc107; display: block; margin-bottom: 8px; }
+        .disclaimer p { color: #c5d0dc; font-size: 0.85em; }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        :focus-visible {
+            outline: 2px solid #7ee7ff;
+            outline-offset: 2px;
+        }
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            header { padding: 24px 0; margin-bottom: 20px; }
+            header h1 { font-size: 1.8em; }
+            .section { padding: 16px; }
+            .stat-value { font-size: 1.5em; }
+            .status-row { align-items: stretch; }
+            .refresh-btn, .search-wrap, .search-wrap input { width: 100%; }
+            .search-wrap { flex-direction: column; align-items: stretch; }
+            .scroll-hint { display: block; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+            .stat-card:hover, .refresh-btn:hover, .cta:hover { transform: none; }
+        }
+        @media (forced-colors: active) {
+            .tab[aria-selected="true"], .filter-btn[aria-pressed="true"] {
+                outline: 2px solid CanvasText;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+    <div class="container">
+        <header>
+            <h1><span aria-hidden="true">📊 </span>Hyperliquid Dashboard</h1>
+            <p>Live perp and spot markets, funding, and open interest</p>
+            <div class="sponsor">
+                <p>Powered by <a href="https://hyperliquid.xyz/" target="_blank" rel="noopener noreferrer">Hyperliquid<span class="visually-hidden"> (opens in a new tab)</span></a> — onchain perpetual and spot markets. Prices, volume, open interest, and funding on this page are read from the public info API in your browser. No API key and no account.</p>
+                <a class="cta" href="https://app.hyperliquid.xyz/" target="_blank" rel="noopener noreferrer">Open Hyperliquid<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </div>
+        </header>
+
+        <main id="dashboard">
+            <noscript>
+                <p class="notice notice-error">This dashboard needs JavaScript to load live data from Hyperliquid.</p>
+            </noscript>
+
+            <div class="status-row">
+                <p class="last-updated" id="last-updated">Loading market data…</p>
+                <button type="button" class="refresh-btn" id="refresh-btn">
+                    <span aria-hidden="true">🔄 </span><span id="refresh-label">Refresh data</span>
+                </button>
+            </div>
+            <div id="banner"></div>
+
+            <section aria-labelledby="summary-title">
+                <h2 id="summary-title" class="visually-hidden">Market summary</h2>
+                <div class="stats-grid" id="stats-grid">
+                    <p class="loading">Loading market summary…</p>
+                </div>
+            </section>
+            <p class="fine-print">Refreshes about every 45 seconds from <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint" target="_blank" rel="noopener noreferrer"><code>api.hyperliquid.xyz/info</code><span class="visually-hidden"> (opens in a new tab)</span></a>. Perps use <code>metaAndAssetCtxs</code>. Spot uses <code>spotMetaAndAssetCtxs</code>.</p>
+
+            <div class="tabs" role="tablist" aria-label="Market views" aria-orientation="horizontal">
+                <button type="button" class="tab" id="tab-perps" role="tab" aria-selected="true" aria-controls="panel-perps" data-tab="perps" tabindex="0">Perps</button>
+                <button type="button" class="tab" id="tab-funding" role="tab" aria-selected="false" aria-controls="panel-funding" data-tab="funding" tabindex="-1">Funding</button>
+                <button type="button" class="tab" id="tab-oi" role="tab" aria-selected="false" aria-controls="panel-oi" data-tab="oi" tabindex="-1">Open interest</button>
+                <button type="button" class="tab" id="tab-spot" role="tab" aria-selected="false" aria-controls="panel-spot" data-tab="spot" tabindex="-1">Spot</button>
+            </div>
+
+            <div class="toolbar">
+                <form id="search-form" class="search-wrap" role="search">
+                    <label for="market-search">Filter</label>
+                    <input id="market-search" type="search" placeholder="Search BTC, ETH, HYPE" autocomplete="off" autocapitalize="off" spellcheck="false">
+                </form>
+                <div class="filters" role="group" aria-label="Perpetual market filters" data-filter-view="perps">
+                    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+                    <button type="button" class="filter-btn" data-filter="majors" aria-pressed="false">Majors</button>
+                    <button type="button" class="filter-btn" data-filter="isolated" aria-pressed="false">Isolated</button>
+                </div>
+                <div class="filters" role="group" aria-label="Funding filters" data-filter-view="funding" hidden>
+                    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+                    <button type="button" class="filter-btn" data-filter="positive" aria-pressed="false">Longs pay</button>
+                    <button type="button" class="filter-btn" data-filter="negative" aria-pressed="false">Shorts pay</button>
+                </div>
+                <div class="filters" role="group" aria-label="Open interest filters" data-filter-view="oi" hidden>
+                    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+                    <button type="button" class="filter-btn" data-filter="majors" aria-pressed="false">Majors</button>
+                    <button type="button" class="filter-btn" data-filter="isolated" aria-pressed="false">Isolated</button>
+                </div>
+                <div class="filters" role="group" aria-label="Spot market filters" data-filter-view="spot" hidden>
+                    <button type="button" class="filter-btn" data-filter="active" aria-pressed="true">With volume</button>
+                    <button type="button" class="filter-btn" data-filter="all" aria-pressed="false">All pairs</button>
+                    <button type="button" class="filter-btn" data-filter="usdc" aria-pressed="false">USDC</button>
+                </div>
+            </div>
+            <p class="result-count" id="result-count" aria-live="polite"></p>
+            <p class="scroll-hint">Swipe sideways to see every column. The market name stays pinned.</p>
+
+            <section class="section tab-panel" id="panel-perps" role="tabpanel" aria-labelledby="tab-perps" data-view="perps">
+                <h2><span aria-hidden="true">📈</span> Perpetual markets</h2>
+                <p class="section-sub">Mark price, 24-hour change versus the previous day's price, 24-hour notional volume, and open interest in USD (base size × mark). This is the main Hyperliquid perp book only. Builder-deployed markets are not included, and delisted markets are hidden.</p>
+                <div class="table-scroll" id="perps-scroll" tabindex="0" aria-label="Perpetual markets, scroll horizontally for more columns">
+                    <p class="loading">Loading perpetual markets…</p>
+                </div>
+            </section>
+
+            <section class="section tab-panel" id="panel-funding" role="tabpanel" aria-labelledby="tab-funding" data-view="funding" hidden>
+                <h2><span aria-hidden="true">💸</span> Funding rates</h2>
+                <p class="section-sub">Hourly funding from the info API. A positive rate means longs pay shorts. Annualized % multiplies that hourly rate by 24 × 365 and is illustrative, not a quoted yield. Impact spread is the gap between the API's bid and ask impact prices, not the top of the book. Mark vs oracle is (mark − oracle) / oracle.</p>
+                <div class="table-scroll" id="funding-scroll" tabindex="0" aria-label="Funding rates, scroll horizontally for more columns">
+                    <p class="loading">Loading funding rates…</p>
+                </div>
+            </section>
+
+            <section class="section tab-panel" id="panel-oi" role="tabpanel" aria-labelledby="tab-oi" data-view="oi" hidden>
+                <h2><span aria-hidden="true">📊</span> Open interest</h2>
+                <p class="section-sub">Open interest converted to USD with the mark price. Share is that market's fraction of listed perp open interest.</p>
+                <div class="table-scroll" id="oi-scroll" tabindex="0" aria-label="Open interest, scroll horizontally for more columns">
+                    <p class="loading">Loading open interest…</p>
+                </div>
+            </section>
+
+            <section class="section tab-panel" id="panel-spot" role="tabpanel" aria-labelledby="tab-spot" data-view="spot" hidden>
+                <h2><span aria-hidden="true">🪙</span> Spot markets</h2>
+                <p class="section-sub">Names are Hyperliquid token symbols, so the BTC and ETH spot markets appear as UBTC/USDC and UETH/USDC. “With volume” hides pairs with no 24-hour notional. Zero-volume marks can be stale.</p>
+                <div class="table-scroll" id="spot-scroll" tabindex="0" aria-label="Spot markets, scroll horizontally for more columns">
+                    <p class="loading">Loading spot markets…</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built by <a href="https://tsnmedia.org">TSN Media</a></p>
+            <p style="margin-top: 15px;">Data provided by <a href="https://hyperliquid.xyz/" target="_blank" rel="noopener noreferrer">Hyperliquid<span class="visually-hidden"> (opens in a new tab)</span></a> from the public info API. No API key.</p>
+            <a class="cta" href="https://app.hyperliquid.xyz/" target="_blank" rel="noopener noreferrer">Trade on Hyperliquid<span class="visually-hidden"> (opens in a new tab)</span></a>
+            <div class="disclaimer">
+                <strong>Risk disclaimer</strong>
+                <p>Trading perpetual futures and other crypto assets involves substantial risk of loss and is not suitable for everyone. Funding, open interest, and prices can change quickly. Figures on this page are informational, may be delayed or incomplete, and are not financial advice. Hyperliquid mark prices and funding come from their public API and can differ from the trading app and from other exchanges. Never trade with money you cannot afford to lose.</p>
+            </div>
+            <p style="margin-top: 20px;"><a href="../">← Back to Tools</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Public Hyperliquid info API (no key). The response includes
+        // Access-Control-Allow-Origin: *, so the browser can call it directly.
+        // metaAndAssetCtxs aligns universe[i] with assetCtxs[i].
+        //   funding is the hourly rate (0.0001 = 0.01% per hour). APR = hourly × 24 × 365.
+        //   openInterest is base size; USD open interest = openInterest × markPx.
+        //   impactPxs is [bid, ask] impact, not top-of-book.
+        //   isDelisted markets are omitted. Builder-deployed perp dexes are not requested.
+        // spotMetaAndAssetCtxs is joined to the spot universe by coin name.
+        //   Contexts for indexes missing from that universe are omitted.
+        // Hyperliquid documents these info types at REST weight 20, with a
+        // 1200 weight/minute shared limit. This page sends two requests about every 45s.
+        const API_URL = 'https://api.hyperliquid.xyz/info';
+        const REFRESH_MS = 45000;
+        const MAJORS = new Set([
+            'BTC', 'ETH', 'SOL', 'HYPE', 'BNB', 'XRP', 'DOGE', 'AVAX', 'LINK', 'SUI',
+            'ADA', 'AAVE', 'DOT', 'LTC', 'UNI', 'NEAR', 'APT', 'ARB', 'OP', 'TIA',
+            'INJ', 'BCH', 'TRX', 'TON', 'FIL', 'ATOM', 'SEI'
+        ]);
+        const STRING_KEYS = new Set(['coin', 'display', 'margin']);
+        const TABS = [
+            { id: 'perps', hash: 'perps' },
+            { id: 'funding', hash: 'funding' },
+            { id: 'oi', hash: 'open-interest' },
+            { id: 'spot', hash: 'spot' }
+        ];
+
+        const state = {
+            perps: [],
+            spots: [],
+            delistedCount: 0,
+            perpError: '',
+            spotError: '',
+            rateMessage: '',
+            rateLimitedUntil: 0,
+            loading: false,
+            updatedAt: null,
+            tab: 'perps',
+            query: '',
+            filters: { perps: 'all', funding: 'all', oi: 'all', spot: 'active' },
+            sort: {
+                perps: { key: 'volume', dir: 'desc' },
+                funding: { key: 'funding', dir: 'desc' },
+                oi: { key: 'oiUsd', dir: 'desc' },
+                spot: { key: 'volume', dir: 'desc' }
+            }
+        };
+
+        let refreshTimer = 0;
+        let activeController = null;
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function num(value) {
+            const n = typeof value === 'number' ? value : parseFloat(value);
+            return Number.isFinite(n) ? n : null;
+        }
+
+        function formatUsd(value) {
+            if (value == null || !Number.isFinite(value)) return '—';
+            const sign = value < 0 ? '−' : '';
+            const abs = Math.abs(value);
+            if (abs >= 1e12) return sign + '$' + (abs / 1e12).toFixed(2) + 'T';
+            if (abs >= 1e9) return sign + '$' + (abs / 1e9).toFixed(2) + 'B';
+            if (abs >= 1e6) return sign + '$' + (abs / 1e6).toFixed(2) + 'M';
+            if (abs >= 1e3) return sign + '$' + (abs / 1e3).toFixed(abs >= 1e4 ? 1 : 2) + 'K';
+            return sign + '$' + abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatPx(value) {
+            if (value == null || !Number.isFinite(value)) return '—';
+            const abs = Math.abs(value);
+            if (abs === 0) return '$0.00';
+            if (abs >= 1000) return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            if (abs >= 1) return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+            if (abs >= 0.01) return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 5 });
+            return '$' + value.toLocaleString('en-US', { maximumSignificantDigits: 6 });
+        }
+
+        function formatBase(value) {
+            if (value == null || !Number.isFinite(value)) return '—';
+            const abs = Math.abs(value);
+            if (abs >= 1e6) return (value / 1e6).toFixed(2) + 'M';
+            if (abs >= 1e3) return (value / 1e3).toFixed(2) + 'K';
+            if (abs >= 1) return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            return value.toLocaleString('en-US', { maximumSignificantDigits: 4 });
+        }
+
+        function formatSignedPct(pct, digits) {
+            if (pct == null || !Number.isFinite(pct)) return '—';
+            const sign = pct > 0 ? '+' : pct < 0 ? '−' : '';
+            return sign + Math.abs(pct).toFixed(digits) + '%';
+        }
+
+        function formatFundingPct(rate) {
+            if (rate == null || !Number.isFinite(rate)) return '—';
+            const pct = rate * 100;
+            const digits = Math.abs(pct) > 0 && Math.abs(pct) < 0.0001 ? 6 : 4;
+            return formatSignedPct(pct, digits);
+        }
+
+        function formatSpread(pct) {
+            if (pct == null || !Number.isFinite(pct)) return '—';
+            if (pct < 0.01) return pct.toFixed(4) + '%';
+            if (pct < 1) return pct.toFixed(3) + '%';
+            return pct.toFixed(2) + '%';
+        }
+
+        function formatShare(share) {
+            if (share == null || !Number.isFinite(share)) return '—';
+            const pct = share * 100;
+            if (pct > 0 && pct < 0.01) return '&lt;0.01%';
+            if (pct < 10) return pct.toFixed(2) + '%';
+            return pct.toFixed(1) + '%';
+        }
+
+        function toneClass(value) {
+            if (value == null || !Number.isFinite(value) || value === 0) return '';
+            return value > 0 ? 'positive' : 'negative';
+        }
+
+        function tradeUrl(coin) {
+            if (!/^[A-Za-z0-9@./_+-]{1,64}$/.test(coin)) return '';
+            const path = String(coin).split('/').map(encodeURIComponent).join('/');
+            return 'https://app.hyperliquid.xyz/trade/' + path;
+        }
+
+        function changePct(mark, prev) {
+            if (mark == null || prev == null || !(prev > 0)) return null;
+            return (mark - prev) / prev * 100;
+        }
+
+        function basisPct(mark, oracle) {
+            if (mark == null || oracle == null || !(oracle > 0)) return null;
+            return (mark - oracle) / oracle * 100;
+        }
+
+        function impactSpreadPct(impact, mid) {
+            if (!Array.isArray(impact) || impact.length < 2) return null;
+            const bid = num(impact[0]);
+            const ask = num(impact[1]);
+            if (bid == null || ask == null) return null;
+            const ref = mid != null && mid > 0 ? mid : (bid + ask) / 2;
+            if (!(ref > 0)) return null;
+            return (ask - bid) / ref * 100;
+        }
+
+        function marginLabel(asset) {
+            if (asset.marginMode === 'strictIsolated') return 'Strict isolated';
+            if (asset.onlyIsolated || asset.marginMode === 'noCross') return 'Isolated';
+            return 'Cross';
+        }
+
+        function buildPerps(payload) {
+            if (!Array.isArray(payload) || payload.length < 2) {
+                const error = new Error('shape');
+                error.code = 'shape';
+                throw error;
+            }
+            const meta = payload[0];
+            const ctxs = payload[1];
+            if (!meta || !Array.isArray(meta.universe) || !Array.isArray(ctxs) || meta.universe.length !== ctxs.length) {
+                const error = new Error('shape');
+                error.code = 'shape';
+                throw error;
+            }
+            const rows = [];
+            let delistedCount = 0;
+            meta.universe.forEach((asset, index) => {
+                if (!asset || typeof asset.name !== 'string') return;
+                if (asset.isDelisted) {
+                    delistedCount += 1;
+                    return;
+                }
+                const ctx = ctxs[index] || {};
+                const mark = num(ctx.markPx);
+                const oiBase = num(ctx.openInterest);
+                const funding = num(ctx.funding);
+                rows.push({
+                    coin: asset.name,
+                    mark: mark,
+                    oracle: num(ctx.oraclePx),
+                    change: changePct(mark, num(ctx.prevDayPx)),
+                    volume: num(ctx.dayNtlVlm),
+                    oiBase: oiBase,
+                    oiUsd: mark != null && oiBase != null ? oiBase * mark : null,
+                    funding: funding,
+                    maxLeverage: num(asset.maxLeverage),
+                    margin: marginLabel(asset),
+                    isolated: !!(asset.onlyIsolated || asset.marginMode === 'strictIsolated' || asset.marginMode === 'noCross'),
+                    spread: impactSpreadPct(ctx.impactPxs, num(ctx.midPx)),
+                    basis: basisPct(mark, num(ctx.oraclePx)),
+                    share: null
+                });
+            });
+            const totalOi = rows.reduce((sum, row) => sum + (row.oiUsd || 0), 0);
+            rows.forEach((row) => {
+                row.share = row.oiUsd != null && totalOi > 0 ? row.oiUsd / totalOi : null;
+            });
+            return { rows: rows, delistedCount: delistedCount };
+        }
+
+        function buildSpots(payload) {
+            if (!Array.isArray(payload) || payload.length < 2) {
+                const error = new Error('shape');
+                error.code = 'shape';
+                throw error;
+            }
+            const meta = payload[0];
+            const ctxs = payload[1];
+            if (!meta || !Array.isArray(meta.universe) || !Array.isArray(meta.tokens) || !Array.isArray(ctxs)) {
+                const error = new Error('shape');
+                error.code = 'shape';
+                throw error;
+            }
+            const tokens = new Map(meta.tokens.map((token) => [token.index, token]));
+            const byCoin = new Map();
+            ctxs.forEach((ctx) => {
+                if (ctx && typeof ctx.coin === 'string') byCoin.set(ctx.coin, ctx);
+            });
+            return meta.universe.map((pair) => {
+                if (!pair || typeof pair.name !== 'string') return null;
+                const ctx = byCoin.get(pair.name);
+                if (!ctx) return null;
+                const base = tokens.get(pair.tokens && pair.tokens[0]);
+                const quote = tokens.get(pair.tokens && pair.tokens[1]);
+                const display = base && quote ? base.name + '/' + quote.name : pair.name;
+                const mark = num(ctx.markPx);
+                return {
+                    coin: pair.name,
+                    display: display,
+                    quote: quote ? quote.name : '',
+                    mark: mark,
+                    mid: num(ctx.midPx),
+                    change: changePct(mark, num(ctx.prevDayPx)),
+                    volume: num(ctx.dayNtlVlm)
+                };
+            }).filter(Boolean);
+        }
+
+        function errorMessage(err, label) {
+            const code = err && err.code;
+            if (code === 'rate') return '';
+            if (code === 'timeout') return label + ' didn\u2019t load because the request timed out.';
+            if (code === 'network') return label + ' didn\u2019t load. This browser couldn\u2019t reach api.hyperliquid.xyz.';
+            if (code === 'http') return label + ' didn\u2019t load (HTTP ' + err.status + ').';
+            return label + ' didn\u2019t load because the response was unexpected.';
+        }
+
+        function retryDelayMs(header) {
+            if (!header) return 60000;
+            const seconds = Number(header);
+            if (Number.isFinite(seconds)) return Math.min(Math.max(seconds, 1), 300) * 1000;
+            const when = Date.parse(header);
+            if (Number.isFinite(when)) return Math.min(Math.max(when - Date.now(), 1000), 300000);
+            return 60000;
+        }
+
+        async function postInfo(body, signal) {
+            let response;
+            try {
+                response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(body),
+                    cache: 'no-store',
+                    signal: signal
+                });
+            } catch (err) {
+                const error = new Error(err && err.name === 'AbortError' ? 'timeout' : 'network');
+                error.code = err && err.name === 'AbortError' ? 'timeout' : 'network';
+                throw error;
+            }
+            if (response.status === 429) {
+                const error = new Error('rate');
+                error.code = 'rate';
+                error.retryAfter = response.headers.get('Retry-After');
+                throw error;
+            }
+            if (!response.ok) {
+                const error = new Error('http');
+                error.code = 'http';
+                error.status = response.status;
+                throw error;
+            }
+            try {
+                return await response.json();
+            } catch (err) {
+                const error = new Error('shape');
+                error.code = 'shape';
+                throw error;
+            }
+        }
+
+        function compareRows(a, b, key, dir) {
+            const aMissing = a[key] == null || (typeof a[key] === 'number' && !Number.isFinite(a[key]));
+            const bMissing = b[key] == null || (typeof b[key] === 'number' && !Number.isFinite(b[key]));
+            if (aMissing && bMissing) return 0;
+            if (aMissing) return 1;
+            if (bMissing) return -1;
+            let cmp = 0;
+            if (typeof a[key] === 'number' && typeof b[key] === 'number') cmp = a[key] - b[key];
+            else cmp = String(a[key]).localeCompare(String(b[key]), undefined, { sensitivity: 'base', numeric: true });
+            return dir === 'asc' ? cmp : -cmp;
+        }
+
+        function filteredRows(view) {
+            const query = state.query.trim().toLowerCase();
+            const source = view === 'spot' ? state.spots : state.perps;
+            const filter = state.filters[view];
+            const rows = source.filter((row) => {
+                if (query) {
+                    const label = (row.display || row.coin).toLowerCase();
+                    if (!label.includes(query) && !row.coin.toLowerCase().includes(query)) return false;
+                }
+                if (view === 'spot') {
+                    if (filter === 'active' && !(row.volume > 0)) return false;
+                    if (filter === 'usdc' && row.quote !== 'USDC') return false;
+                    return true;
+                }
+                if ((view === 'perps' || view === 'oi') && filter === 'majors' && !MAJORS.has(row.coin)) return false;
+                if ((view === 'perps' || view === 'oi') && filter === 'isolated' && !row.isolated) return false;
+                if (view === 'funding' && filter === 'positive' && !(row.funding > 0)) return false;
+                if (view === 'funding' && filter === 'negative' && !(row.funding < 0)) return false;
+                return true;
+            });
+            const sort = state.sort[view];
+            rows.sort((a, b) => compareRows(a, b, sort.key, sort.dir));
+            return rows;
+        }
+
+        function marketCell(row) {
+            const label = row.display || row.coin;
+            const href = tradeUrl(row.coin);
+            const name = escapeHtml(label);
+            if (!href) return '<td class="pair-name">' + name + '</td>';
+            return '<td class="pair-name"><a href="' + escapeHtml(href) + '" data-coin="' + escapeHtml(row.coin) + '" target="_blank" rel="noopener noreferrer">' + name + '<span class="visually-hidden"> (opens in a new tab)</span></a></td>';
+        }
+
+        function textCell(value, className) {
+            return '<td class="' + className + '">' + value + '</td>';
+        }
+
+        function signedCell(pct, digits) {
+            const text = formatSignedPct(pct, digits);
+            const word = pct > 0 ? 'up' : pct < 0 ? 'down' : 'unchanged';
+            const hidden = text === '—' ? '' : '<span class="visually-hidden"> ' + word + '</span>';
+            return textCell(text + hidden, 'num ' + toneClass(pct));
+        }
+
+        function fundingCell(rate) {
+            const text = formatFundingPct(rate);
+            let who = '';
+            if (rate > 0) who = ' longs pay shorts';
+            else if (rate < 0) who = ' shorts pay longs';
+            const hidden = who ? '<span class="visually-hidden">' + who + '</span>' : '';
+            return textCell(text + hidden, 'num ' + toneClass(rate));
+        }
+
+        function oiCell(row) {
+            return '<td class="num"><span>' + formatUsd(row.oiUsd) + '</span><span class="sub">' + formatBase(row.oiBase) + ' base</span></td>';
+        }
+
+        function leverageCell(row) {
+            if (row.maxLeverage == null) return textCell('—', 'num');
+            return textCell(String(row.maxLeverage) + '×<span class="visually-hidden"> leverage</span>', 'num');
+        }
+
+        function columnsFor(view) {
+            if (view === 'funding') {
+                return [
+                    { key: 'coin', label: 'Market', cell: marketCell },
+                    { key: 'funding', label: 'Funding / hr', numeric: true, cell: (row) => fundingCell(row.funding) },
+                    { key: null, label: 'APR', numeric: true, cell: (row) => textCell(row.funding == null ? '—' : formatSignedPct(row.funding * 24 * 365 * 100, 2), 'num ' + toneClass(row.funding)) },
+                    { key: 'basis', label: 'Mark vs oracle', numeric: true, cell: (row) => signedCell(row.basis, 3) },
+                    { key: 'spread', label: 'Impact spread', numeric: true, cell: (row) => textCell(formatSpread(row.spread), 'num') },
+                    { key: 'mark', label: 'Mark', numeric: true, cell: (row) => textCell(formatPx(row.mark), 'num') },
+                    { key: 'oracle', label: 'Oracle', numeric: true, cell: (row) => textCell(formatPx(row.oracle), 'num') }
+                ];
+            }
+            if (view === 'oi') {
+                return [
+                    { key: 'coin', label: 'Market', cell: marketCell },
+                    { key: 'oiUsd', label: 'Open interest', numeric: true, cell: oiCell },
+                    { key: null, label: 'Share', numeric: true, cell: (row) => textCell(formatShare(row.share), 'num') },
+                    { key: 'volume', label: '24h volume', numeric: true, cell: (row) => textCell(formatUsd(row.volume), 'num') },
+                    { key: 'funding', label: 'Funding / hr', numeric: true, cell: (row) => fundingCell(row.funding) }
+                ];
+            }
+            if (view === 'spot') {
+                return [
+                    { key: 'display', label: 'Pair', cell: marketCell },
+                    { key: 'mark', label: 'Mark', numeric: true, cell: (row) => textCell(formatPx(row.mark), 'num') },
+                    { key: 'change', label: '24h', numeric: true, cell: (row) => signedCell(row.change, 2) },
+                    { key: 'volume', label: '24h volume', numeric: true, cell: (row) => textCell(formatUsd(row.volume), 'num') },
+                    { key: 'mid', label: 'Mid', numeric: true, cell: (row) => textCell(formatPx(row.mid), 'num') }
+                ];
+            }
+            return [
+                { key: 'coin', label: 'Market', cell: (row) => {
+                    const badge = row.isolated ? '<span class="badge">' + escapeHtml(row.margin) + '</span>' : '';
+                    return marketCell(row).replace('</td>', badge + '</td>');
+                } },
+                { key: 'mark', label: 'Mark', numeric: true, cell: (row) => textCell(formatPx(row.mark), 'num') },
+                { key: 'change', label: '24h', numeric: true, cell: (row) => signedCell(row.change, 2) },
+                { key: 'volume', label: '24h volume', numeric: true, cell: (row) => textCell(formatUsd(row.volume), 'num') },
+                { key: 'oiUsd', label: 'Open interest', numeric: true, cell: oiCell },
+                { key: 'funding', label: 'Funding / hr', numeric: true, cell: (row) => fundingCell(row.funding) },
+                { key: 'maxLeverage', label: 'Max lev', numeric: true, cell: leverageCell }
+            ];
+        }
+
+        function renderTable(view, rows) {
+            const columns = columnsFor(view);
+            const sort = state.sort[view];
+            const captions = {
+                perps: 'Perpetual markets',
+                funding: 'Funding rates',
+                oi: 'Open interest',
+                spot: 'Spot markets'
+            };
+            const head = columns.map((col) => {
+                const numeric = col.numeric ? ' num' : '';
+                if (!col.key) return '<th scope="col" class="' + numeric.trim() + '">' + escapeHtml(col.label) + '</th>';
+                const active = sort.key === col.key;
+                const aria = active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none';
+                const arrow = active ? (sort.dir === 'asc' ? '↑' : '↓') : '';
+                return '<th scope="col" class="' + numeric.trim() + '" aria-sort="' + aria + '"><button type="button" data-sort="' + escapeHtml(col.key) + '">' + escapeHtml(col.label) + (arrow ? '<span aria-hidden="true"> ' + arrow + '</span>' : '') + '</button></th>';
+            }).join('');
+            const body = rows.map((row) => '<tr>' + columns.map((col) => col.cell(row)).join('') + '</tr>').join('');
+            return '<table class="price-table"><caption class="visually-hidden">' + escapeHtml(captions[view]) + '</caption><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>';
+        }
+
+        function setScrollerMessage(scroller, className, text) {
+            scroller.replaceChildren();
+            const p = document.createElement('p');
+            p.className = className;
+            p.textContent = text;
+            scroller.appendChild(p);
+        }
+
+        function emptyText(view) {
+            if (state.query.trim()) return 'No markets match “' + state.query.trim() + '”.';
+            if (view === 'spot' && state.filters.spot === 'active') return 'No spot markets with 24-hour volume.';
+            if (view === 'spot' && state.filters.spot === 'usdc') return 'No USDC spot markets.';
+            if (view === 'funding' && state.filters.funding === 'positive') return 'No markets where longs pay shorts.';
+            if (view === 'funding' && state.filters.funding === 'negative') return 'No markets where shorts pay longs.';
+            return 'No markets match this filter.';
+        }
+
+        function captureFocus() {
+            const el = document.activeElement;
+            if (!el || !el.closest) return null;
+            const panel = el.closest('[data-view]');
+            if (!panel) return null;
+            if (el.dataset && el.dataset.sort) return { type: 'sort', key: el.dataset.sort, view: panel.dataset.view };
+            if (el.dataset && el.dataset.coin) return { type: 'coin', coin: el.dataset.coin, view: panel.dataset.view };
+            return null;
+        }
+
+        function restoreFocus(saved) {
+            if (!saved || saved.view !== state.tab || typeof CSS === 'undefined' || !CSS.escape) return;
+            const root = document.querySelector('[data-view="' + CSS.escape(saved.view) + '"]');
+            if (!root) return;
+            const selector = saved.type === 'sort'
+                ? '[data-sort="' + CSS.escape(saved.key) + '"]'
+                : '[data-coin="' + CSS.escape(saved.coin) + '"]';
+            const target = root.querySelector(selector);
+            if (target) target.focus();
+        }
+
+        function renderActive() {
+            const view = state.tab;
+            const scroller = document.getElementById(view + '-scroll');
+            const countEl = document.getElementById('result-count');
+            if (!scroller || !countEl) return;
+            const saved = captureFocus();
+            const left = scroller.scrollLeft;
+            const source = view === 'spot' ? state.spots : state.perps;
+            const err = view === 'spot' ? state.spotError : state.perpError;
+
+            if (!source.length && !state.updatedAt && !err && !state.rateMessage) {
+                setScrollerMessage(scroller, 'loading', 'Loading markets…');
+                countEl.textContent = '';
+                return;
+            }
+            if (!source.length && (err || state.rateMessage)) {
+                setScrollerMessage(scroller, 'empty', err ? 'This view is unavailable until the next successful refresh.' : 'No data yet. Refresh is paused after a rate limit.');
+                countEl.textContent = '';
+                return;
+            }
+
+            const rows = filteredRows(view);
+            const noun = rows.length === 1 ? 'market' : 'markets';
+            countEl.textContent = state.query.trim()
+                ? rows.length + ' ' + noun + ' match “' + state.query.trim() + '”.'
+                : rows.length + ' ' + noun;
+            if (!rows.length) {
+                setScrollerMessage(scroller, 'empty', emptyText(view));
+                restoreFocus(saved);
+                return;
+            }
+            scroller.innerHTML = renderTable(view, rows);
+            scroller.scrollLeft = left;
+            restoreFocus(saved);
+        }
+
+        function statCard(label, value, detail, detailClass) {
+            return '<div class="stat-card"><p class="stat-label">' + escapeHtml(label) + '</p><p class="stat-value">' + value + '</p><p class="stat-detail ' + (detailClass || '') + '">' + detail + '</p></div>';
+        }
+
+        function renderStats() {
+            const grid = document.getElementById('stats-grid');
+            if (!state.perps.length && !state.spots.length && !state.updatedAt && !state.perpError && !state.spotError && !state.rateMessage) {
+                grid.innerHTML = '<p class="loading">Loading market summary…</p>';
+                return;
+            }
+            if (!state.perps.length && !state.spots.length) {
+                grid.innerHTML = '<p class="empty">Market summary is unavailable.</p>';
+                return;
+            }
+            const perpVol = state.perps.reduce((sum, row) => sum + (row.volume || 0), 0);
+            const oi = state.perps.reduce((sum, row) => sum + (row.oiUsd || 0), 0);
+            const spotVol = state.spots.reduce((sum, row) => sum + (row.volume || 0), 0);
+            const hype = state.perps.find((row) => row.coin === 'HYPE');
+            const hypeDetail = !state.perps.length ? 'Perp data unavailable' : (!hype ? 'Not listed on the main perp book' : (hype.change == null ? '24h change unavailable' : formatSignedPct(hype.change, 2) + ' 24h'));
+            const spotDetail = state.spots.length ? 'Listed spot pairs' : 'Spot data unavailable';
+            const spotValue = state.spots.length ? formatUsd(spotVol) : '—';
+            const perpDetail = state.perps.length ? 'Main perp book, notional' : 'Perp data unavailable';
+            const oiDetail = state.perps.length ? 'Base size × mark price' : 'Perp data unavailable';
+            const listedValue = state.perps.length ? state.perps.length.toLocaleString('en-US') : '—';
+            const listedDetail = state.perps.length ? state.delistedCount.toLocaleString('en-US') + ' delisted hidden' : 'Perp data unavailable';
+            grid.innerHTML = [
+                statCard('24h perp volume', state.perps.length ? formatUsd(perpVol) : '—', perpDetail),
+                statCard('Open interest', state.perps.length ? formatUsd(oi) : '—', oiDetail),
+                statCard('Listed perps', listedValue, listedDetail),
+                statCard('24h spot volume', spotValue, spotDetail),
+                statCard('HYPE', hype ? formatPx(hype.mark) : '—', escapeHtml(hypeDetail), hype ? toneClass(hype.change) : '')
+            ].join('');
+        }
+
+        function renderStatus() {
+            const el = document.getElementById('last-updated');
+            el.replaceChildren();
+            if (state.loading && !state.updatedAt) {
+                el.textContent = 'Loading market data…';
+                return;
+            }
+            if (state.loading) {
+                el.textContent = 'Refreshing…';
+                return;
+            }
+            if (!state.updatedAt) {
+                el.textContent = 'No data loaded yet.';
+                return;
+            }
+            el.append('Last updated ');
+            const time = document.createElement('time');
+            time.dateTime = state.updatedAt.toISOString();
+            time.textContent = state.updatedAt.toLocaleString();
+            el.append(time, ' · refreshes about every 45 seconds');
+        }
+
+        function renderButton() {
+            const button = document.getElementById('refresh-btn');
+            const label = document.getElementById('refresh-label');
+            button.disabled = state.loading;
+            label.textContent = state.loading ? 'Refreshing…' : 'Refresh data';
+        }
+
+        function renderAlert() {
+            const banner = document.getElementById('banner');
+            const parts = [];
+            if (state.rateMessage) parts.push(state.rateMessage);
+            if (state.perpError) parts.push(state.perpError + (state.perps.length ? ' Showing the last perpetual update.' : ''));
+            if (state.spotError) parts.push(state.spotError + (state.spots.length ? ' Showing the last spot update.' : ''));
+            const text = parts.join(' ');
+            const existing = banner.querySelector('[role="alert"]');
+            if (!text) {
+                banner.replaceChildren();
+                return;
+            }
+            if (existing && existing.textContent === text) return;
+            banner.replaceChildren();
+            const div = document.createElement('div');
+            div.className = state.rateMessage && !state.perpError && !state.spotError ? 'notice notice-rate' : 'notice notice-error';
+            div.setAttribute('role', 'alert');
+            div.textContent = text;
+            banner.appendChild(div);
+        }
+
+        function renderAll() {
+            renderStatus();
+            renderButton();
+            renderAlert();
+            renderStats();
+            renderActive();
+        }
+
+        function selectTab(id, updateHash) {
+            if (!TABS.some((tab) => tab.id === id)) return;
+            state.tab = id;
+            document.querySelectorAll('[role="tab"]').forEach((tab) => {
+                const selected = tab.dataset.tab === id;
+                tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+                tab.tabIndex = selected ? 0 : -1;
+            });
+            document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
+                panel.hidden = panel.dataset.view !== id;
+            });
+            document.querySelectorAll('[data-filter-view]').forEach((group) => {
+                group.hidden = group.dataset.filterView !== id;
+            });
+            if (updateHash) {
+                const hash = TABS.find((tab) => tab.id === id).hash;
+                if (location.hash !== '#' + hash) history.replaceState(null, '', '#' + hash);
+            }
+            renderActive();
+        }
+
+        function tabFromHash() {
+            const hash = location.hash.replace('#', '');
+            const found = TABS.find((tab) => tab.hash === hash);
+            return found ? found.id : null;
+        }
+
+        function setFilter(view, value) {
+            state.filters[view] = value;
+            document.querySelectorAll('[data-filter-view="' + view + '"] [data-filter]').forEach((button) => {
+                button.setAttribute('aria-pressed', button.dataset.filter === value ? 'true' : 'false');
+            });
+            renderActive();
+        }
+
+        function setSort(view, key) {
+            const sort = state.sort[view];
+            if (sort.key === key) sort.dir = sort.dir === 'asc' ? 'desc' : 'asc';
+            else {
+                sort.key = key;
+                sort.dir = STRING_KEYS.has(key) ? 'asc' : 'desc';
+            }
+            renderActive();
+        }
+
+        function schedule(ms) {
+            clearTimeout(refreshTimer);
+            if (document.hidden) return;
+            refreshTimer = setTimeout(refresh, ms);
+        }
+
+        async function refresh() {
+            if (state.loading) return;
+            state.loading = true;
+            if (activeController) activeController.abort();
+            const controller = new AbortController();
+            activeController = controller;
+            const timeout = setTimeout(() => controller.abort(), 20000);
+            document.getElementById('dashboard').setAttribute('aria-busy', 'true');
+            renderStatus();
+            renderButton();
+
+            let sawRate = false;
+            let retryHeader = '';
+            let fresh = false;
+            try {
+                const [perpRes, spotRes] = await Promise.allSettled([
+                    postInfo({ type: 'metaAndAssetCtxs' }, controller.signal),
+                    postInfo({ type: 'spotMetaAndAssetCtxs' }, controller.signal)
+                ]);
+
+                if (perpRes.status === 'fulfilled') {
+                    try {
+                        const built = buildPerps(perpRes.value);
+                        state.perps = built.rows;
+                        state.delistedCount = built.delistedCount;
+                        state.perpError = '';
+                        fresh = true;
+                    } catch (err) {
+                        state.perpError = errorMessage(err, 'Perp markets');
+                    }
+                } else if (perpRes.reason && perpRes.reason.code === 'rate') {
+                    sawRate = true;
+                    retryHeader = perpRes.reason.retryAfter || retryHeader;
+                    state.perpError = '';
+                } else {
+                    state.perpError = errorMessage(perpRes.reason, 'Perp markets');
+                }
+
+                if (spotRes.status === 'fulfilled') {
+                    try {
+                        state.spots = buildSpots(spotRes.value);
+                        state.spotError = '';
+                        fresh = true;
+                    } catch (err) {
+                        state.spotError = errorMessage(err, 'Spot markets');
+                    }
+                } else if (spotRes.reason && spotRes.reason.code === 'rate') {
+                    sawRate = true;
+                    retryHeader = spotRes.reason.retryAfter || retryHeader;
+                    state.spotError = '';
+                } else {
+                    state.spotError = errorMessage(spotRes.reason, 'Spot markets');
+                }
+            } finally {
+                clearTimeout(timeout);
+                state.loading = false;
+                document.getElementById('dashboard').setAttribute('aria-busy', 'false');
+            }
+
+            if (sawRate) {
+                const wait = retryDelayMs(retryHeader);
+                state.rateLimitedUntil = Date.now() + wait;
+                const seconds = Math.max(1, Math.round(wait / 1000));
+                state.rateMessage = 'Hyperliquid rate-limited this browser (HTTP 429). Automatic refresh is paused for about ' + seconds + ' seconds.';
+            } else {
+                state.rateMessage = '';
+                state.rateLimitedUntil = 0;
+            }
+            if (fresh) state.updatedAt = new Date();
+            renderAll();
+            const wait = state.rateLimitedUntil > Date.now() ? state.rateLimitedUntil - Date.now() : REFRESH_MS;
+            schedule(wait);
+        }
+
+        function init() {
+            if (!window.fetch || !window.AbortController) {
+                state.perpError = 'This dashboard needs a current browser with fetch support.';
+                state.loading = false;
+                renderAll();
+                return;
+            }
+
+            document.getElementById('refresh-btn').addEventListener('click', refresh);
+            document.getElementById('search-form').addEventListener('submit', (event) => event.preventDefault());
+            document.getElementById('market-search').addEventListener('input', (event) => {
+                state.query = event.target.value;
+                renderActive();
+            });
+
+            const tablist = document.querySelector('[role="tablist"]');
+            tablist.addEventListener('click', (event) => {
+                const tab = event.target.closest('[role="tab"]');
+                if (!tab) return;
+                selectTab(tab.dataset.tab, true);
+            });
+            tablist.addEventListener('keydown', (event) => {
+                const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+                const index = tabs.indexOf(document.activeElement);
+                if (index === -1) return;
+                let next = -1;
+                if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+                else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+                else if (event.key === 'Home') next = 0;
+                else if (event.key === 'End') next = tabs.length - 1;
+                else return;
+                event.preventDefault();
+                tabs[next].focus();
+                selectTab(tabs[next].dataset.tab, true);
+            });
+
+            document.getElementById('dashboard').addEventListener('click', (event) => {
+                const filterBtn = event.target.closest('[data-filter]');
+                if (filterBtn) {
+                    const group = filterBtn.closest('[data-filter-view]');
+                    if (group) setFilter(group.dataset.filterView, filterBtn.dataset.filter);
+                    return;
+                }
+                const sortBtn = event.target.closest('[data-sort]');
+                if (sortBtn) {
+                    const panel = sortBtn.closest('[data-view]');
+                    if (panel) setSort(panel.dataset.view, sortBtn.dataset.sort);
+                }
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearTimeout(refreshTimer);
+                    return;
+                }
+                if (state.loading) return;
+                const age = state.updatedAt ? Date.now() - state.updatedAt.getTime() : Infinity;
+                if (!state.updatedAt || age > 15000 || state.perpError || state.spotError || state.rateMessage) refresh();
+                else schedule(Math.max(1000, REFRESH_MS - age));
+            });
+
+            window.addEventListener('hashchange', () => {
+                const tab = tabFromHash();
+                if (tab && tab !== state.tab) selectTab(tab, false);
+            });
+
+            const initial = tabFromHash();
+            if (initial) selectTab(initial, false);
+            refresh();
+        }
+
+        init();
+    </script>
+</body>
+</html>
