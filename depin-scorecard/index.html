@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DePIN Scorecard 2026 | Flux, Akash, Render, Helium, io.net, Filecoin, Theta | TSN Media</title>
+<meta name="description" content="Free live DePIN scorecard comparing Flux, Akash, Render, Helium, io.net, Filecoin and Theta side by side: price, market cap, supply and network metrics from free public APIs. Not financial advice.">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://techsocialnetwork.github.io/tsn-tools/depin-scorecard/">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="DePIN Scorecard | Flux, Akash, Render, Helium, io.net, Filecoin, Theta">
+<meta property="og:description" content="Seven decentralized physical infrastructure networks side by side, with live public data and honest n/a where no free API exists.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/depin-scorecard/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"DePIN Scorecard","description":"Live side-by-side scorecard of seven DePIN networks using free public APIs.","url":"https://techsocialnetwork.github.io/tsn-tools/depin-scorecard/","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@type":"Organization","name":"TSN Media","url":"https://tsnmedia.org"}}</script>
+<style>
+:root{--bg:#0a0e1a;--card:#111827;--line:#1a2332;--line2:#2a3342;--text:#e0e0e0;--muted:#9aa4b2;--accent:#ffa301;--accent2:#ffd27a;--good:#00d4a0;--bad:#ff6b7a;--warn:#ffc107}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;line-height:1.5}
+.container{max-width:1200px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:2px}
+a:hover{color:var(--accent2)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:10}
+.skip:focus{left:8px}
+.topnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.9em;color:var(--muted);padding:4px 0 0}
+.topnav a{text-decoration:none;font-weight:600}
+header.page{text-align:center;padding:34px 0 30px;border-bottom:1px solid var(--line);margin-bottom:30px}
+header.page h1{font-size:2.4em;line-height:1.15;color:var(--accent);background:linear-gradient(135deg,#ffa301,#ffd27a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+header.page .lede{color:#b4bcc8;font-size:1.08em;max-width:820px;margin:0 auto}
+.callout{margin:20px auto 0;max-width:820px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,163,1,.10),rgba(255,163,1,.03));border:1px solid rgba(255,163,1,.35);border-radius:12px;color:#c9d0da;font-size:.93em;text-align:left}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:26px}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.stat-card h2,.stat-card .k{color:var(--muted);font-size:.78em;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px}
+.stat-card .v{font-size:1.9em;font-weight:700;color:#fff;line-height:1.15}
+.stat-card .s{font-size:.85em;color:var(--muted);margin-top:4px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:26px}
+.section>h2{font-size:1.4em;color:#fff;margin-bottom:10px}
+.section-sub{color:var(--muted);font-size:.92em;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#111;border:0;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95em;cursor:pointer;text-decoration:none;font-family:inherit}
+.btn:hover{background:var(--accent2);color:#111}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(255,163,1,.5)}
+.btn.ghost:hover{background:rgba(255,163,1,.12);color:var(--accent2)}
+.btn:disabled{opacity:.6;cursor:wait}
+label{display:block;color:#c9d0da;font-size:.85em;font-weight:600;margin-bottom:6px}
+input,select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;font-size:1em;font-family:inherit;min-height:44px}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:#7b8696}
+.loading{text-align:center;color:var(--muted);padding:34px 10px}
+.loading::after{content:'';display:inline-block;width:14px;height:14px;margin-left:10px;border:2px solid var(--line2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.loading::after{animation:none}}
+.error{background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.4);color:#ffb3bb;border-radius:12px;padding:14px 16px;margin:12px 0}
+.muted{color:var(--muted)}
+.small{font-size:.85em}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.74em;font-weight:700;white-space:nowrap;background:rgba(136,146,160,.18);color:#c3cad4}
+.badge.ok{background:rgba(0,212,160,.16);color:#3be3b8}
+.badge.rep{background:rgba(255,193,7,.16);color:#ffd45a}
+.badge.na{background:rgba(136,146,160,.15);color:#aab3bf}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.prose h2{font-size:1.25em;color:#fff;margin:22px 0 8px}
+.prose h2:first-child{margin-top:0}
+.prose p,.prose li{color:#b4bcc8;margin-bottom:10px}
+.prose ul{margin-left:22px}
+footer.page{text-align:center;padding:34px 0 10px;color:var(--muted);border-top:1px solid var(--line);margin-top:34px}
+footer.page p{margin-bottom:10px}
+footer.page a{font-weight:600}
+@media (max-width:640px){body{padding:12px}header.page h1{font-size:1.75em}.section{padding:18px}}
+
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:20px}
+.updated{color:var(--muted);font-size:.92em}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{font-size:.78em;padding:4px 10px;border-radius:20px;border:1px solid var(--line2);color:#c3cad4;background:#0d1424}
+.chip b{font-weight:700}
+.chip.live{border-color:rgba(0,212,160,.45)}.chip.live b{color:#3be3b8}
+.chip.cached{border-color:rgba(255,193,7,.45)}.chip.cached b{color:#ffd45a}
+.chip.fail{border-color:rgba(255,107,122,.5)}.chip.fail b{color:#ff9aa5}
+.chip.load b{color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:12px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{background:#0d1424;font-size:.78em;text-transform:uppercase;letter-spacing:.6px;color:#e8ecf2}
+tbody tr:last-child td{border-bottom:0}
+td.name strong{color:#fff}
+td.name .tk{color:var(--muted);font-size:.85em;margin-left:6px}
+td.price{color:var(--accent);font-weight:700}
+.na{color:#8b95a3;font-style:italic}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.net{background:#0d1424;border:1px solid var(--line);border-radius:14px;padding:18px}
+.net h3{font-size:1.1em;color:#fff;margin-bottom:2px}
+.net h3 a{color:#fff;text-decoration:none}
+.net h3 a:hover{color:var(--accent)}
+.net .sub{color:var(--muted);font-size:.82em;margin-bottom:10px}
+.net dl{display:grid;grid-template-columns:1fr auto;gap:0}
+.net dt,.net dd{padding:8px 0;border-top:1px solid var(--line);font-size:.93em}
+.net dt{color:#b4bcc8;padding-right:10px}
+.net dd{text-align:right;font-weight:700;color:#fff}
+.net dd.na{font-weight:400}
+.net .links{margin-top:10px;font-size:.84em;display:flex;gap:12px;flex-wrap:wrap}
+sup a{text-decoration:none;font-weight:700}
+ol.notes{margin-left:20px}
+ol.notes li{margin-bottom:8px;color:#b4bcc8;font-size:.92em}
+@media (max-width:760px){
+  .tablewrap table{min-width:0}
+  .tablewrap thead{position:absolute;left:-9999px}
+  .tablewrap table,.tablewrap tbody,.tablewrap tr,.tablewrap td{display:block;text-align:left}
+  .tablewrap tr{border-bottom:1px solid var(--line);padding:8px 4px}
+  .tablewrap td{border:0;display:flex;justify-content:space-between;gap:12px;padding:5px 12px;white-space:normal}
+  .tablewrap td[data-label]::before{content:attr(data-label);color:var(--muted);font-size:.85em}
+  .tablewrap td.name{font-size:1.05em}
+  .tablewrap td.name::before{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#market">Skip to the scorecard</a>
+<div class="container">
+  <div class="topnav"><a href="https://tsnmedia.org">← TSN Media</a><a href="../">All free tools</a></div>
+  <header class="page">
+    <h1>DePIN Scorecard</h1>
+    <p class="lede">Seven decentralized infrastructure networks side by side: Flux, Akash, Render, Helium, io.net, Filecoin and Theta. Live market data plus the network numbers each project exposes through a free, key-free public API. Where no usable endpoint exists the scorecard says <em>n/a</em> and tells you why.</p>
+    <div class="callout"><strong>Not financial advice.</strong> Prices and market caps come from CoinGecko’s free API and can lag or be wrong. Network metrics are not comparable across projects (a Helium hotspot is not a Filecoin miner). Responses are cached in your browser for a few minutes to respect rate limits.</div>
+  </header>
+
+  <div class="toolbar">
+    <div class="updated" role="status" aria-live="polite" id="updated">Loading live data…</div>
+    <button type="button" class="btn" id="refresh">↻ Refresh data</button>
+  </div>
+  <div class="chips" id="chips" aria-label="Data source status"></div>
+
+  <section class="section" id="market" aria-labelledby="m-h">
+    <h2 id="m-h">Market snapshot</h2>
+    <p class="section-sub">Source: CoinGecko free API (no key). Sorted by market cap. Circulating supply as reported by CoinGecko.</p>
+    <div id="market-state" class="loading">Loading market data</div>
+    <div class="tablewrap" id="market-wrap" hidden>
+      <table>
+        <caption class="sr-only">Market data for seven DePIN tokens</caption>
+        <thead><tr><th scope="col">Network</th><th scope="col">Price (USD)</th><th scope="col">24h</th><th scope="col">Market cap</th><th scope="col">24h volume</th><th scope="col">Circulating supply</th></tr></thead>
+        <tbody id="market-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="n-h">
+    <h2 id="n-h">Network metrics</h2>
+    <p class="section-sub">Only metrics that returned real data from a free, key-free, browser-readable endpoint are shown live. <span class="na">n/a</span> means none exists (see the notes below), never a guess.</p>
+    <div class="cards" id="cards"><div class="loading">Loading network metrics</div></div>
+  </section>
+
+  <section class="section prose" aria-labelledby="f-h">
+    <h2 id="f-h">Notes: sources, gaps and caveats</h2>
+    <ol class="notes" id="notes">
+      <li id="fn-cg"><strong>Prices &amp; supply:</strong> <a href="https://www.coingecko.com/en/api" rel="noopener">CoinGecko free API</a>, <code>/coins/markets</code>. Flux is listed on CoinGecko as “zelcash” (symbol FLUX). Rate limits are shared; if CoinGecko throttles you the page shows the last cached values and says so.</li>
+      <li id="fn-flux"><strong>Flux nodes:</strong> <code>api.runonflux.io/daemon/getfluxnodecount</code>, the same endpoint the <a href="../flux-dashboard/">Flux Dashboard</a> uses. Tiers: Cumulus, Nimbus, Stratus.</li>
+      <li id="fn-akash"><strong>Akash providers:</strong> the provider list the <a href="../akash-dashboard/">Akash Dashboard</a> reads through a CORS proxy hosted on tsnmedia.org (Akash’s own console API blocks browser requests). Counts are computed in your browser: “online” uses the provider’s own <code>isOnline</code> flag; GPUs and leases are summed over online providers only. If that proxy is retired, this card will show an error.</li>
+      <li id="fn-helium"><strong>Helium:</strong> <code>entities.nft.helium.io/v2/hotspots/pagination-metadata</code> for the IoT and Mobile subnetworks. These are registered hotspots (gateways), not necessarily online or earning, and the two subnetworks are different hardware fleets, so they are not added together.</li>
+      <li id="fn-fil"><strong>Filecoin:</strong> <a href="https://filfox.info" rel="noopener">Filfox</a> public <code>/api/v1/overview</code>. Raw byte power is shown in EiB (2<sup>60</sup> bytes); quality-adjusted power also counts verified-deal multipliers.</li>
+      <li id="fn-theta"><strong>Theta:</strong> Theta Explorer public API <code>/api/stake/totalAmount</code> for THETA and TFUEL stakes. The node count is the number of stake holders/nodes the explorer reports; it is not the number of GPU edge nodes. Theta’s EdgeCloud GPU capacity has no public keyless endpoint, so it is n/a.</li>
+      <li id="fn-render"><strong>Render: network metrics n/a.</strong> The Render Foundation’s dashboard (stats.renderfoundation.com) shows frames rendered and node counts, but only inside a rendered web page with no API and no CORS headers, so a browser page on another domain cannot read it. Only the CoinGecko market data is live.</li>
+      <li id="fn-io"><strong>io.net: network metrics n/a.</strong> The io.net IO Explorer API needs an account token, and the keyless device endpoint we found does not send CORS headers, so browsers block it. Only market data is live.</li>
+      <li><strong>Not investment advice.</strong> TSN does not recommend any token. Data may be delayed, incomplete or wrong; check the source before relying on a number.</li>
+    </ol>
+    <p class="small muted">Related TSN tools: <a href="../flux-dashboard/">Flux Dashboard</a> · <a href="../akash-dashboard/">Akash Dashboard</a> · <a href="../crypto-calculator/">Crypto Profit Calculator</a> · <a href="../ai-funding-tracker/">AI Funding Tracker</a></p>
+  </section>
+
+  <footer class="page">
+    <p>Built by <a href="https://tsnmedia.org">TSN Media</a> · Live data from CoinGecko, Flux, Akash, Helium, Filfox and Theta public APIs. Not financial advice.</p>
+    <p><a href="../">← Back to Tools</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+var TTL=5*60*1000, AKASH_TTL=10*60*1000, TIMEOUT=15000, MIN_REFRESH=20000, lastForce=0;
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+var NETS=[
+ {key:'flux',name:'Flux',cg:'zelcash',site:'https://runonflux.com',dash:'../flux-dashboard/',what:'Decentralized cloud (Flux nodes)'},
+ {key:'akash',name:'Akash',cg:'akash-network',site:'https://akash.network',dash:'../akash-dashboard/',what:'Decentralized GPU/CPU cloud marketplace'},
+ {key:'render',name:'Render',cg:'render-token',site:'https://rendernetwork.com',what:'Decentralized GPU rendering and compute'},
+ {key:'helium',name:'Helium',cg:'helium',site:'https://www.helium.com',what:'Wireless networks (IoT and 5G Mobile)'},
+ {key:'io',name:'io.net',cg:'io',site:'https://io.net',what:'Decentralized GPU clusters'},
+ {key:'filecoin',name:'Filecoin',cg:'filecoin',site:'https://filecoin.io',what:'Decentralized storage'},
+ {key:'theta',name:'Theta',cg:'theta-token',site:'https://www.thetatoken.org',what:'Decentralized video and AI edge compute'}
+];
+
+// ---------- cache + fetch ----------
+function cget(k){try{var o=JSON.parse(localStorage.getItem('tsn-depin:'+k));return o&&o.t?o:null}catch(e){return null}}
+function cset(k,v){try{localStorage.setItem('tsn-depin:'+k,JSON.stringify({t:Date.now(),v:v}))}catch(e){}}
+function fetchJson(url){
+  var ctl=('AbortController' in window)?new AbortController():null, to=setTimeout(function(){ctl&&ctl.abort()},TIMEOUT);
+  return fetch(url,ctl?{signal:ctl.signal}:{}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()});
+}
+var status={}; // key -> {state:'live'|'cached'|'fail'|'load', t, label}
+/* load(key,label,ttl,producer,force): producer returns a Promise of the small summary object that we cache */
+function load(key,label,ttl,producer,force){
+  var c=cget(key);
+  if(c&&!force&&Date.now()-c.t<ttl){status[key]={state:'cached',t:c.t,label:label};return Promise.resolve(c.v)}
+  status[key]={state:'load',label:label};
+  return producer().then(function(v){cset(key,v);status[key]={state:'live',t:Date.now(),label:label};return v}).catch(function(e){
+    if(c){status[key]={state:'cached',t:c.t,label:label,stale:true,err:e.message};return c.v}
+    status[key]={state:'fail',label:label,err:e.message};return null;
+  });
+}
+
+// ---------- producers (each returns a SMALL summary so localStorage stays tiny) ----------
+function pCG(){
+  var ids=NETS.map(function(n){return n.cg}).join(',');
+  return fetchJson('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids='+ids+'&price_change_percentage=24h').then(function(a){
+    if(!Array.isArray(a)||!a.length)throw new Error('empty response');
+    var o={};a.forEach(function(c){o[c.id]={price:c.current_price,chg:c.price_change_percentage_24h,mcap:c.market_cap,vol:c.total_volume,supply:c.circulating_supply,rank:c.market_cap_rank}});return o});
+}
+function pFlux(){return fetchJson('https://api.runonflux.io/daemon/getfluxnodecount').then(function(r){var d=r&&r.data;if(!d||typeof d.total!=='number')throw new Error('unexpected response');return {total:d.total,cumulus:d['cumulus-enabled'],nimbus:d['nimbus-enabled'],stratus:d['stratus-enabled']}})}
+function pAkash(){return fetchJson('https://tsnmedia.org/tools/akash-dashboard/proxy.php/v1/providers').then(function(a){
+  if(!Array.isArray(a)||!a.length)throw new Error('unexpected response');
+  var on=a.filter(function(p){return p.isOnline}),gpu=0,gpuActive=0,leases=0;
+  on.forEach(function(p){var g=p.stats&&p.stats.gpu;if(g){gpu+=g.total||0;gpuActive+=g.active||0}leases+=p.leaseCount||0});
+  return {registered:a.length,online:on.length,gpu:gpu,gpuActive:gpuActive,leases:leases}})}
+function pHelium(){return Promise.all([fetchJson('https://entities.nft.helium.io/v2/hotspots/pagination-metadata?subnetwork=iot'),fetchJson('https://entities.nft.helium.io/v2/hotspots/pagination-metadata?subnetwork=mobile')]).then(function(r){
+  if(typeof r[0].totalItems!=='number'||typeof r[1].totalItems!=='number')throw new Error('unexpected response');return {iot:r[0].totalItems,mobile:r[1].totalItems}})}
+function pFil(){return fetchJson('https://filfox.info/api/v1/overview').then(function(o){
+  if(!o||!o.totalRawBytePower)throw new Error('unexpected response');
+  var EiB=Math.pow(2,60);return {raw:Number(o.totalRawBytePower)/EiB,qa:Number(o.totalQualityAdjPower)/EiB,miners:o.activeMiners}})}
+function pTheta(){var B='https://explorer-api.thetatoken.org/api/stake/totalAmount?type=';return Promise.all([fetchJson(B+'theta'),fetchJson(B+'tfuel')]).then(function(r){
+  var a=r[0]&&r[0].body,b=r[1]&&r[1].body;if(!a||!b)throw new Error('unexpected response');
+  return {thetaNodes:a.totalNodes,thetaStaked:Number(a.totalAmount)/1e18,tfuelNodes:b.totalNodes,tfuelStaked:Number(b.totalAmount)/1e18}})}
+
+// ---------- formatting ----------
+function nf(n,d){return Number(n).toLocaleString('en-US',{maximumFractionDigits:d==null?0:d})}
+function usd(n){if(n==null)return null;if(n>=1000)return '$'+nf(n,0);if(n>=1)return '$'+nf(n,2);if(n>=0.01)return '$'+nf(n,4);return '$'+Number(n).toPrecision(3)}
+function big(n,prefix){if(n==null)return null;var p=prefix||'';if(n>=1e9)return p+nf(n/1e9,2)+'B';if(n>=1e6)return p+nf(n/1e6,1)+'M';if(n>=1e3)return p+nf(n/1e3,1)+'K';return p+nf(n,0)}
+function pct(n){if(n==null)return null;var up=n>=0;return '<span class="'+(up?'pos':'neg')+'">'+(up?'▲ +':'▼ ')+nf(n,2)+'%</span>'}
+function na(why){return '<span class="na">n/a</span>'+(why?' <sup><a href="#'+why+'" aria-label="See note">?</a></sup>':'')}
+
+// ---------- render ----------
+var D={cg:null,flux:null,akash:null,helium:null,fil:null,theta:null};
+function renderMarket(){
+  var tb=$('market-rows');
+  if(!D.cg){ $('market-state').className='error';$('market-state').textContent='Could not load market data from CoinGecko ('+((status.cg&&status.cg.err)||'unknown error')+'). Try Refresh in a minute; CoinGecko’s free tier rate-limits.';$('market-wrap').hidden=true;return}
+  $('market-state').hidden=true;$('market-wrap').hidden=false;
+  var rows=NETS.map(function(n){return {n:n,d:D.cg[n.cg]}}).sort(function(a,b){return ((b.d&&b.d.mcap)||0)-((a.d&&a.d.mcap)||0)});
+  tb.innerHTML=rows.map(function(r){
+    var d=r.d;
+    if(!d)return '<tr><td class="name" data-label="Network"><strong>'+esc(r.n.name)+'</strong></td><td colspan="5" class="na">No data returned by CoinGecko for this token</td></tr>';
+    var sym={flux:'FLUX',akash:'AKT',render:'RENDER',helium:'HNT',io:'IO',filecoin:'FIL',theta:'THETA'}[r.n.key];
+    return '<tr><td class="name" data-label="Network"><strong>'+esc(r.n.name)+'</strong><span class="tk">'+sym+'</span></td>'+
+      '<td class="price" data-label="Price">'+(usd(d.price)||na())+'</td>'+
+      '<td data-label="24h">'+(pct(d.chg)||na())+'</td>'+
+      '<td data-label="Market cap">'+(big(d.mcap,'$')||na())+'</td>'+
+      '<td data-label="24h volume">'+(big(d.vol,'$')||na())+'</td>'+
+      '<td data-label="Circulating supply">'+(d.supply!=null?big(d.supply)+' '+sym:na())+'</td></tr>';
+  }).join('');
+}
+function row(label,val){return '<dt>'+label+'</dt><dd'+(/class="na"/.test(val)?' class="na"':'')+'>'+val+'</dd>'}
+function card(n,body,extra){
+  var h=n.dash?'<a href="'+n.dash+'">'+esc(n.name)+'</a>':esc(n.name);
+  return '<article class="net"><h3>'+h+'</h3><div class="sub">'+esc(n.what)+'</div><dl>'+body+'</dl><div class="links"><a href="'+n.site+'" target="_blank" rel="noopener">Official site ↗</a>'+(n.dash?'<a href="'+n.dash+'">TSN dashboard</a>':'')+'</div></article>';
+}
+function fail(key){var s=status[key];if(!s||s.state==='load')return '<span class="na">loading…</span>';return '<span class="na" title="'+esc(s.err||'')+'">unavailable right now</span>'}
+function renderCards(){
+  var by={};NETS.forEach(function(n){by[n.key]=n});
+  var h='';
+  // Flux
+  h+=card(by.flux, D.flux?row('Total Flux nodes',nf(D.flux.total))+row('Cumulus',nf(D.flux.cumulus))+row('Nimbus',nf(D.flux.nimbus))+row('Stratus',nf(D.flux.stratus)):row('Flux nodes',fail('flux')));
+  // Akash
+  h+=card(by.akash, D.akash?row('Providers online',nf(D.akash.online)+' <span class="muted small">of '+nf(D.akash.registered)+' registered</span>')+row('GPUs on online providers',nf(D.akash.gpu))+row('GPUs in use',nf(D.akash.gpuActive))+row('Active leases (online providers)',nf(D.akash.leases)):row('Akash providers',fail('akash')));
+  // Render
+  h+=card(by.render, row('Nodes / frames rendered',na('fn-render'))+row('GPU capacity',na('fn-render')));
+  // Helium
+  h+=card(by.helium, D.helium?row('IoT hotspots (registered)',nf(D.helium.iot))+row('Mobile hotspots (registered)',nf(D.helium.mobile))+row('Online / earning hotspots',na('fn-helium')):row('Helium hotspots',fail('helium')));
+  // io.net
+  h+=card(by.io, row('Active GPUs / devices',na('fn-io'))+row('Network revenue',na('fn-io')));
+  // Filecoin
+  h+=card(by.filecoin, D.fil?row('Raw storage power',nf(D.fil.raw,2)+' EiB')+row('Quality-adjusted power',nf(D.fil.qa,2)+' EiB')+row('Active storage providers',nf(D.fil.miners)):row('Filecoin storage',fail('fil')));
+  // Theta
+  h+=card(by.theta, D.theta?row('Nodes staking THETA',nf(D.theta.thetaNodes))+row('THETA staked',big(D.theta.thetaStaked)+' THETA')+row('Nodes staking TFUEL',nf(D.theta.tfuelNodes))+row('TFUEL staked',big(D.theta.tfuelStaked)+' TFUEL')+row('GPU edge capacity',na('fn-theta')):row('Theta staking',fail('theta')));
+  $('cards').innerHTML=h;
+}
+function renderStatus(){
+  var keys=['cg','flux','akash','helium','fil','theta'],names={cg:'CoinGecko',flux:'Flux API',akash:'Akash (via TSN proxy)',helium:'Helium entities API',fil:'Filfox',theta:'Theta Explorer'};
+  $('chips').innerHTML=keys.map(function(k){var s=status[k]||{state:'load'};var lab={live:'live',cached:s.stale?'stale cache':'cached',fail:'failed',load:'loading'}[s.state];
+    var t=s.t?' '+new Date(s.t).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';
+    return '<span class="chip '+(s.state==='load'?'load':s.state)+'" title="'+esc(s.err||'')+'">'+names[k]+': <b>'+lab+'</b>'+t+'</span>'}).join('');
+  var ts=keys.map(function(k){return status[k]&&status[k].t||0}).filter(Boolean);
+  var anyLoad=keys.some(function(k){return !status[k]||status[k].state==='load'});
+  if(anyLoad)$('updated').textContent='Loading live data…';
+  else if(ts.length)$('updated').textContent='Last updated '+new Date(Math.max.apply(null,ts)).toLocaleString([], {dateStyle:'medium',timeStyle:'medium'})+' (your local time). Older values come from the browser cache.';
+  else $('updated').textContent='No data could be loaded. Check your connection and refresh.';
+}
+function run(force){
+  var btn=$('refresh');btn.disabled=true;btn.textContent='Refreshing…';
+  var jobs=[load('cg','CoinGecko',TTL,pCG,force).then(function(v){D.cg=v;renderMarket();renderStatus()}),
+   load('flux','Flux',TTL,pFlux,force).then(function(v){D.flux=v;renderCards();renderStatus()}),
+   load('akash','Akash',AKASH_TTL,pAkash,force).then(function(v){D.akash=v;renderCards();renderStatus()}),
+   load('helium','Helium',TTL,pHelium,force).then(function(v){D.helium=v;renderCards();renderStatus()}),
+   load('fil','Filecoin',TTL,pFil,force).then(function(v){D.fil=v;renderCards();renderStatus()}),
+   load('theta','Theta',TTL,pTheta,force).then(function(v){D.theta=v;renderCards();renderStatus()})];
+  renderStatus();
+  return Promise.all(jobs).then(function(){btn.disabled=false;btn.textContent='↻ Refresh data';renderStatus()});
+}
+$('refresh').addEventListener('click',function(){if(Date.now()-lastForce<MIN_REFRESH){$('updated').textContent='Refreshed moments ago; please wait a few seconds to stay within API rate limits.';return}lastForce=Date.now();run(true)});
+renderCards();run(false);
+})();
+</script>
+</body>
+</html>
