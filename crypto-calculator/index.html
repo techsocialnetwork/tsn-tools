@@ -20,7 +20,7 @@
         .input-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; color: #b0b8c8; font-size: 0.95em; }
         input, select { width: 100%; padding: 14px; background: #0a0e1a; border: 1px solid #1a2332; border-radius: 8px; color: #e0e0e0; font-size: 1em; }
-        input:focus, select:focus { outline: none; border-color: #00d4ff; }
+        input:focus, select:focus, button:focus-visible { outline: 2px solid #00d4ff; outline-offset: 2px; border-color: #00d4ff; }
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .calculate-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #00d4ff, #7b2cbf); border: none; border-radius: 8px; color: white; font-size: 1.1em; font-weight: 600; cursor: pointer; margin-top: 20px; transition: transform 0.2s; }
         .calculate-btn:hover { transform: translateY(-2px); }
@@ -109,7 +109,7 @@
             <div id="simple-calc">
                 <div class="row">
                     <div class="input-group">
-                        <label>Cryptocurrency</label>
+                        <label for="coin-search">Cryptocurrency</label>
                         <div class="coin-search">
                             <input type="text" id="coin-search" class="search-input" placeholder="Search coins (e.g. Bitcoin, BTC)..." autocomplete="off">
                             <div class="coin-dropdown" id="coin-dropdown"></div>
@@ -118,27 +118,27 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Investment Amount ($)</label>
+                        <label for="investment">Investment Amount ($)</label>
                         <input type="number" id="investment" placeholder="1000" step="0.01">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-group">
-                        <label>Entry Price ($)</label>
+                        <label for="entry-price">Entry Price ($)</label>
                         <input type="number" id="entry-price" placeholder="50000" step="0.01">
                     </div>
                     <div class="input-group">
-                        <label>Exit Price ($)</label>
+                        <label for="exit-price">Exit Price ($)</label>
                         <input type="number" id="exit-price" placeholder="75000" step="0.01">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-group">
-                        <label>Quantity</label>
+                        <label for="quantity">Quantity</label>
                         <input type="number" id="quantity" placeholder="0.02" step="0.00000001">
                     </div>
                     <div class="input-group">
-                        <label>Fees (%)</label>
+                        <label for="fees">Fees (%)</label>
                         <input type="number" id="fees" placeholder="0.5" step="0.01" value="0.5">
                     </div>
                 </div>
@@ -147,19 +147,19 @@
             <!-- DCA Calculator -->
             <div id="dca-calc" class="dca-section">
                 <div class="input-group">
-                    <label>Current Price ($)</label>
+                    <label for="dca-current-price">Current Price ($)</label>
                     <input type="number" id="dca-current-price" placeholder="75000" step="0.01">
                 </div>
                 <div id="dca-entries">
                     <div class="dca-entry">
                         <div class="row">
                             <div class="input-group">
-                                <label>Entry 1 - Price ($)</label>
-                                <input type="number" class="dca-price" placeholder="50000" step="0.01">
+                                <label for="dca-price-1">Entry 1 - Price ($)</label>
+                                <input type="number" id="dca-price-1" class="dca-price" placeholder="50000" step="0.01">
                             </div>
                             <div class="input-group">
-                                <label>Entry 1 - Amount ($)</label>
-                                <input type="number" class="dca-amount" placeholder="1000" step="0.01">
+                                <label for="dca-amount-1">Entry 1 - Amount ($)</label>
+                                <input type="number" id="dca-amount-1" class="dca-amount" placeholder="1000" step="0.01">
                             </div>
                         </div>
                     </div>
@@ -227,12 +227,12 @@
             newEntry.innerHTML = `
                 <div class="row">
                     <div class="input-group">
-                        <label>Entry ${dcaEntryCount} - Price ($)</label>
-                        <input type="number" class="dca-price" placeholder="50000" step="0.01">
+                        <label for="dca-price-${dcaEntryCount}">Entry ${dcaEntryCount} - Price ($)</label>
+                        <input type="number" id="dca-price-${dcaEntryCount}" class="dca-price" placeholder="50000" step="0.01">
                     </div>
                     <div class="input-group">
-                        <label>Entry ${dcaEntryCount} - Amount ($)</label>
-                        <input type="number" class="dca-amount" placeholder="1000" step="0.01">
+                        <label for="dca-amount-${dcaEntryCount}">Entry ${dcaEntryCount} - Amount ($)</label>
+                        <input type="number" id="dca-amount-${dcaEntryCount}" class="dca-amount" placeholder="1000" step="0.01">
                     </div>
                 </div>
             `;
@@ -438,10 +438,5 @@
         fetchTop100Coins();
         setInterval(fetchTop100Coins, 60000);
     </script>
-
-    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
-        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
-        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
-    </footer>
 </body>
 </html>

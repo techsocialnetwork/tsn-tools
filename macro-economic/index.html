@@ -72,19 +72,21 @@
         .actual-neutral { color: #ffc107; font-weight: 600; }
         .countdown-soon { color: #ff4757; font-weight: 700; }
         .countdown-week { color: #ffc107; font-weight: 600; }
-        .countdown-past { color: #555; }
+        .countdown-past { color: #8892a0; }
         .released-section { background: #0d1420; border: 1px solid #1a2332; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
         .section-header { font-size: 1.1em; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .last-updated { text-align: center; color: #555; font-size: 0.82em; margin-top: 20px; }
-        .disclaimer { text-align: center; color: #555; font-size: 0.8em; margin-top: 15px; padding: 12px; background: #111827; border-radius: 8px; border: 1px solid #1a2332; }
+        .table-scroll { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .last-updated { text-align: center; color: #8892a0; font-size: 0.82em; margin-top: 20px; }
+        .disclaimer { text-align: center; color: #8892a0; font-size: 0.8em; margin-top: 15px; padding: 12px; background: #111827; border-radius: 8px; border: 1px solid #1a2332; }
         .error-msg { background: rgba(255,71,87,0.1); border: 1px solid rgba(255,71,87,0.3); border-radius: 8px; padding: 15px; color: #ff4757; text-align: center; margin: 20px 0; }
-        footer { text-align: center; padding: 35px 0; color: #555; border-top: 1px solid #1a2332; margin-top: 35px; }
+        footer { text-align: center; padding: 35px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 35px; }
         footer a { color: #00d4ff; text-decoration: none; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal.open { display: flex; }
         .modal-content { background: #111827; border: 1px solid #1a2332; border-radius: 16px; padding: 25px; max-width: 600px; width: 90%; }
         .modal-title { font-size: 1.2em; font-weight: 700; color: #fff; margin-bottom: 5px; }
-        .modal-close { float: right; cursor: pointer; color: #555; font-size: 1.4em; line-height: 1; }
+        .modal-close { float: right; cursor: pointer; color: #e0e0e0; font-size: 1.4em; line-height: 1; background: none; border: none; padding: 4px 8px; }
+        .modal-close:focus-visible, .indicator-card:focus-visible, .quarter-btn:focus-visible, .category-tab:focus-visible { outline: 2px solid #00d4ff; outline-offset: 2px; }
         .modal-chart { height: 220px; margin-top: 15px; }
         @media (max-width: 768px) {
             h1 { font-size: 1.7em; }
@@ -100,7 +102,7 @@
 <div class="container">
     <h1>📈 Macro Economic Calendar <span class="live-badge">LIVE</span></h1>
     <p class="subtitle">Live US macroeconomic indicators and economic calendar</p>
-    <p class="data-source">Data: <a href="https://fred.stlouisfed.org" target="_blank">FRED (St. Louis Fed)</a> · <a href="https://www.bls.gov" target="_blank">Bureau of Labor Statistics</a> · <a href="https://www.bea.gov" target="_blank">BEA</a> · Updated hourly</p>
+    <p class="data-source">Data: <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED (St. Louis Fed)</a> · <a href="https://www.bls.gov" target="_blank" rel="noopener">Bureau of Labor Statistics</a> · <a href="https://www.bea.gov" target="_blank" rel="noopener">BEA</a> · Updated hourly</p>
 
     <div class="stats-bar">
         <div class="stat-item"><div class="stat-value" id="totalEvents">—</div><div class="stat-label">Events 2026</div></div>
@@ -139,7 +141,7 @@
 
 <div class="modal" id="chartModal">
     <div class="modal-content">
-        <span class="modal-close" id="modalClose">✕</span>
+        <button type="button" class="modal-close" id="modalClose" aria-label="Close chart">✕</button>
         <div class="modal-title" id="modalTitle">—</div>
         <div style="color:#8892a0;font-size:0.82em;" id="modalMeta">—</div>
         <div class="modal-chart"><canvas id="modalChart"></canvas></div>
@@ -305,7 +307,7 @@ function renderIndicators() {
         const valClass = changeClass === 'change-down' ? 'positive' : changeClass === 'change-up' ? 'negative' : 'neutral';
         const latestDate = latest.date ? latest.date.substring(0,7) : 'Latest';
 
-        html += `<div class="indicator-card" onclick="openModal('${feed.id}','${feed.label}')">
+        html += `<div class="indicator-card" role="button" tabindex="0" aria-label="Open chart for ${feed.label}" onclick="openModal('${feed.id}','${feed.label}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('${feed.id}','${feed.label}')}">
             <div class="indicator-header">
                 <div class="indicator-name">${feed.label}</div>
                 <span class="indicator-change ${changeClass}">${changeLabel}</span>
@@ -359,11 +361,12 @@ function openModal(feedId, label) {
             labels: d.data.map(p => p.date?.substring(0,7) || ''),
             datasets: [{ data: vals, borderColor: '#00d4ff', borderWidth: 2, pointRadius: 2, pointBackgroundColor: '#00d4ff', tension: 0.3, fill: true, backgroundColor: 'rgba(0,212,255,0.08)' }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => feed ? feed.fmt(ctx.raw) : ctx.raw } } }, scales: { x: { ticks: { color: '#555', maxRotation: 45, font: { size: 10 } }, grid: { color: '#1a2332' } }, y: { ticks: { color: '#555', font: { size: 10 }, callback: v => feed ? feed.fmt(v) : v }, grid: { color: '#1a2332' } } } }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => feed ? feed.fmt(ctx.raw) : ctx.raw } } }, scales: { x: { ticks: { color: '#8892a0', maxRotation: 45, font: { size: 12 } }, grid: { color: '#1a2332' } }, y: { ticks: { color: '#8892a0', font: { size: 12 }, callback: v => feed ? feed.fmt(v) : v }, grid: { color: '#1a2332' } } } }
     });
 }
 document.getElementById('modalClose').onclick = () => document.getElementById('chartModal').classList.remove('open');
 document.getElementById('chartModal').onclick = e => { if(e.target === document.getElementById('chartModal')) document.getElementById('chartModal').classList.remove('open'); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('chartModal').classList.remove('open'); });
 
 // ── Calendar render ────────────────────────────────────────────────────────
 let currentQ = 'Q2', currentCat = 'all';
@@ -388,8 +391,8 @@ function renderCalendar() {
 
     if (released.length) {
         html += `<div class="released-section">
-            <div class="section-header">✅ Released — ${currentQ} <span class="event-count-badge">${released.length}</span></div>
-            <table class="events-table">
+            <h2 class="section-header">✅ Released — ${currentQ} <span class="event-count-badge">${released.length}</span></h2>
+            <div class="table-scroll"><table class="events-table">
                 <thead><tr><th>Date</th><th>Event</th><th>Impact</th><th>Previous</th><th>Forecast</th><th>Actual</th></tr></thead><tbody>`;
         released.forEach(e => {
             const ac = e.beat===true?'actual-beat':e.beat===false?'actual-miss':'actual-neutral';
@@ -400,13 +403,13 @@ function renderCalendar() {
                 <td class="forecast-val">${e.fcst||'—'}</td>
                 <td class="${ac}">${e.actual} ${e.beat===true?'✓':e.beat===false?'✗':''}</td></tr>`;
         });
-        html += '</tbody></table></div>';
+        html += '</tbody></table></div></div>';
     }
 
     if (upcoming.length) {
         html += `<div style="margin-bottom:20px">
-            <div class="section-title">📅 Upcoming Events <span class="event-count-badge">${upcoming.length}</span></div>
-            <table class="events-table">
+            <h2 class="section-title">📅 Upcoming Events <span class="event-count-badge">${upcoming.length}</span></h2>
+            <div class="table-scroll"><table class="events-table">
                 <thead><tr><th>Date</th><th>Event</th><th>Impact</th><th>Previous</th><th>Forecast</th><th>Countdown</th></tr></thead><tbody>`;
         upcoming.forEach(e => {
             const cd = getCountdown(e.date);
@@ -417,10 +420,10 @@ function renderCalendar() {
                 <td class="forecast-val">${e.fcst||'—'}</td>
                 <td class="${cd.cls}">${cd.text}</td></tr>`;
         });
-        html += '</tbody></table></div>';
+        html += '</tbody></table></div></div>';
     }
 
-    if (!filtered.length) html = '<div style="text-align:center;padding:40px;color:#555;">No events for this selection</div>';
+    if (!filtered.length) html = '<div style="text-align:center;padding:40px;color:#8892a0;">No events for this selection</div>';
     document.getElementById('calendarSection').innerHTML = html;
 }
 

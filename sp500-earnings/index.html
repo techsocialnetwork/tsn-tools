@@ -10,11 +10,13 @@
     <meta property="og:description" content="Complete S&P 500 earnings calendar organized by sector with EPS estimates and revenue forecasts">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/">
-    <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/og-image.jpg">
+    <meta property="og:image" content="https://techsocialnetwork.github.io/tsn-tools/tools-hero.jpg">
+    <meta property="og:image:width" content="1376">
+    <meta property="og:image:height" content="768">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="S&P 500 Earnings Calendar 2026">
     <meta name="twitter:description" content="All 503 S&P 500 companies organized by sector">
-    <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/og-image.jpg">
+    <meta name="twitter:image" content="https://techsocialnetwork.github.io/tsn-tools/tools-hero.jpg">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"S&P 500 Earnings Calendar","description":"Complete S&P 500 earnings calendar with all 503 companies organized by GICS sector","url":"https://techsocialnetwork.github.io/tsn-tools/sp500-earnings/","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +28,7 @@
         .stat-item { text-align: center; background: #111827; padding: 15px 20px; border-radius: 10px; border: 1px solid #1a2332; min-width: 100px; }
         .stat-value { font-size: 1.6em; font-weight: 700; color: #00d4a0; }
         .stat-label { color: #8892a0; font-size: 0.8em; margin-top: 5px; }
-        .quarter-selector { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .quarter-selector { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
         .quarter-btn { padding: 12px 24px; background: #111827; border: 2px solid #1a2332; color: #e0e0e0; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
         .quarter-btn:hover, .quarter-btn.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
         .view-toggle { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
@@ -37,7 +39,7 @@
         .sector-tab:hover, .sector-tab.active { background: linear-gradient(135deg, #00d4a0, #00d4ff); color: #0a0e1a; border-color: transparent; }
         .passed-section { background: #111827; border: 1px solid #1a2332; border-radius: 12px; padding: 25px; margin-bottom: 30px; }
         .passed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
-        .passed-title { font-size: 1.3em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .passed-title { font-size: 1.3em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; margin: 0; }
         .passed-stats { display: flex; gap: 15px; flex-wrap: wrap; }
         .passed-stat { background: #1a2332; padding: 8px 15px; border-radius: 8px; font-size: 0.9em; }
         .passed-stat .label { color: #8892a0; font-size: 0.85em; }
@@ -45,8 +47,9 @@
         .beat { color: #00d4a0; } .miss { color: #ff4757; } .meet { color: #ffc107; }
         .sector-section { margin-bottom: 40px; }
         .sector-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #1a2332; }
-        .sector-title { font-size: 1.4em; font-weight: 700; color: #fff; }
+        .sector-title { font-size: 1.4em; font-weight: 700; color: #fff; margin: 0; }
         .sector-count { background: #1a2332; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; color: #8892a0; }
+        .table-scroll { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
         .earnings-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 12px; overflow: hidden; font-size: 0.95em; }
         .earnings-table th { background: #1a2332; padding: 12px; text-align: left; font-weight: 600; color: #8892a0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
         .earnings-table td { padding: 12px; border-bottom: 1px solid #1a2332; }
@@ -219,10 +222,10 @@
                 html += `
                     <div class="sector-section">
                         <div class="sector-header">
-                            <span class="sector-title">${sectorNames[sector] || sector}</span>
+                            <h2 class="sector-title">${sectorNames[sector] || sector}</h2>
                             <span class="sector-count">${companies.length} companies</span>
                         </div>
-                        <table class="earnings-table">
+                        <div class="table-scroll"><table class="earnings-table">
                             <thead>
                                 <tr>
                                     <th>Company</th>
@@ -251,7 +254,7 @@
                                     </tr>
                                 `).join('')}
                             </tbody>
-                        </table>
+                        </table></div>
                     </div>
                 `;
             });
@@ -269,7 +272,7 @@
             allCompanies.sort((a, b) => new Date(a.date) - new Date(b.date));
             
             container.innerHTML = `
-                <table class="earnings-table">
+                <div class="table-scroll"><table class="earnings-table">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -298,7 +301,7 @@
                             </tr>
                         `).join('')}
                     </tbody>
-                </table>
+                </table></div>
             `;
         }
         
@@ -324,14 +327,14 @@
             container.innerHTML = `
                 <div class="passed-section">
                     <div class="passed-header">
-                        <span class="passed-title">📋 Recently Reported</span>
+                        <h2 class="passed-title">📋 Recently Reported</h2>
                         <div class="passed-stats">
                             <div class="passed-stat"><span class="label">Beat</span> <span class="value beat">${beat}</span></div>
                             <div class="passed-stat"><span class="label">Miss</span> <span class="value miss">${miss}</span></div>
                             <div class="passed-stat"><span class="label">Meet</span> <span class="value meet">${meet}</span></div>
                         </div>
                     </div>
-                    <table class="earnings-table">
+                    <div class="table-scroll"><table class="earnings-table">
                         <thead>
                             <tr>
                                 <th>Company</th>
@@ -360,7 +363,7 @@
                                 </tr>
                             `).join('')}
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
             `;
         }

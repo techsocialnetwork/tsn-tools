@@ -97,7 +97,8 @@
             font-family: inherit;
         }
         textarea:focus {
-            outline: none;
+            outline: 2px solid #00d4ff;
+            outline-offset: 2px;
             border-color: #00d4ff;
         }
         .stats-bar {
@@ -177,9 +178,11 @@
             border: 1px solid rgba(0, 212, 255, 0.3);
             margin-bottom: 30px;
         }
-        .highlight-box h3 {
+        .highlight-box h2 {
             color: #00d4ff;
             margin-bottom: 10px;
+            font-size: 1.17em;
+            font-weight: 700;
         }
         .seo-content {
             margin-top: 40px;
@@ -248,7 +251,7 @@
         </div>
 
         <div class="highlight-box">
-            <h3>💡 How Token Counting Works</h3>
+            <h2>💡 How Token Counting Works</h2>
             <p>Most LLMs use roughly <strong>1 token per 4 characters</strong> (or ~0.75 tokens per word) for English text. This is an estimate — actual token counts vary by model tokenizer.</p>
             <p style="margin-top: 10px;"><strong>GPT-4/Claude:</strong> ~1 token per 4 chars | <strong>Kimi/DeepSeek:</strong> Similar ratios | <strong>Code:</strong> Often more tokens per char</p>
         </div>
@@ -477,6 +480,7 @@
                 <a href="../ai-image-comparison/">AI Image Comparison</a> | 
                 <a href="../crypto-calculator/">Crypto Calculator</a>
             </p>
+            <p style="margin-top: 10px;"><a href="../">← Back to Tools</a></p>
         </footer>
     </div>
 
@@ -525,10 +529,5 @@
         // Initialize
         updateStats();
     </script>
-
-    <footer style="text-align: center; padding: 40px 0; color: #8892a0; border-top: 1px solid #1a2332; margin-top: 40px;">
-        <p>Built by <a href="https://tsnmedia.org" style="color: #00d4ff; text-decoration: none;">TSN Media</a></p>
-        <p style="margin-top: 10px;"><a href="../" style="color: #00d4ff; text-decoration: none;">← Back to Tools</a></p>
-    </footer>
 </body>
 </html>
