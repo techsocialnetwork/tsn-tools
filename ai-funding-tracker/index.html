@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Funding Tracker 2026 | AI Funding Rounds Table | TSN Media</title>
+<meta name="description" content="Free, sortable and filterable table of AI funding rounds taken from TSN Media's own reporting: company, stage, amount, date, investors and links to the original source. Updated October 2026.">
+<link rel="icon" href="data:,">
+<link rel="canonical" href="https://techsocialnetwork.github.io/tsn-tools/ai-funding-tracker/">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="AI Funding Tracker | TSN Media">
+<meta property="og:description" content="Sortable table of AI funding rounds from TSN's roundups, each linked to the original source.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://techsocialnetwork.github.io/tsn-tools/ai-funding-tracker/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Funding Tracker","description":"Sortable, filterable table of AI funding rounds compiled from TSN Media reporting and its cited sources.","url":"https://techsocialnetwork.github.io/tsn-tools/ai-funding-tracker/","applicationCategory":"BusinessApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@type":"Organization","name":"TSN Media","url":"https://tsnmedia.org"}}</script>
+<style>
+:root{--bg:#0a0e1a;--card:#111827;--line:#1a2332;--line2:#2a3342;--text:#e0e0e0;--muted:#9aa4b2;--accent:#ffa301;--accent2:#ffd27a;--good:#00d4a0;--bad:#ff6b7a;--warn:#ffc107}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;line-height:1.5}
+.container{max-width:1200px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:2px}
+a:hover{color:var(--accent2)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:10}
+.skip:focus{left:8px}
+.topnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.9em;color:var(--muted);padding:4px 0 0}
+.topnav a{text-decoration:none;font-weight:600}
+header.page{text-align:center;padding:34px 0 30px;border-bottom:1px solid var(--line);margin-bottom:30px}
+header.page h1{font-size:2.4em;line-height:1.15;color:var(--accent);background:linear-gradient(135deg,#ffa301,#ffd27a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+header.page .lede{color:#b4bcc8;font-size:1.08em;max-width:820px;margin:0 auto}
+.callout{margin:20px auto 0;max-width:820px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,163,1,.10),rgba(255,163,1,.03));border:1px solid rgba(255,163,1,.35);border-radius:12px;color:#c9d0da;font-size:.93em;text-align:left}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:26px}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.stat-card h2,.stat-card .k{color:var(--muted);font-size:.78em;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px}
+.stat-card .v{font-size:1.9em;font-weight:700;color:#fff;line-height:1.15}
+.stat-card .s{font-size:.85em;color:var(--muted);margin-top:4px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:26px}
+.section>h2{font-size:1.4em;color:#fff;margin-bottom:10px}
+.section-sub{color:var(--muted);font-size:.92em;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#111;border:0;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.95em;cursor:pointer;text-decoration:none;font-family:inherit}
+.btn:hover{background:var(--accent2);color:#111}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(255,163,1,.5)}
+.btn.ghost:hover{background:rgba(255,163,1,.12);color:var(--accent2)}
+.btn:disabled{opacity:.6;cursor:wait}
+label{display:block;color:#c9d0da;font-size:.85em;font-weight:600;margin-bottom:6px}
+input,select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;font-size:1em;font-family:inherit;min-height:44px}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:#7b8696}
+.loading{text-align:center;color:var(--muted);padding:34px 10px}
+.loading::after{content:'';display:inline-block;width:14px;height:14px;margin-left:10px;border:2px solid var(--line2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.loading::after{animation:none}}
+.error{background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.4);color:#ffb3bb;border-radius:12px;padding:14px 16px;margin:12px 0}
+.muted{color:var(--muted)}
+.small{font-size:.85em}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.74em;font-weight:700;white-space:nowrap;background:rgba(136,146,160,.18);color:#c3cad4}
+.badge.ok{background:rgba(0,212,160,.16);color:#3be3b8}
+.badge.rep{background:rgba(255,193,7,.16);color:#ffd45a}
+.badge.na{background:rgba(136,146,160,.15);color:#aab3bf}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.prose h2{font-size:1.25em;color:#fff;margin:22px 0 8px}
+.prose h2:first-child{margin-top:0}
+.prose p,.prose li{color:#b4bcc8;margin-bottom:10px}
+.prose ul{margin-left:22px}
+footer.page{text-align:center;padding:34px 0 10px;color:var(--muted);border-top:1px solid var(--line);margin-top:34px}
+footer.page p{margin-bottom:10px}
+footer.page a{font-weight:600}
+@media (max-width:640px){body{padding:12px}header.page h1{font-size:1.75em}.section{padding:18px}}
+
+.container{max-width:1320px}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;align-items:end;margin-bottom:14px}
+.filters .wide{grid-column:span 2}
+@media (max-width:640px){.filters .wide{grid-column:span 1}}
+.bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:900px}
+caption{text-align:left;padding:10px 14px;color:var(--muted);font-size:.85em}
+th,td{padding:12px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:#0d1424;position:sticky;top:0;white-space:nowrap}
+th button{all:unset;cursor:pointer;color:#e8ecf2;font-weight:700;font-size:.82em;text-transform:uppercase;letter-spacing:.6px;display:inline-flex;gap:6px;align-items:center;padding:2px 2px;border-radius:4px}
+th button:hover{color:var(--accent)}
+th button:focus-visible{outline:3px solid var(--accent)}
+th .arrow{color:var(--accent);font-size:.9em;min-width:1ch}
+th.plain{font-size:.82em;text-transform:uppercase;letter-spacing:.6px;color:#e8ecf2}
+tbody tr:hover{background:rgba(255,163,1,.04)}
+td.co{min-width:120px}
+td.co strong{color:#fff;font-size:1.02em}
+td.num{white-space:nowrap}
+td.amt{min-width:150px;max-width:210px}
+td.amt strong{color:var(--accent);font-size:1.02em}
+td.inv{min-width:170px;max-width:230px;font-size:.9em;color:#c3cad4}
+td.desc{min-width:210px;font-size:.92em;color:#c3cad4}
+td.src{white-space:nowrap;font-size:.9em;min-width:120px}
+td.src a{display:block;margin-bottom:4px}
+.undis{color:#8b95a3;font-style:italic}
+details.note summary{cursor:pointer;color:var(--accent);font-size:.85em;margin-top:6px}
+details.note p{font-size:.85em;color:var(--muted);margin-top:6px}
+.count{color:var(--muted);font-size:.92em}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+@media (max-width:760px){
+  table,thead,tbody,tr,th,td{display:block;min-width:0}
+  thead{position:absolute;left:-9999px}
+  tr{background:#0d1424;border:1px solid var(--line);border-radius:12px;margin:0 0 12px;padding:6px 4px}
+  td{border:0;padding:6px 12px;white-space:normal!important}
+  td[data-label]::before{content:attr(data-label);display:block;font-size:.72em;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:1px}
+  td.co::before{display:none}
+  .tablewrap{border:0}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#tracker">Skip to the table</a>
+<div class="container">
+  <div class="topnav"><a href="https://tsnmedia.org">← TSN Media</a><a href="../">All free tools</a></div>
+  <header class="page">
+    <h1>AI Funding Tracker</h1>
+    <p class="lede">A sortable, filterable table of AI funding rounds, built only from rounds TSN has reported and the primary sources those reports cite. Every row links to the TSN post and to the original announcement or news report.</p>
+    <div class="callout"><strong>How it is compiled.</strong> <span id="method-short">Loading…</span> Amounts, stages and valuations appear only where a cited source states them; anything else is shown as <em>undisclosed</em>. Nothing is estimated. This is a news reference, not investment advice.</div>
+  </header>
+
+  <div class="stats-grid" id="stats" aria-live="polite">
+    <div class="stat-card"><div class="k">Rounds listed</div><div class="v" id="st-count">–</div><div class="s" id="st-count-sub">&nbsp;</div></div>
+    <div class="stat-card"><div class="k">Latest announcement</div><div class="v" id="st-latest">–</div><div class="s">Most recent round in the table</div></div>
+    <div class="stat-card"><div class="k">Largest stated amount</div><div class="v" id="st-largest">–</div><div class="s" id="st-largest-sub">&nbsp;</div></div>
+    <div class="stat-card"><div class="k">Data as of</div><div class="v" id="st-asof">–</div><div class="s">Static file, refreshed by TSN</div></div>
+  </div>
+
+  <section class="section" id="tracker" aria-labelledby="t-h">
+    <h2 id="t-h">Funding rounds</h2>
+    <p class="section-sub">Click a column heading to sort. Filters combine. Amounts are in US dollars as stated by the source; “undisclosed” means the source did not say.</p>
+    <form class="filters" id="filters" onsubmit="return false" aria-label="Filter funding rounds">
+      <div class="wide"><label for="f-q">Search company, investor, description</label><input id="f-q" type="search" placeholder="e.g. Sequoia, robotics, agents" autocomplete="off"></div>
+      <div><label for="f-stage">Stage</label><select id="f-stage"><option value="">All stages</option></select></div>
+      <div><label for="f-sector">Sector</label><select id="f-sector"><option value="">All sectors</option></select></div>
+      <div><label for="f-size">Size</label><select id="f-size">
+        <option value="">Any size</option><option value="lt10">Under $10M</option><option value="10-100">$10M – $100M</option><option value="100-1000">$100M – $1B</option><option value="gte1000">$1B and over</option><option value="undisclosed">Undisclosed / not in USD</option></select></div>
+      <div><label for="f-from">Date from</label><input id="f-from" type="date"></div>
+      <div><label for="f-to">Date to</label><input id="f-to" type="date"></div>
+    </form>
+    <div class="bar">
+      <div class="count" id="shown" role="status" aria-live="polite">Loading…</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn ghost" id="reset">Reset filters</button>
+        <button type="button" class="btn" id="csv">Download CSV</button>
+      </div>
+    </div>
+    <div id="state" class="loading">Loading funding rounds</div>
+    <div class="tablewrap" id="tablewrap" hidden>
+      <table id="tbl">
+        <caption class="sr-only">AI funding rounds, sortable</caption>
+        <thead><tr>
+          <th scope="col" aria-sort="none" data-k="company"><button type="button">Company <span class="arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" aria-sort="none" data-k="stage"><button type="button">Round <span class="arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" aria-sort="none" data-k="amount"><button type="button">Amount <span class="arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" aria-sort="none" data-k="date"><button type="button">Date <span class="arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" class="plain">Investors</th>
+          <th scope="col" class="plain">What it does</th>
+          <th scope="col" class="plain">Sources</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <noscript><p class="error">This table needs JavaScript to load data/funding.json.</p></noscript>
+  </section>
+
+  <section class="section prose" aria-labelledby="m-h">
+    <h2 id="m-h">Method, limits and what is not here</h2>
+    <p id="method-long">Loading…</p>
+    <ul>
+      <li><strong>Confirmed vs reported.</strong> “Confirmed (company)” means the company’s own announcement states the figure. “Reported” means a news outlet or unnamed sources did; those can change.</li>
+      <li><strong>Amounts in other currencies</strong> (for example yuan) are shown as stated and are not converted, so they are left out of the USD size filter.</li>
+      <li><strong>“Up to” and “more than”</strong> amounts are shown with those words; they are not exact totals.</li>
+      <li><strong>Not included:</strong> talks that have not closed, loans and contracts, and non-AI rounds TSN also covered (fusion, nuclear, quantum, crypto-only).</li>
+      <li>Found an error? Tell TSN via <a href="https://tsnmedia.org">tsnmedia.org</a> and include the row and the source.</li>
+    </ul>
+    <p class="small muted">Related TSN tools: <a href="../ai-model-comparison/">AI Model Comparison</a> · <a href="../ai-token-calculator/">AI Token Calculator</a> · <a href="../ai-agent-cost-calculator/">AI Agent Cost Calculator</a> · <a href="../depin-scorecard/">DePIN Scorecard</a></p>
+  </section>
+
+  <footer class="page">
+    <p>Built by <a href="https://tsnmedia.org">TSN Media</a> · Funding data compiled from TSN reporting. Not financial advice.</p>
+    <p><a href="../">← Back to Tools</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+var DATA_URL='data/funding.json';
+var rows=[],state={key:'date',dir:-1},el=function(id){return document.getElementById(id)};
+var STAGE_ORDER=['Pre-seed','Seed','Series A','Series B','Series C','Series D','Series E','Series F','Series G'];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function safeUrl(u){return /^https?:\/\//i.test(u||'')?u:'#'}
+function fmtUsd(n){if(n==null)return null;if(n>=1e9)return '$'+(n/1e9).toLocaleString('en-US',{maximumFractionDigits:2})+'B';if(n>=1e6)return '$'+(n/1e6).toLocaleString('en-US',{maximumFractionDigits:1})+'M';return '$'+n.toLocaleString('en-US')}
+function fmtDate(r){if(!r.date)return null;var p=r.date.split('-');var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];if(p.length===2)return mo[+p[1]-1]+' '+p[0];return (+p[2])+' '+mo[+p[1]-1]+' '+p[0]}
+function sortDate(r){return r.date?(r.date.length===7?r.date+'-01':r.date):''}
+function stageLabel(r){return r.stage||'undisclosed'}
+function stageRank(r){if(!r.stage)return 999;var i=STAGE_ORDER.indexOf(r.stage);return i<0?500:i}
+function amountLabel(r){
+  if(r.amount_text){return r.amount_text}
+  if(r.amount_usd!=null){return fmtUsd(r.amount_usd)}
+  return null;
+}
+function sizeBucket(r){var n=r.amount_usd;if(n==null)return 'undisclosed';if(n<1e7)return 'lt10';if(n<1e8)return '10-100';if(n<1e9)return '100-1000';return 'gte1000'}
+function badge(r){var s=(r.status||'').toLowerCase();var cls=s.indexOf('confirmed')===0?'ok':(s.indexOf('reported')===0?'rep':'na');return '<span class="badge '+cls+'">'+esc(r.status||'unverified')+'</span>'}
+
+function populate(){
+  var stages={},sectors={};
+  rows.forEach(function(r){stages[stageLabel(r)]=stageRank(r);sectors[r.sector||'Other']=1});
+  var s=el('f-stage');Object.keys(stages).sort(function(a,b){return stages[a]-stages[b]||a.localeCompare(b)}).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k.charAt(0).toUpperCase()+k.slice(1);s.appendChild(o)});
+  var c=el('f-sector');Object.keys(sectors).sort().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;c.appendChild(o)});
+}
+function filtered(){
+  var q=el('f-q').value.trim().toLowerCase(),st=el('f-stage').value,se=el('f-sector').value,sz=el('f-size').value,df=el('f-from').value,dt=el('f-to').value;
+  return rows.filter(function(r){
+    if(st&&stageLabel(r)!==st)return false;
+    if(se&&(r.sector||'Other')!==se)return false;
+    if(sz&&sizeBucket(r)!==sz)return false;
+    var d=sortDate(r);
+    if(df&&(!d||d<df))return false;
+    if(dt&&(!d||d>dt))return false;
+    if(q){var hay=[r.company,r.stage,r.sector,r.description,(r.investors||[]).join(' '),r.amount_text,r.valuation_text].join(' ').toLowerCase();if(hay.indexOf(q)<0)return false}
+    return true;
+  });
+}
+function cmp(a,b){
+  var k=state.key,d=state.dir,x,y,miss=false;
+  if(k==='company'){x=a.company.toLowerCase();y=b.company.toLowerCase()}
+  else if(k==='stage'){x=stageRank(a);y=stageRank(b)}
+  else if(k==='amount'){x=a.amount_usd;y=b.amount_usd;if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1}
+  else {x=sortDate(a);y=sortDate(b);if(!x&&!y)return 0;if(!x)return 1;if(!y)return -1}
+  return x<y?-d:x>y?d:a.company.localeCompare(b.company);
+}
+function render(){
+  var list=filtered().sort(cmp);
+  el('shown').textContent='Showing '+list.length+' of '+rows.length+' rounds';
+  var tb=el('rows');
+  if(!list.length){tb.innerHTML='<tr><td colspan="7" class="empty">No rounds match these filters.</td></tr>';}
+  else tb.innerHTML=list.map(function(r){
+    var amt=amountLabel(r),val=r.valuation_text;
+    var inv=(r.investors&&r.investors.length)?esc(r.investors.join(', ')):'<span class="undis">not named in source</span>';
+    var note=r.note?'<details class="note"><summary>Note</summary><p>'+esc(r.note)+'</p></details>':'';
+    var d=fmtDate(r);
+    var viaSearch=r.source_url_found_by_search?' <span class="small muted" title="TSN named this outlet without a link; the URL was located separately">(link located separately)</span>':'';
+    return '<tr>'+
+    '<td class="co" data-label="Company"><strong>'+esc(r.company)+'</strong><div class="small muted">'+esc(r.sector||'')+'</div></td>'+
+    '<td data-label="Round">'+(r.stage?esc(r.stage):'<span class="undis">undisclosed</span>')+'</td>'+
+    '<td class="amt" data-label="Amount">'+(amt?'<strong>'+esc(amt)+'</strong>':'<span class="undis">undisclosed</span>')+(val?'<div class="small muted">Valuation: '+esc(val)+'</div>':'')+'<div style="margin-top:4px">'+badge(r)+'</div></td>'+
+    '<td class="num" data-label="Date">'+(d?esc(d):'<span class="undis">undisclosed</span>')+'</td>'+
+    '<td class="inv" data-label="Investors">'+inv+'</td>'+
+    '<td class="desc" data-label="What it does">'+esc(r.description||'')+note+'</td>'+
+    '<td class="src" data-label="Sources"><a href="'+esc(safeUrl(r.tsn_url))+'" target="_blank" rel="noopener">TSN post ↗</a><a href="'+esc(safeUrl(r.source_url))+'" target="_blank" rel="noopener" title="'+esc(r.source_name||'')+'">Original source ↗</a>'+viaSearch+'</td>'+
+    '</tr>';
+  }).join('');
+  document.querySelectorAll('#tbl thead th[data-k]').forEach(function(th){
+    var on=th.getAttribute('data-k')===state.key;
+    th.setAttribute('aria-sort',on?(state.dir>0?'ascending':'descending'):'none');
+    th.querySelector('.arrow').textContent=on?(state.dir>0?'▲':'▼'):'';
+  });
+}
+function stats(meta){
+  el('st-count').textContent=rows.length;
+  var withAmt=rows.filter(function(r){return r.amount_usd!=null}).length;
+  el('st-count-sub').textContent=withAmt+' with a stated USD amount';
+  var dated=rows.filter(function(r){return r.date}).sort(function(a,b){return sortDate(b)<sortDate(a)?-1:1});
+  el('st-latest').textContent=dated.length?fmtDate(dated[0]):'–';
+  var big=rows.filter(function(r){return r.amount_usd!=null}).sort(function(a,b){return b.amount_usd-a.amount_usd})[0];
+  if(big){el('st-largest').textContent=amountLabel(big);el('st-largest-sub').textContent=big.company+(big.amount_qualifier==='up_to'?' (up to)':'')}
+  var p=(meta.as_of||'').split('-');var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  el('st-asof').textContent=p.length===3?(+p[2])+' '+mo[+p[1]-1]+' '+p[0]:'–';
+  var m=meta.method||'';
+  el('method-short').textContent='Rounds come only from TSN’s own published posts and the primary or named sources those posts cite, with a link to both on every row. Data as of '+(meta.as_of||'?')+'.';
+  el('method-long').textContent=m;
+}
+function csv(){
+  var list=filtered().sort(cmp);
+  var cols=['company','stage','amount_usd','amount_text','valuation_text','date','investors','description','sector','status','source_url','tsn_url','note'];
+  function q(v){v=v==null?'':Array.isArray(v)?v.join('; '):String(v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'}
+  var out=[cols.join(',')].concat(list.map(function(r){return cols.map(function(c){return q(r[c])}).join(',')})).join('\r\n');
+  var blob=new Blob([out],{type:'text/csv;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tsn-ai-funding-rounds.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+}
+function init(){
+  fetch(DATA_URL,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).then(function(doc){
+    rows=(doc.rows||[]).filter(function(r){return !r.needs_review});
+    populate();stats(doc);
+    el('state').hidden=true;el('tablewrap').hidden=false;
+    render();
+  }).catch(function(e){
+    el('state').className='error';el('state').textContent='Could not load data/funding.json ('+e.message+'). If you opened this file directly from disk, serve the folder with a local web server instead (for example python3 -m http.server).';
+    el('shown').textContent='';
+  });
+}
+['f-q','f-stage','f-sector','f-size','f-from','f-to'].forEach(function(id){el(id).addEventListener('input',render);el(id).addEventListener('change',render)});
+el('reset').addEventListener('click',function(){['f-q','f-stage','f-sector','f-size','f-from','f-to'].forEach(function(id){el(id).value=''});render()});
+el('csv').addEventListener('click',csv);
+document.querySelectorAll('#tbl thead th[data-k] button').forEach(function(b){b.addEventListener('click',function(){var k=b.parentNode.getAttribute('data-k');if(state.key===k)state.dir*=-1;else{state.key=k;state.dir=(k==='company'||k==='stage')?1:-1}render()})});
+init();
+})();
+</script>
+</body>
+</html>
