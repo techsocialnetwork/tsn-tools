@@ -11,8 +11,6 @@ These pages used to live under `tsnmedia.org/tools/*`. This public repo is the n
 | Tool | Pages URL |
 |------|-----------|
 | Hub | https://techsocialnetwork.github.io/tsn-tools/ |
-| Crypto Profit Calculator | https://techsocialnetwork.github.io/tsn-tools/crypto-calculator/ |
-| Bitcoin Halving Countdown | https://techsocialnetwork.github.io/tsn-tools/bitcoin-halving-countdown/ |
 | AI Model Comparison | https://techsocialnetwork.github.io/tsn-tools/ai-model-comparison/ |
 | AI Image Comparison | https://techsocialnetwork.github.io/tsn-tools/ai-image-comparison/ |
 | AI Token Calculator | https://techsocialnetwork.github.io/tsn-tools/ai-token-calculator/ |
@@ -23,6 +21,8 @@ These pages used to live under `tsnmedia.org/tools/*`. This public repo is the n
 | Flux Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/flux-dashboard/ |
 | Akash Network Dashboard | https://techsocialnetwork.github.io/tsn-tools/akash-dashboard/ |
 | Hyperliquid Dashboard | https://techsocialnetwork.github.io/tsn-tools/hyperliquid-dashboard/ |
+| Crypto Profit Calculator | https://techsocialnetwork.github.io/tsn-tools/crypto-calculator/ |
+| Bitcoin Halving Countdown | https://techsocialnetwork.github.io/tsn-tools/bitcoin-halving-countdown/ |
 
 ## Data sources
 
