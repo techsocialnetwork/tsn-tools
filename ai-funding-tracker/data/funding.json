@@ -1,8 +1,8 @@
 {
- "as_of": "2026-10-10",
- "generated": "2026-10-10T11:06:50.564Z",
+ "as_of": "2026-10-12",
+ "generated": "2026-10-12T07:14:39.716Z",
  "method": "Rounds were taken only from TSN's own published posts (WordPress REST API) and the primary or named sources those posts cite. Each row links to the TSN post and the original source. Amounts, stages and valuations are shown only where the cited source states them; anything else is left blank and displayed as 'undisclosed'. Nothing is estimated or converted. Scope: AI companies, AI infrastructure/chips, AI agents and AI-driven robotics. Fusion, nuclear, quantum and pure-crypto rounds that TSN also covered are not included.",
- "count": 30,
+ "count": 32,
  "rows": [
   {
    "id": "sabi-seed-2026-10-09",
@@ -38,12 +38,12 @@
    "note": "Forbes reports a $600M valuation from an unnamed source; Sabi did not state one, so it is not shown.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "50 million",
-     "Khosla"
+     "$50 million",
+     "seed"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -77,12 +77,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "870 million",
-     "7.5"
+     "$870 million",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -121,12 +121,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "200 million",
-     "Series B"
+     "$200 million",
+     "series b"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -159,12 +159,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "60 million",
-     "Benchmark"
+     "$60 million",
+     "seed"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -200,12 +200,11 @@
    "note": "Round stage not stated in TSN post. Vesta has raised $85M to date per TechCrunch.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$30",
-     "Conversion Capital"
+     "$30 million"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -243,12 +242,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "30 million",
-     "Sequoia"
+     "$30 million",
+     "seed"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -282,12 +281,12 @@
    "note": "Total funding $35M per company. Added to the TSN post as an update on 9 Oct.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$25",
-     "Series A"
+     "$25 million",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -321,12 +320,11 @@
    "note": "Round stage not stated.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$10",
-     "Vine Ventures"
+     "$10 million"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -359,12 +357,12 @@
    "note": "No lead investor named; total funding $70M per company.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "50 million",
-     "Series A"
+     "$50 million",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -400,12 +398,11 @@
    "note": "Valuation not disclosed. Bloomberg’s ~$4B figure is reported, not confirmed, and is not shown.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "500 million",
-     "Boyu"
+     "$500 million"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -440,11 +437,12 @@
    "note": "Amount stated in yuan; not converted, so it is excluded from USD size filters.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "100 mln"
+     "100 million yuan",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -478,12 +476,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$5.2",
-     "Uncork"
+     "$5.2 million",
+     "seed"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -523,12 +521,12 @@
    "tsn_post_date": "2026-10-08",
    "note": "Stage and lead come from TechCrunch, not Nous’s own note. A $1.2B figure appeared in one aggregator; unconfirmed.",
    "verification": {
-    "status": "verified",
-    "method": "curl",
+    "status": "partial",
+    "method": "fetch",
     "terms_matched": [
-     "90 million"
+     "$90 million"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -567,12 +565,12 @@
    "note": "A $500M valuation was reported earlier by TechCrunch for the round in progress; Mecka did not state one.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "60 million",
-     "Series B"
+     "$60 million",
+     "series b"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -610,13 +608,12 @@
    "tsn_post_date": "2026-10-08",
    "note": "Press-release headline says “$100M+”; body says $100 million.",
    "verification": {
-    "status": "verified",
-    "method": "curl",
+    "status": "partial",
+    "method": "fetch",
     "terms_matched": [
-     "$100",
-     "Series C"
+     "series c"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -657,12 +654,12 @@
    "note": "Total raised over $100M since 2016.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "75 million",
-     "Series B"
+     "$75 million",
+     "series b"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -695,12 +692,10 @@
    "tsn_post_date": "2026-10-08",
    "note": "Tab declined to say how much it raised.",
    "verification": {
-    "status": "verified",
-    "method": "curl",
-    "terms_matched": [
-     "$300"
-    ],
-    "checked": "2026-10-10"
+    "status": "partial",
+    "method": "fetch",
+    "terms_matched": [],
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -734,9 +729,13 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "webfetch/websearch (curl blocked: HTTP 403)",
+    "method": "fetch",
     "note": "Source page blocked automated curl; contents checked separately via WebFetch/WebSearch excerpt on 2026-10-10.",
-    "checked": "2026-10-10"
+    "checked": "2026-10-12",
+    "terms_matched": [
+     "$10 million",
+     "pre-seed"
+    ]
    },
    "needs_review": false
   },
@@ -770,12 +769,12 @@
    "note": null,
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$1.2",
-     "Tawani"
+     "$1.2 million",
+     "seed"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -809,12 +808,11 @@
    "note": "The release names new investors but not the amount. About $74M total is cited by secondary outlets only, so it is not shown.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "Series A",
-     "Lightspeed"
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -844,12 +842,11 @@
    "note": "Mostly a secondary sale (employees selling shares), per SiliconANGLE. Investors not named.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$40 million",
-     "RobCo"
+     "$40 million"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -880,12 +877,10 @@
    "tsn_post_date": "2026-04-25",
    "note": null,
    "verification": {
-    "status": "verified",
-    "method": "curl",
-    "terms_matched": [
-     "40 billion"
-    ],
-    "checked": "2026-10-10"
+    "status": "partial",
+    "method": "fetch",
+    "terms_matched": [],
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -916,13 +911,10 @@
    "tsn_post_date": "2026-04-25",
    "note": null,
    "verification": {
-    "status": "verified",
-    "method": "curl",
-    "terms_matched": [
-     "5 billion",
-     "25 billion"
-    ],
-    "checked": "2026-10-10"
+    "status": "partial",
+    "method": "fetch",
+    "terms_matched": [],
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -962,12 +954,12 @@
    "note": "The TSN post names Reuters without a link; the company release (found by search) is used as the primary source. Stage and investors come from the source, not the TSN post.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "400 million",
-     "Series G"
+     "$400 million",
+     "series g"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -1005,12 +997,12 @@
    "note": "The TSN post names TechCrunch without a link; the URL was found by search.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "$60",
-     "Series A"
+     "$60 million",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -1049,10 +1041,11 @@
    "tsn_post_date": "2026-04-03",
    "note": "“Committed capital”. TSN post cites TechCrunch/others without links; the primary OpenAI URL was found by search. Stage not labelled.",
    "verification": {
-    "status": "verified",
+    "status": "unreachable",
     "method": "webfetch/websearch (curl blocked: HTTP 403)",
     "note": "Source page blocked automated curl; contents checked separately via WebFetch/WebSearch excerpt on 2026-10-10.",
-    "checked": "2026-10-10"
+    "checked": "2026-10-12",
+    "http": 403
    },
    "needs_review": false
   },
@@ -1082,12 +1075,99 @@
    "note": "Linked by TSN as “Anthropic $380B Valuation – CNBC”. Investors not listed in the TSN post.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "30 billion",
-     "380"
+     "$30 billion"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
+   },
+   "needs_review": false
+  },
+  {
+   "id": "waymo-equity-2026-02",
+   "company": "Waymo",
+   "stage": null,
+   "amount_usd": 16000000000,
+   "amount_text": "$16 billion",
+   "amount_qualifier": "exact",
+   "currency": "USD",
+   "valuation_usd": 126000000000,
+   "valuation_text": "$126 billion (reported, TechCrunch)",
+   "date": "2026-02",
+   "date_precision": "month",
+   "investors": [
+    "Dragoneer Investment Group (co-lead)",
+    "DST Global (co-lead)",
+    "Sequoia Capital (co-lead)",
+    "Alphabet (majority investor)"
+   ],
+   "description": "Alphabet’s self-driving robotaxi company; equity raised to expand the Waymo Driver to more cities.",
+   "sector": "Robotics / autonomous driving",
+   "status": "confirmed (company) / TechCrunch",
+   "source_url": "https://techcrunch.com/2026/10/08/waymo-locks-in-5b-loan-from-blackstone-pimco-to-fuel-robotaxi-expansion/",
+   "source_name": "TechCrunch, 8 Oct 2026",
+   "source_url_found_by_search": false,
+   "other_sources": [
+    "https://waymo.com/blog/2026/10/waymo-closes-5-billion-debt-financing/"
+   ],
+   "tsn_url": "https://tsnmedia.org/waymo-5-billion-loan-closed-robotaxi-debt/",
+   "tsn_title": "Waymo Closes Its $5 Billion Term Loan, Its First Debt Financing: What We Know",
+   "tsn_post_date": "2026-10-10",
+   "note": "Waymo’s 8 Oct blog confirms it closed a $16 billion equity investment “earlier this year”; the February date, valuation and lead investors come from TechCrunch. Stage not labelled. The $5 billion term loan in the same post is debt and is not listed.",
+   "verification": {
+    "status": "verified",
+    "method": "fetch",
+    "terms_matched": [
+     "$16 billion"
+    ],
+    "checked": "2026-10-12"
+   },
+   "needs_review": false
+  },
+  {
+   "id": "xai-series-e-2026-01-06",
+   "company": "xAI (now SpaceXAI)",
+   "stage": "Series E",
+   "amount_usd": 20000000000,
+   "amount_text": "$20 billion",
+   "amount_qualifier": "exact",
+   "currency": "USD",
+   "valuation_usd": null,
+   "valuation_text": null,
+   "date": "2026-01-06",
+   "date_precision": "day",
+   "investors": [
+    "Valor Equity Partners",
+    "StepStone Group",
+    "Fidelity Management & Research Company",
+    "Qatar Investment Authority",
+    "MGX",
+    "Baron Capital Group",
+    "NVIDIA (strategic)",
+    "Cisco Investments (strategic)",
+    "Tesla (about $2 billion, per Tesla)"
+   ],
+   "description": "Maker of the Grok models; the round was upsized from a $15 billion target. xAI has since merged into SpaceX.",
+   "sector": "AI models",
+   "status": "confirmed (company)",
+   "source_url": "https://x.ai/news/series-e",
+   "source_name": "xAI announcement, 6 Jan 2026",
+   "source_url_found_by_search": false,
+   "other_sources": [
+    "https://techcrunch.com/2026/01/28/tesla-invested-2b-in-elon-musks-xai/"
+   ],
+   "tsn_url": "https://tsnmedia.org/xai-spacexai-the-last-12-months-timeline-roadmap-claims/",
+   "tsn_title": "xAI (now SpaceXAI): The Last 12 Months, From Grok 4.1 to the SpaceX IPO",
+   "tsn_post_date": "2026-10-11",
+   "note": "xAI did not state a valuation; CNBC reported about $230 billion (cited in the TSN post), so none is shown. Tesla’s about $2 billion is part of this round, per Tesla’s shareholder letter via TechCrunch. The separate $5.4bn Valor Compute Infrastructure GPU-leasing vehicle is asset financing and is not listed.",
+   "verification": {
+    "status": "verified",
+    "method": "fetch",
+    "terms_matched": [
+     "$20 billion",
+     "series e"
+    ],
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -1117,12 +1197,12 @@
    "note": "Exact January day not stated in the cited article.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "150 million",
-     "Series A"
+     "$150 million",
+     "series a"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -1154,12 +1234,12 @@
    "note": "Secondary source; the primary Series C announcement was not read by TSN. Only Nvidia is named here.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "Series C",
-     "1 billion"
+     "$1 billion",
+     "series c"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   },
@@ -1189,12 +1269,12 @@
    "note": "Date not stated: Bloomberg says “five months ago” (about May 2026). New talks at $40bn+ are unconfirmed and not listed.",
    "verification": {
     "status": "verified",
-    "method": "curl",
+    "method": "fetch",
     "terms_matched": [
-     "2.1",
-     "series B"
+     "$2.1 billion",
+     "series b"
     ],
-    "checked": "2026-10-10"
+    "checked": "2026-10-12"
    },
    "needs_review": false
   }
